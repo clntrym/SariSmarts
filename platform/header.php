@@ -64,7 +64,7 @@
                     </li>
                 </ul>
                 <div class="d-flex align-items-center gap-3">
-                    <a href="/SariSmarts/accounts/acc_log_in.php"
+                    <a href="<?= (isset($isLocal) && $isLocal) ? '/SariSmarts/accounts/acc_log_in.php' : '/accounts/acc_log_in.php' ?>"
                         class="text-dark text-decoration-none fw-semibold">
                         Login
                     </a>
