@@ -10,3 +10,4 @@ RewriteRule ^ - [L]
 # If appending .php exists, rewrite internally (no external 301 redirect)
 RewriteCond %{REQUEST_FILENAME}.php -f
 RewriteRule ^(.*)$ $1.php [L,QSA]
+

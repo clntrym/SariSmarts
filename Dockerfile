@@ -12,6 +12,9 @@ RUN sed -i '/<Directory \/var\/www\/>/,/<\/Directory>/ s/AllowOverride None/Allo
     && echo "UseCanonicalName Off" >> /etc/apache2/apache2.conf \
     && echo "UseCanonicalPhysicalPort Off" >> /etc/apache2/apache2.conf
 
+# Set global PHP include path so files in subdirectories always find config and includes
+RUN echo "include_path = \".:/var/www/html:/var/www/html/platform:/usr/local/lib/php\"" > /usr/local/etc/php/conf.d/include_path.ini
+
 # Copy application files to web root
 COPY . /var/www/html/
 
