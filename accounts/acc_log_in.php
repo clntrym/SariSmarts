@@ -95,7 +95,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             */
             if (!accountStatusAllowsAccess($row['status'] ?? null)) {
                 $_SESSION['login_error'] = accountAccessMessage($row['status'] ?? null);
-                header("Location: /SariSmarts/accounts/acc_log_in.php");
+                header("Location: /accounts/acc_log_in.php");
                 exit();
             }
 
@@ -193,7 +193,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     session_destroy();
                     session_start();
                     $_SESSION['login_error'] = $blockReason;
-                    header("Location: " . "/SariSmarts/accounts/acc_log_in.php");
+                    header("Location: " . "/accounts/acc_log_in.php");
                     exit();
                 }
             }
@@ -228,23 +228,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             switch (strtolower($row['role'])) {
 
                 case "admin":
-                    header("Location: /SariSmarts/admin/dashboard.php");
+                    header("Location: /admin/dashboard.php");
                     exit();
 
                 case "hr":
-                    header("Location: /SariSmarts/hr/dashboard.php");
+                    header("Location: /hr/dashboard.php");
                     exit();
 
                 case "finance":
-                    header("Location: /SariSmarts/finance/dashboard.php");
+                    header("Location: /finance/dashboard.php");
                     exit();
 
                 case "inventory":
-                    header("Location: /SariSmarts/inventory/dashboard.php");
+                    header("Location: /inventory/dashboard.php");
                     exit();
 
                 case "cashier":
-                    header("Location: /SariSmarts/cashier/pointofsales.php");
+                    header("Location: /cashier/pointofsales.php");
                     exit();
 
                 /*
@@ -271,17 +271,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 default:
                     $_SESSION['login_error'] = "Invalid role assigned to this account.";
-                    header("Location: /SariSmarts/accounts/acc_log_in.php");
+                    header("Location: /accounts/acc_log_in.php");
                     exit();
             }
         } else {
             $_SESSION['login_error'] = "Invalid Password";
-            header("Location: /SariSmarts/accounts/acc_log_in.php");
+            header("Location: /accounts/acc_log_in.php");
             exit();
         }
     } else {
         $_SESSION['login_error'] = "User ID / Email not found";
-        header("Location: /SariSmarts/accounts/acc_log_in.php");
+        header("Location: /accounts/acc_log_in.php");
         exit();
     }
 

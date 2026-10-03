@@ -32,7 +32,7 @@ if ($conn->affected_rows) {
     $mail->addAddress($email);
     $mail->Subject = "Password Reset";
     $mail->Body = <<<END
-    Click <a href="http://localhost/SariSmarts/accounts/reset-password.php?token=$token">here</a> 
+    Click <a href="https://retailcore-2jlm.onrender.com/accounts/reset-password.php?token=$token">here</a> 
     to reset your password. This link will expire in 30 minutes.
     END;
 

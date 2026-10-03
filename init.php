@@ -350,7 +350,7 @@ if (!function_exists('requireModule')) {
             . '<h2 style="margin:0 0 8px">' . htmlspecialchars($what) . ' is not part of your plan</h2>'
             . '<p style="color:#5b6b82;margin:0 0 20px">Your ' . htmlspecialchars($planName)
             . ' subscription does not include this module. Upgrade the plan to unlock it.</p>'
-            . '<a href="/SariSmarts/admin/dashboard.php" style="color:#00224c;font-weight:600">Back to dashboard</a>'
+            . '<a href="/admin/dashboard.php" style="color:#00224c;font-weight:600">Back to dashboard</a>'
             . '</div>'
         );
     }
@@ -655,7 +655,7 @@ if (!function_exists('requireRole')) {
 
         if (!isset($_SESSION['user_id']) || !isset($_SESSION['role'])) {
             $_SESSION['session_expired'] = "Please log in to access this page.";
-            header("Location: /SariSmarts/accounts/acc_log_in.php");
+            header("Location: /accounts/acc_log_in.php");
             exit();
         }
 
@@ -682,7 +682,7 @@ if (!function_exists('requireRole')) {
             session_start();
             $_SESSION['login_error'] = accountAccessMessage(null);
 
-            header("Location: /SariSmarts/accounts/acc_log_in.php");
+            header("Location: /accounts/acc_log_in.php");
             exit();
         }
 
@@ -708,23 +708,23 @@ if (!function_exists('requireRole')) {
             switch ($userRole) {
 
                 case "admin":
-                    header("Location: /SariSmarts/admin/dashboard.php");
+                    header("Location: /admin/dashboard.php");
                     break;
 
                 case "hr":
-                    header("Location: /SariSmarts/hr/dashboard.php");
+                    header("Location: /hr/dashboard.php");
                     break;
 
                 case "finance":
-                    header("Location: /SariSmarts/finance/dashboard.php");
+                    header("Location: /finance/dashboard.php");
                     exit();
 
                 case "inventory":
-                    header("Location: /SariSmarts/inventory/dashboard.php");
+                    header("Location: /inventory/dashboard.php");
                     exit();
 
                 case "cashier":
-                    header("Location: /SariSmarts/cashier/pointofsales.php");
+                    header("Location: /cashier/pointofsales.php");
                     exit();
 
                 case "super admin":
@@ -732,7 +732,7 @@ if (!function_exists('requireRole')) {
                     exit();
 
                 default:
-                    header("Location: /SariSmarts/accounts/acc_log_in.php");
+                    header("Location: /accounts/acc_log_in.php");
                     break;
             }
 

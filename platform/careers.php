@@ -1,22 +1,29 @@
 <?php
 require_once __DIR__ . "/config.php";
 
-$jobsQuery = $conn->query("
-    SELECT
-        j.*,
-        b.branch_name
-    FROM job j
-    INNER JOIN branch b
-        ON j.branch_id = b.branch_id
-    WHERE j.status = 'Published'
-    AND (
-        j.application_deadline IS NULL
-        OR j.application_deadline = ''
-        OR j.application_deadline >= CURDATE()
-    )
-    ORDER BY j.created_at DESC
-
-");
+// Gracefully handle case where job table doesn't exist yet
+try {
+    $jobsQuery = $conn->query("
+        SELECT
+            j.*,
+            b.branch_name
+        FROM job j
+        INNER JOIN branch b
+            ON j.branch_id = b.branch_id
+        WHERE j.status = 'Published'
+        AND (
+            j.application_deadline IS NULL
+            OR j.application_deadline = ''
+            OR j.application_deadline >= CURDATE()
+        )
+        ORDER BY j.created_at DESC
+    ");
+} catch (Exception $e) {
+    $jobsQuery = false;
+}
+if ($jobsQuery === false && $conn->errno) {
+    $jobsQuery = null;
+}
 
 /* Page copy comes from the Super Admin careers editor. */
 $careers = $conn->query("SELECT * FROM website_careers_section ORDER BY section_id LIMIT 1")->fetch_assoc() ?: [];
