@@ -1,4 +1,4 @@
-<?php include("header.php"); ?>
+<?php include __DIR__ . "/header.php"; ?>
 <section class="pricing-hero">
     <div class="container">
         <span class="pricing-badge">
@@ -14,5 +14,5 @@
     </div>
 </section>
 <?php
-include("footer.php");
+include __DIR__ . "/footer.php";
 ?>

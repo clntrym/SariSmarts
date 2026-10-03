@@ -1,7 +1,7 @@
 <?php
 
-require_once("config.php");
-include("header.php");
+require_once __DIR__ . "/config.php";
+include __DIR__ . "/header.php";
 
 
 /*
@@ -414,4 +414,4 @@ function pricingCompareCell($value)
     </div>
 </section>
 
-<?php include("footer.php"); ?>
+<?php include __DIR__ . "/footer.php"; ?>

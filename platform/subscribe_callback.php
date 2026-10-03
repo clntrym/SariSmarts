@@ -207,7 +207,7 @@ $screens = [
 
 $screen = $screens[$state];
 
-include("header.php");
+include __DIR__ . "/header.php";
 
 ?>
 
@@ -264,4 +264,4 @@ include("header.php");
 
 </div>
 
-<?php include("footer.php"); ?>
+<?php include __DIR__ . "/footer.php"; ?>

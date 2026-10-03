@@ -359,7 +359,7 @@ if ($company && isset($_POST['resubmit'])) {
 }
 
 
-include("header.php");
+include __DIR__ . "/header.php";
 
 $value = function ($key, $fallback = '') use ($company) {
     if (isset($_POST[$key])) {
@@ -729,4 +729,4 @@ $value = function ($key, $fallback = '') use ($company) {
 -->
 <script src="<?= $BASE_URL ?>/assets/js/public-form-guard.js"></script>
 
-<?php include("footer.php"); ?>
+<?php include __DIR__ . "/footer.php"; ?>

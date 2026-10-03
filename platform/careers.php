@@ -1,5 +1,5 @@
 <?php
-require_once("config.php");
+require_once __DIR__ . "/config.php";
 
 $jobsQuery = $conn->query("
     SELECT
@@ -21,7 +21,7 @@ $jobsQuery = $conn->query("
 /* Page copy comes from the Super Admin careers editor. */
 $careers = $conn->query("SELECT * FROM website_careers_section ORDER BY section_id LIMIT 1")->fetch_assoc() ?: [];
 
-include("header.php");
+include __DIR__ . "/header.php";
 ?>
 
 
@@ -540,5 +540,5 @@ include("header.php");
 
 
 <?php
-include("footer.php");
+include __DIR__ . "/footer.php";
 ?>

@@ -610,7 +610,7 @@ if ($company && $_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['payNow'])
 }
 
 
-include("header.php");
+include __DIR__ . "/header.php";
 
 ?>
 
@@ -1281,4 +1281,4 @@ include("header.php");
 -->
 <script src="<?= $BASE_URL ?>/assets/js/public-form-guard.js"></script>
 
-<?php include("footer.php"); ?>
+<?php include __DIR__ . "/footer.php"; ?>

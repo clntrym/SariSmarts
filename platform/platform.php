@@ -1,5 +1,5 @@
 <?php
-include("header.php");
+include __DIR__ . "/header.php";
 require_once 'config.php';
 
 $platform = mysqli_fetch_assoc(mysqli_query($conn, "
@@ -113,5 +113,5 @@ $modules = mysqli_query($conn, "
     </div>
 </section>
 <?php
-include("footer.php");
+include __DIR__ . "/footer.php";
 ?>

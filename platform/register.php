@@ -819,7 +819,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$postTooLarge) {
 */
 $stagedUploads = $success ? [] : registrationStaged();
 
-include("header.php");
+include __DIR__ . "/header.php";
 
 ?>
 <link rel="stylesheet" href="<?= $BASE_URL ?>/assets/css/permits.css">
@@ -1872,4 +1872,4 @@ include("header.php");
 -->
 <script src="<?= $BASE_URL ?>/assets/js/public-form-guard.js"></script>
 
-<?php include("footer.php"); ?>
+<?php include __DIR__ . "/footer.php"; ?>
