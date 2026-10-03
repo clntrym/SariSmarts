@@ -6,8 +6,11 @@ RUN docker-php-ext-install mysqli pdo pdo_mysql
 # Enable Apache mod_rewrite for routing and .htaccess support
 RUN a2enmod rewrite
 
-# Configure Apache to allow .htaccess overrides in /var/www/html
-RUN sed -i '/<Directory \/var\/www\/>/,/<\/Directory>/ s/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf
+# Configure Apache to allow .htaccess overrides and prevent internal port redirection
+RUN sed -i '/<Directory \/var\/www\/>/,/<\/Directory>/ s/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf \
+    && echo "ServerName localhost" >> /etc/apache2/apache2.conf \
+    && echo "UseCanonicalName Off" >> /etc/apache2/apache2.conf \
+    && echo "UseCanonicalPhysicalPort Off" >> /etc/apache2/apache2.conf
 
 # Copy application files to web root
 COPY . /var/www/html/
