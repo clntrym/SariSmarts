@@ -27,3 +27,4 @@ RUN printf '#!/bin/bash\nPORT=${PORT:-80}\nsed -i "s/Listen [0-9]*/Listen $PORT/
     && chmod +x /usr/local/bin/start.sh
 
 CMD ["/usr/local/bin/start.sh"]
+
