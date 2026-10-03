@@ -1,0 +1,133 @@
+
+:root{
+    --primary:#00224c;
+    --accent:#fbbd23;
+    --bg:#f5f7fb;
+}
+body{
+    background:var(--bg);
+}
+.pos-panel{
+    background:#fff;
+    border-radius:18px;
+    border:1px solid #dfe7f3;
+    box-shadow:0 4px 12px rgba(0,0,0,.05);
+}
+.search-box{
+    border-radius:12px;
+}
+.category-scroll{
+    display:flex;
+    gap:10px;
+    overflow-x:auto;
+    padding-bottom:8px;
+}
+.category-scroll::-webkit-scrollbar{
+    height:5px;
+}
+.category-scroll::-webkit-scrollbar-thumb{
+    background:#bdbdbd;
+    border-radius:50px;
+}
+.category-btn{
+    border:1px solid #d7dce5 !important;
+    background:#fff !important;
+    border-radius:30px;
+    padding:8px 18px;
+    white-space:nowrap;
+    cursor:pointer;
+    color:#000 !important;
+    transition:.3s;
+}
+
+.category-btn:hover{
+    background:#00224c !important;
+    color:#fff !important;
+    border-color:#00224c !important;
+}
+
+.category-btn.active{
+    background:#00224c !important;
+    color:#fff !important;
+    border-color:#00224c !important;
+}
+.product-list{
+    height:650px;
+    overflow-y:auto;
+}
+.product-card{
+    cursor:pointer;
+    transition:.25s;
+    border-radius:14px;
+    border:1px solid #dfe5f0;
+}
+.product-card:hover{
+    transform:translateY(-4px);
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
+}
+.product-image{
+    height:170px;
+    background:#eef2f8;
+    border-radius:12px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+.product-image img{
+    max-width:100%;
+    max-height:150px;
+    object-fit:contain;
+}
+.price{
+    color:#00224c;
+    font-size:22px;
+    font-weight:bold;
+}
+.stock{
+    border:1px solid #d8dce8;
+    border-radius:20px;
+    padding:2px 12px;
+    font-size:12px;
+}
+.btn-primary{
+    background: var(--primary);
+    border:1px solid var(--primary);
+    color:#fff;
+    border-radius:10px;
+}
+
+.btn-primary:hover{
+    background:#001633;
+    border-color:#001633;
+    color:#fff;
+}
+
+.btn-outline-primary{
+    background:#fff;
+    color:var(--primary);
+    border:1px solid var(--primary);
+    border-radius:10px;
+}
+
+.btn-outline-primary:hover{
+    background:var(--primary);
+    color:#fff;
+}
+
+.btn-outline-secondary{
+    background:#fff;
+    color:var(--primary);
+    border:1px solid var(--primary);
+    border-radius:10px;
+}
+
+.btn-outline-secondary:hover{
+    background:var(--primary);
+    color:#fff;
+}
+.form-control{
+    border-radius:10px;
+}
+h2.text-primary{
+    color:#00224c !important;
+}

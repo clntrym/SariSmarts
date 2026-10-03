@@ -1,0 +1,331 @@
+/* ============================================================
+   SariSmart — shared DataTables theme
+
+   Mirrors the Supplier Invoices (accounts_payable.php) design so
+   every table in the system gets the same pill search box, footer
+   record count, pagination buttons, and sortable headers.
+
+   Works with both DataTables 2.x renderers used in this project:
+   the stock one (button.dt-paging-button) and the Bootstrap 5
+   integration (ul.pagination > li.page-item > .page-link).
+   ============================================================ */
+
+
+/* ------------------------------------------------------------
+   LAYOUT ROWS
+   ------------------------------------------------------------ */
+
+.dt-container .dt-layout-row {
+    align-items: center;
+}
+
+/* Top row — search on the left, page toolbar on the right, one line.
+   The :not() guard keeps these rules off the row that holds the table
+   itself, which is what :first-child would otherwise match on pages
+   that switch the top bar off. */
+.dt-container .dt-layout-row:not(.dt-layout-table):first-child {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin: 0;
+    padding: 16px 20px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.dt-container .dt-layout-row:not(.dt-layout-table):first-child .dt-layout-start {
+    margin-right: auto;
+}
+
+/* Slot the page's own filters / Export button get moved into */
+.dt-container .dt-toolbar-slot {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-left: auto;
+    padding: 0;
+}
+
+.dt-container .dt-toolbar-slot > * {
+    margin: 0;
+}
+
+/* Bottom row — record count on the left, pagination on the right */
+.dt-container .dt-layout-row:not(.dt-layout-table):last-child {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin: 0;
+    padding: 16px 20px;
+    border-top: 1px solid #e2e8f0;
+}
+
+
+/* ------------------------------------------------------------
+   SEARCH BOX — rounded pill with magnifier icon
+   ------------------------------------------------------------ */
+
+.dt-container .dt-search {
+    position: relative;
+    margin: 0;
+    text-align: left;
+}
+
+/* The stock "Search:" label text is hidden — the placeholder and
+   the magnifier icon already say what the field does. */
+.dt-container .dt-search label {
+    font-size: 0;
+    margin: 0;
+}
+
+.dt-container .dt-search input,
+.dt-container input.dt-input {
+    width: 430px;
+    max-width: 100%;
+    height: 40px;
+    margin: 0;
+    padding: 0 16px 0 40px;
+    border: 1px solid #cbd5e1;
+    border-radius: 999px;
+    background-color: #fff;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2394a3b8' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='M21 21l-4.3-4.3' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: 14px center;
+    background-size: 16px 16px;
+    font-size: 14px;
+    color: #334155;
+    outline: none;
+    transition: border-color .15s ease, box-shadow .15s ease;
+}
+
+.dt-container .dt-search input::placeholder {
+    color: #94a3b8;
+}
+
+.dt-container .dt-search input:focus,
+.dt-container input.dt-input:focus {
+    border-color: #00224c;
+    box-shadow: 0 0 0 3px rgba(0, 34, 76, .10);
+}
+
+
+/* ------------------------------------------------------------
+   PAGE-LENGTH SELECT (only shows when a page opts in)
+   ------------------------------------------------------------ */
+
+.dt-container .dt-length select {
+    height: 40px;
+    padding: 0 30px 0 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background-color: #fff;
+    font-size: 14px;
+    color: #334155;
+    outline: none;
+}
+
+.dt-container .dt-length select:focus {
+    border-color: #00224c;
+}
+
+
+/* ------------------------------------------------------------
+   RECORD COUNT
+   ------------------------------------------------------------ */
+
+.dt-container .dt-info {
+    padding: 0;
+    margin: 0;
+    font-size: 14px;
+    color: #64748b;
+}
+
+
+/* ------------------------------------------------------------
+   PAGINATION
+   ------------------------------------------------------------ */
+
+.dt-container .dt-paging {
+    margin: 0;
+}
+
+.dt-container .dt-paging nav {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+/* --- Stock renderer: plain <button> elements --- */
+.dt-container .dt-paging button.dt-paging-button {
+    min-width: 36px;
+    height: 36px;
+    margin: 0;
+    padding: 0 10px;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 8px;
+    background: #fff !important;
+    color: #334155 !important;
+    font-size: 14px;
+    line-height: 1;
+    box-shadow: none;
+    transition: background .15s ease, border-color .15s ease;
+}
+
+.dt-container .dt-paging button.dt-paging-button:hover:not(.disabled):not(.current) {
+    background: #f8fafc !important;
+    border-color: #cbd5e1 !important;
+}
+
+.dt-container .dt-paging button.dt-paging-button.current {
+    background: #00224c !important;
+    border-color: #00224c !important;
+    color: #fff !important;
+    font-weight: 600;
+}
+
+.dt-container .dt-paging button.dt-paging-button.disabled {
+    opacity: .4;
+    cursor: not-allowed;
+    color: #94a3b8 !important;
+}
+
+/* --- Bootstrap 5 renderer: ul.pagination --- */
+.dt-container .dt-paging .pagination {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    flex-wrap: wrap;
+}
+
+.dt-container .dt-paging .pagination .page-item .page-link {
+    min-width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 10px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    background: #fff;
+    color: #334155;
+    font-size: 14px;
+    box-shadow: none;
+    transition: background .15s ease, border-color .15s ease;
+}
+
+.dt-container .dt-paging .pagination .page-item .page-link:hover {
+    background: #f8fafc;
+    border-color: #cbd5e1;
+}
+
+.dt-container .dt-paging .pagination .page-item.active .page-link {
+    background: #00224c;
+    border-color: #00224c;
+    color: #fff;
+    font-weight: 600;
+}
+
+.dt-container .dt-paging .pagination .page-item.disabled .page-link {
+    opacity: .4;
+    color: #94a3b8;
+    background: #fff;
+}
+
+.dt-container .dt-paging .pagination .page-item .page-link:focus {
+    box-shadow: 0 0 0 3px rgba(0, 34, 76, .10);
+}
+
+
+/* ------------------------------------------------------------
+   SORTABLE HEADERS
+   ------------------------------------------------------------
+   Every orderable header gets a pointer cursor and a chevron pair
+   that fills in to show the active sort direction, so it's obvious
+   the header is clickable.
+   ------------------------------------------------------------ */
+
+.dt-container table thead th.dt-orderable-asc,
+.dt-container table thead th.dt-orderable-desc {
+    cursor: pointer;
+    user-select: none;
+    position: relative;
+}
+
+.dt-container table thead th.dt-orderable-asc:hover,
+.dt-container table thead th.dt-orderable-desc:hover {
+    background-color: rgba(0, 34, 76, .04);
+}
+
+/* Keep the built-in arrows but tone them down until the column is
+   the one actually being sorted. */
+.dt-container table thead th .dt-column-order::before,
+.dt-container table thead th .dt-column-order::after {
+    opacity: .28;
+}
+
+.dt-container table thead th.dt-ordering-asc .dt-column-order::before,
+.dt-container table thead th.dt-ordering-desc .dt-column-order::after {
+    opacity: 1;
+    color: #00224c;
+}
+
+/* Dark headers (some pages use a navy thead) need light arrows */
+.dt-container table thead th.dt-ordering-asc .dt-column-order::before,
+.dt-container table thead th.dt-ordering-desc .dt-column-order::after {
+    filter: none;
+}
+
+
+/* ------------------------------------------------------------
+   EMPTY STATE
+   ------------------------------------------------------------ */
+
+.dt-container table td.dt-empty {
+    padding: 34px 20px;
+    text-align: center;
+    color: #94a3b8;
+    font-size: 14px;
+}
+
+
+/* ------------------------------------------------------------
+   LEGACY (DataTables 1.x) — accounts/ still runs the old build
+   ------------------------------------------------------------ */
+
+.dataTables_wrapper .dataTables_filter {
+    float: none;
+    text-align: left;
+    padding: 18px 20px 14px;
+}
+
+.dataTables_wrapper .dataTables_filter label {
+    width: 100%;
+    font-size: 0;
+}
+
+.dataTables_wrapper .dataTables_filter input {
+    margin-left: 0 !important;
+    width: 430px;
+    max-width: 100%;
+    height: 40px;
+    padding: 0 16px 0 40px;
+    border: 1px solid #cbd5e1;
+    border-radius: 999px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2394a3b8' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='M21 21l-4.3-4.3' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: 14px center;
+    background-size: 16px 16px;
+    font-size: 14px;
+    outline: none;
+}
+
+.dataTables_wrapper .dataTables_filter input:focus {
+    border-color: #00224c;
+    box-shadow: 0 0 0 3px rgba(0, 34, 76, .10);
+}

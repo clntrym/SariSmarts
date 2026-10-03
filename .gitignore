@@ -1,0 +1,46 @@
+# =====================
+# SariSmarts .gitignore
+# =====================
+
+# Environment / Config files with credentials
+config.php
+db_config.php
+*.env
+.env
+
+# Uploaded user files (personal data, biometrics, receipts, etc.)
+uploads/faces/
+uploads/employee_biometrics/
+uploads/employee_documents/
+uploads/contracts/
+uploads/resume/
+uploads/attendance/
+uploads/receipts/
+uploads/ap_receipts/
+uploads/products/
+hr/uploads/
+
+# Keep uploads folder structure but not files
+uploads/**
+!uploads/.gitkeep
+hr/uploads/**
+!hr/uploads/.gitkeep
+
+# PHP error logs
+*.log
+error_log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE / Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Composer (optional: keep if vendor is large)
+# vendor/
+
+# XAMPP specific

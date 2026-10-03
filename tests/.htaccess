@@ -1,0 +1,2 @@
+# Tests sit inside htdocs; nothing here may be fetched over HTTP.
+Require all denied
