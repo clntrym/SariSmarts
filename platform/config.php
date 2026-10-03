@@ -46,5 +46,3 @@ if (!defined('PAYMONGO_SECRET_KEY')) {
         $secrets['PAYMONGO_SECRET_KEY'] ?? (getenv('PAYMONGO_SECRET_KEY') ?: '')
     );
 }
-?>
-?>
