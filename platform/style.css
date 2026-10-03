@@ -1,0 +1,916 @@
+/* ==========================
+   GLOBAL
+========================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background: #fff;
+    color: #1f2937;
+    overflow-x: hidden;
+}
+
+/* ==========================
+   NAVBAR
+========================== */
+
+.navbar {
+    background: #fff;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 18px 0;
+    z-index: 999;
+}
+
+.logo-box {
+    width: 50px;
+    height: 50px;
+    border-radius: 15px;
+    background: #2495EA;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 24px;
+}
+
+.navbar-brand h5 {
+    color: #0f172a;
+    font-weight: 700;
+}
+
+.navbar-brand small {
+    color: #64748b;
+    letter-spacing: 1px;
+}
+
+.navbar-nav .nav-link {
+    position: relative;
+    color: #374151 !important;
+    padding: 10px 18px;
+    border-radius: 999px;
+    overflow: hidden;
+    transition: .3s;
+}
+
+.navbar-nav .nav-link::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 0;
+    height: 0;
+    background: #EEF2F7;
+    border-radius: 999px;
+    transform: translate(-50%, -50%);
+    transition: all .3s ease;
+    z-index: -1;
+}
+
+.navbar-nav .nav-link:hover::after {
+    width: 100%;
+    height: 100%;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #00224C !important;
+}
+
+.dropdown-menu {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, .08);
+    min-width: 220px;
+}
+
+.dropdown-item {
+    padding: 12px 18px;
+}
+
+.dropdown-item:hover {
+    background: #eff6ff;
+}
+
+/* ==========================
+   BUTTONS
+========================== */
+
+.btn-primary {
+    background: #2495EA;
+    border: none;
+    border-radius: 12px;
+    padding: 12px 28px;
+    font-weight: 600;
+}
+
+.btn-primary:hover {
+    background: #1174c2;
+}
+
+.btn-outline-secondary {
+    border-radius: 12px;
+    padding: 12px 28px;
+}
+
+.btn-start {
+
+    background: #ff9330;
+    color: #fff;
+    border-radius: 14px;
+    padding: 16px 35px;
+    font-weight: 600;
+}
+
+.btn-start:hover {
+
+    background: #ff7f0e;
+    color: #fff;
+}
+
+.btn-demo {
+
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, .4);
+    border-radius: 14px;
+    padding: 16px 35px;
+}
+
+.btn-demo:hover {
+
+    background: #fff;
+    color: #0A4B8C;
+}
+
+/* ==========================
+   HERO
+========================== */
+
+.hero-section {
+
+    
+    background: linear-gradient(135deg, #06264B 0%, #0A4B8C 100%) !important;
+
+    min-height: 90vh;
+
+    display: flex;
+
+    align-items: center;
+
+    color: #fff;
+
+    padding: 100px 0;
+
+}
+
+.hero-badge {
+
+    display: inline-block;
+
+    padding: 10px 20px;
+
+    border-radius: 30px;
+
+    background: rgba(255, 255, 255, .08);
+
+    border: 1px solid rgba(255, 255, 255, .2);
+
+    letter-spacing: 2px;
+
+    font-size: 13px;
+
+}
+
+.hero-title {
+
+    font-size: 65px;
+
+    font-weight: 800;
+
+    line-height: 1.05;
+
+    margin-top: 30px;
+
+}
+
+.hero-title span {
+
+    color: #ff9330;
+
+}
+
+.hero-desc {
+
+    margin-top: 30px;
+
+    font-size: 20px;
+
+    color: #dbe4ef;
+
+    line-height: 1.8;
+
+    max-width: 560px;
+
+}
+
+/* ==========================
+   STATISTICS
+========================== */
+
+.stats {
+
+    margin-top: 70px;
+
+}
+
+.stats h2 {
+
+    font-size: 42px;
+
+    font-weight: 700;
+
+    color: #fff;
+
+}
+
+.stats small {
+
+    color: #dbe4ef;
+
+    text-transform: uppercase;
+
+    letter-spacing: 1px;
+
+}
+
+/* ==========================
+   DASHBOARD
+========================== */
+
+.dashboard-img {
+
+    width: 100%;
+
+    max-width: 700px;
+
+    border-radius: 24px;
+
+    box-shadow: 0 35px 90px rgba(0, 0, 0, .35);
+
+}
+
+/* ==========================
+   FLOATING CARD
+========================== */
+
+.sales-card {
+
+    position: absolute;
+
+    left: -20px;
+
+    bottom: 25px;
+
+    background: #fff;
+
+    width: 220px;
+
+    border-radius: 20px;
+
+    padding: 22px;
+
+    color: #111827;
+
+    box-shadow: 0 25px 60px rgba(0, 0, 0, .25);
+
+}
+
+.sales-card small {
+
+    color: #6b7280;
+
+}
+
+.sales-card h3 {
+
+    font-size: 42px;
+
+    font-weight: 700;
+
+    margin: 10px 0;
+
+}
+
+.sales-card p {
+
+    color: #16a34a;
+
+    font-weight: 600;
+
+    margin: 0;
+
+}
+
+/* ==========================
+   TRUSTED
+========================== */
+
+.trusted {
+
+    padding: 80px 0;
+
+    background: #fff;
+
+}
+
+.trusted p {
+
+    color: #94a3b8;
+
+    text-transform: uppercase;
+
+    letter-spacing: 3px;
+
+}
+
+.trusted h4 {
+
+    color: #9ca3af;
+
+    font-weight: 600;
+
+    margin: 20px;
+
+    transition: .3s;
+
+}
+
+.trusted h4:hover {
+
+    color: #2495EA;
+
+}
+
+/* ==========================
+   FOOTER
+========================== */
+
+footer {
+
+    background: #0B2340;
+
+    color: #fff;
+
+    padding: 70px 0 30px;
+
+}
+
+footer h5 {
+
+    font-weight: 600;
+
+    margin-bottom: 20px;
+
+}
+
+footer p {
+
+    color: #d1d5db;
+
+    line-height: 1.8;
+
+}
+
+.footer-link {
+
+    color: #d1d5db;
+
+    text-decoration: none;
+
+    display: block;
+
+    margin-bottom: 10px;
+
+    transition: .3s;
+
+}
+
+.footer-link:hover {
+
+    color: #fff;
+
+    transform: translateX(5px);
+
+}
+
+footer hr {
+
+    border-color: rgba(255, 255, 255, .1);
+
+}
+
+/* ==========================
+   ANIMATION
+========================== */
+
+.dashboard-img,
+.sales-card {
+
+    animation: float 4s ease-in-out infinite;
+
+}
+
+@keyframes float {
+
+    0% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-8px);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
+
+}
+
+/* ==========================
+   RESPONSIVE
+========================== */
+
+@media(max-width:991px) {
+
+    .hero-section {
+
+        text-align: center;
+
+        min-height: auto;
+
+        padding: 80px 0;
+
+    }
+
+    .hero-title {
+
+        font-size: 52px;
+
+    }
+
+    .hero-desc {
+
+        margin: auto;
+        margin-top: 25px;
+
+    }
+
+    .dashboard-img {
+
+        margin-top: 50px;
+
+    }
+
+    .sales-card {
+
+        position: relative;
+
+        left: 0;
+
+        bottom: 0;
+
+        margin: 30px auto;
+
+    }
+
+}
+
+@media(max-width:576px) {
+
+    .hero-title {
+
+        font-size: 40px;
+
+    }
+
+    .hero-desc {
+
+        font-size: 17px;
+
+    }
+
+    .btn-start,
+    .btn-demo {
+
+        display: block;
+
+        width: 100%;
+
+        margin-bottom: 15px;
+
+    }
+
+    .stats h2 {
+
+        font-size: 32px;
+
+    }
+
+}
+
+/* pricing.php */
+/* ==========================================
+   PRICING PAGE
+========================================== */
+
+.pricing-hero {
+    background: linear-gradient(135deg, #06264B, #0A4B8C);
+    color: #fff;
+    padding: 120px 0 140px;
+}
+
+.pricing-badge {
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 30px;
+    border: 1px solid rgba(255, 255, 255, .25);
+    background: rgba(255, 255, 255, .08);
+    font-size: 13px;
+    letter-spacing: 2px;
+    font-weight: 600;
+}
+
+.pricing-title {
+    font-size: 64px;
+    font-weight: 800;
+    max-width: 1200px;
+    line-height: 1.15;
+}
+
+.pricing-description {
+    max-width: 650px;
+    font-size: 20px;
+    line-height: 1.8;
+    color: #dbe4ef;
+}
+
+/* ==========================================
+   PRICING CARDS
+========================================== */
+
+.pricing-card {
+
+    background: #fff;
+
+    border-radius: 22px;
+
+    padding: 35px;
+
+    height: 100%;
+
+    box-shadow: 0 10px 35px rgba(0, 0, 0, .08);
+
+    position: relative;
+
+    transition: .35s;
+
+}
+
+.pricing-card:hover {
+
+    transform: translateY(-8px);
+
+    box-shadow: 0 20px 45px rgba(0, 0, 0, .15);
+
+}
+
+.pricing-card.featured {
+
+    border: 2px solid #2495EA;
+
+}
+
+.popular-badge {
+
+    position: absolute;
+
+    top: -14px;
+
+    left: 25px;
+
+    background: #ff8b2b;
+
+    color: #fff;
+
+    padding: 6px 14px;
+
+    border-radius: 30px;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+}
+
+.pricing-card h3 {
+
+    font-size: 28px;
+
+    font-weight: 700;
+
+}
+
+.price {
+
+    font-size: 46px;
+
+    font-weight: 800;
+
+    margin: 20px 0;
+
+}
+
+.price span {
+
+    font-size: 18px;
+
+    color: #6b7280;
+
+    font-weight: 500;
+
+}
+
+.pricing-list {
+
+    list-style: none;
+
+    padding: 0;
+
+    margin: 0;
+
+}
+
+.pricing-list li {
+
+    margin-bottom: 15px;
+
+    color: #374151;
+
+}
+
+.pricing-list i {
+
+    color: #22C55E;
+
+    margin-right: 10px;
+
+}
+
+/* ==========================================
+   COMPARE TABLE
+========================================== */
+
+.pricing-comparison {
+
+    background: #f8fafc;
+
+}
+
+.pricing-badge-light {
+
+    display: inline-block;
+
+    padding: 8px 18px;
+
+    border-radius: 25px;
+
+    background: #eaf4ff;
+
+    color: #2495EA;
+
+    font-size: 13px;
+
+    letter-spacing: 2px;
+
+    font-weight: 600;
+
+}
+
+.comparison-title {
+
+    font-size: 42px;
+
+    font-weight: 800;
+
+    color: #0f172a;
+
+}
+
+.comparison-table {
+
+    background: #fff;
+
+    border-radius: 18px;
+
+    overflow: hidden;
+
+    box-shadow: 0 12px 35px rgba(0, 0, 0, .08);
+
+}
+
+.comparison-table thead {
+
+    background: #f8fafc;
+
+}
+
+.comparison-table th {
+
+    padding: 20px;
+
+    font-weight: 700;
+
+    color: #111827;
+
+}
+
+.comparison-table td {
+
+    padding: 18px;
+
+    border-color: #edf2f7;
+
+}
+
+/* ==========================================
+   FAQ
+========================================== */
+
+.pricing-faq {
+
+    background: #fff;
+
+}
+
+.pricing-faq .accordion-item {
+
+    border: none;
+
+    border-bottom: 1px solid #e5e7eb;
+
+}
+
+.pricing-faq .accordion-button {
+
+    background: #fff;
+
+    padding: 22px;
+
+    font-weight: 600;
+
+    box-shadow: none;
+
+}
+
+.pricing-faq .accordion-button:not(.collapsed) {
+
+    color: #2495EA;
+
+}
+
+.pricing-faq .accordion-button:focus {
+
+    box-shadow: none;
+
+}
+
+.pricing-faq .accordion-body {
+
+    padding: 22px;
+
+    color: #6b7280;
+
+    line-height: 1.8;
+
+}
+
+/* ==========================================
+   CTA
+========================================== */
+
+.pricing-cta {
+
+    background: #fff;
+
+}
+
+.cta-box {
+
+    background: linear-gradient(135deg, #06264B, #1f4f8a);
+
+    color: #fff;
+
+    border-radius: 30px;
+
+    padding: 70px;
+
+}
+
+.cta-box h2 {
+
+    font-size: 46px;
+
+    font-weight: 800;
+
+}
+
+.cta-box p {
+
+    color: #dbe4ef;
+
+    margin-top: 20px;
+
+    font-size: 18px;
+
+}
+
+/* ==========================================
+   BUTTONS
+========================================== */
+
+.btn-warning {
+
+    background: #ff8b2b;
+
+    border: none;
+
+}
+
+.btn-warning:hover {
+
+    background: #ff7b12;
+
+}
+
+.btn-outline-primary {
+
+    border-radius: 12px;
+
+}
+
+.btn-primary {
+
+    border-radius: 12px;
+
+}
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
+@media(max-width:992px) {
+    .pricing-title {
+        font-size: 48px;
+    }
+    .price {
+        font-size: 38px;
+    }
+    .cta-box {
+        padding: 45px;
+    }
+    .cta-box h2 {
+        font-size: 36px;
+    }
+}
+
+@media(max-width:768px) {
+    .pricing-hero {
+
+        padding: 90px 0;
+    }
+    .pricing-title {
+        font-size: 36px;
+    }
+    .pricing-description {
+        font-size: 17px;
+    }
+    .comparison-title {
+        font-size: 30px;
+    }
+    .cta-box {
+        padding: 30px;
+    }
+    .cta-box h2 {
+        font-size: 28px;
+    }
+    .cta-box .btn {
+        width: 100%;
+        margin: 10px 0;
+    }
+}

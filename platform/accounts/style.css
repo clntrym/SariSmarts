@@ -1,0 +1,200 @@
+/* ===========================
+   BODY
+=========================== */
+
+body{
+    margin:0;
+    min-height:100vh;
+    background:url('../assets/SariSmart_1st_bg.png') center center/cover no-repeat;
+    font-family:'Poppins',sans-serif;
+    overflow-x:hidden;
+    position:relative;
+}
+
+body::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:linear-gradient(
+        135deg,
+        rgba(0,34,76,.90),
+        rgba(0,34,76,.78)
+    );
+    z-index:0;
+}
+
+/* ===========================
+   WRAPPER
+=========================== */
+
+.login-wrapper{
+    position:relative;
+    z-index:2;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    padding:40px 20px;
+}
+
+/* ===========================
+   LOGIN CARD
+=========================== */
+
+.login-box{
+    width:100%;
+    max-width:470px;
+    background:#fff;
+    border-radius:30px;
+    padding:40px;
+    box-shadow:0 20px 60px rgba(0,0,0,.35);
+}
+
+/* ===========================
+   LOGO
+=========================== */
+
+.logo{
+    width:100px;
+    display:block;
+    margin:0 auto 15px;
+}
+
+/* ===========================
+   TEXT
+=========================== */
+
+.welcome-title span {
+    color: #FDB515;
+}
+
+h2{
+    text-align:center;
+    color:#00224c;
+    font-weight:700;
+}
+
+.subtitle{
+    text-align:center;
+    color:#777;
+    margin-bottom:25px;
+}
+
+.form-label{
+    font-weight:600;
+    color:#00224c;
+}
+
+/* ===========================
+   INPUTS
+=========================== */
+
+.input-group{
+    height:50px;
+    background:#f3f4f6;
+    border-radius:35px;
+    padding:0 15px;
+    border:1px solid transparent;
+    transition:.3s;
+}
+
+.input-group:focus-within{
+    border-color:#FDB515;
+    box-shadow:0 0 0 .15rem rgba(253,181,21,.2);
+}
+
+.input-group-text{
+    background:none;
+    border:none;
+    color:#555;
+}
+
+.form-control{
+    border:none;
+    background:transparent;
+    box-shadow:none;
+}
+
+.form-control:focus{
+    background:transparent;
+    box-shadow:none;
+}
+
+/* ===========================
+   LOGIN BUTTON
+=========================== */
+.btn-login{
+    height:48px;
+    background:#00224c;
+    color:#fff;
+    border:none;
+    border-radius:40px;
+    font-weight:600;
+    font-size:18px;
+    transition:.3s;
+}
+
+.btn-login:hover{
+    background:#FDB515;
+    color:#00224c;
+}
+
+/* ===========================
+   FOOTER
+=========================== */
+
+.footer-section{
+    margin-top:30px;
+    width:100%;
+    max-width:900px;
+}
+
+.footer-icons{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:15px;
+}
+
+.feature{
+    background:rgba(255,255,255,.08);
+    backdrop-filter:blur(6px);
+    border:1px solid rgba(255,255,255,.2);
+    border-radius:12px;
+    padding:12px;
+    color:#fff;
+    text-align:center;
+
+}
+
+.feature i{
+    font-size:28px;
+    color:#FDB515;
+    margin-bottom:10px;
+}
+
+.copy{
+    color:#fff;
+    text-align:center;
+    margin-top:20px;
+}
+
+/* ===========================
+   MOBILE
+=========================== */
+
+@media(max-width:768px){
+    .login-box{
+        max-width:100%;
+        padding:30px;
+    }
+    .footer-icons{
+        grid-template-columns:repeat(2,1fr);
+    }
+}
+
+@media(max-width:576px){
+    .footer-icons{
+        grid-template-columns:1fr;
+    }
+}

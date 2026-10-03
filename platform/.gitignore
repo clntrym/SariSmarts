@@ -1,0 +1,29 @@
+# Sensitive configuration
+config.php
+
+# Uploaded files (user content)
+uploads/
+
+# Vendor / third-party libraries (can be reinstalled)
+libs/
+
+# Bootstrap & FontAwesome (CDN or reinstallable)
+bootstrap-5.3.8-dist/
+bootstrap-icons-1.13.1/
+fontawesome-free-7.0.1-web/
+
+# Database exports / data dumps
+data/
+
+# Editor / tool metadata
+.claude/
+.vscode/
+.idea/
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# PHP logs / temp files
+*.log
+*.tmp

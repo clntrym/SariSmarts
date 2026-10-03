@@ -1,0 +1,19 @@
+Options -Indexes
+RewriteEngine On
+RewriteBase /SariSmarts/
+
+# Remove .php extension from URL
+# Example: /admin/reports → /admin/reports.php
+
+# If the request is NOT an existing file or directory
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# And if adding .php makes it an existing file, serve that file
+RewriteCond %{REQUEST_FILENAME}.php -f
+RewriteRule ^(.+)$ $1.php [L,QSA]
+
+# Redirect .php URLs to clean URLs (no .php)
+# Prevents duplicate content (both /reports and /reports.php working)
+RewriteCond %{THE_REQUEST} /([^.]+)\.php [NC]
+RewriteRule ^ /%1 [R=301,L,NE]
