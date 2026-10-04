@@ -19,9 +19,19 @@ function sendCompanyVerificationEmail($email, $ownerName, $companyName, $token)
 
     $mail->addAddress($email, $ownerName);
 
-    $link = "http://localhost/platform/accounts/verify_company.php?token=" . urlencode($token);
+    /*
+    | Built from the address this request arrived on.
+    |
+    | This was the literal "http://localhost/platform/..." -- correct on the
+    | machine it was typed on and useless anywhere else. Every owner who
+    | registered on the deployed site was sent a link to their own computer,
+    | so the address they were asked to confirm could never be confirmed.
+    */
+    require_once __DIR__ . "/../../includes/app_url.php";
 
-    $mail->Subject = "Verify your email - RetailSync";
+    $link = appUrl("/platform/accounts/verify_company.php?token=" . urlencode($token));
+
+    $mail->Subject = "Verify your email - RetailCore";
 
     $safeOwner   = htmlspecialchars($ownerName, ENT_QUOTES, 'UTF-8');
     $safeCompany = htmlspecialchars($companyName, ENT_QUOTES, 'UTF-8');

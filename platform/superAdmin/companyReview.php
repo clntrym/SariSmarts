@@ -136,6 +136,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['reviewCompany'])) {
                 $conn->commit();
 
                 $emailed = true;
+                $mailProblem = '';
 
                 try {
                     sendReviewResultEmail(
@@ -147,7 +148,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['reviewCompany'])) {
                         $approvalToken
                     );
                 } catch (Throwable $mailError) {
+
+                    /*
+                    | The reason, kept.
+                    |
+                    | This caught the error and reported "could not be sent",
+                    | which says that something is wrong and nothing about
+                    | what -- a refused sender, an exhausted daily quota and a
+                    | revoked key all read identically. The reviewer is the
+                    | Super Admin, the only person who can act on any of
+                    | those, and the message is already in hand.
+                    |
+                    | Catching stays: a failed notification must not undo an
+                    | approval that is already committed.
+                    */
                     $emailed = false;
+                    $mailProblem = $mailError->getMessage();
+
+                    error_log('Review result mail failed: ' . $mailProblem);
                 }
 
                 auditLog($conn, 'Application ' . strtolower($decision), 'company', $companyId,
@@ -157,7 +175,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['reviewCompany'])) {
                     'icon'  => 'success',
                     'title' => $decision === 'Approved' ? 'Application Approved' : 'Application Rejected',
                     'text'  => $company['company_name'] . ' has been marked ' . strtolower($decision) . '.'
-                        . ($emailed ? ' The owner has been emailed.' : ' The notification email could not be sent.'),
+                        . ($emailed
+                            ? ' The owner has been emailed.'
+                            : ' The notification email could not be sent: ' . $mailProblem),
                 ];
 
             } catch (Throwable $e) {

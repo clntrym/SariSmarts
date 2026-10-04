@@ -29,13 +29,22 @@ function sendReviewResultEmail($email, $ownerName, $companyName, $decision, $rea
     | Without it the page opens on an email and password form, which an
     | approved owner cannot get past -- their account stays locked until the
     | subscription is paid for.
+    |
+    | Both links are built from the address this request arrived on. They
+    | were the literal "http://localhost/platform/..." -- correct on the
+    | machine they were typed on, and useless everywhere else. An approved
+    | owner was congratulated and then pointed at their own computer, so the
+    | account they had just been granted stayed locked.
     */
-    $subscribeLink = "http://localhost/platform/subscribe.php";
+    require_once __DIR__ . "/../../includes/app_url.php";
+
+    $subscribeLink = appUrl("/platform/subscribe.php");
 
     if ($approvalToken) {
         $subscribeLink .= "?ref=" . urlencode($approvalToken);
     }
-    $updateLink = "http://localhost/platform/resubmit.php";
+
+    $updateLink = appUrl("/platform/resubmit.php");
 
     if ($approved) {
 
