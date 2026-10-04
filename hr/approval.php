@@ -1,6 +1,16 @@
 <?php
 require_once("../init.php");
-requireRole(['hr']);
+requireRole(['hr', 'admin']);
+/*
+| The owner reaches this too.
+|
+| The module belongs to hr; the business belongs to the owner, so they see
+| everything. The header and footer are chosen by who is reading rather than
+| named outright -- an owner who opened this page used to find their own menu
+| replaced by this role's, with no way back to the rest of their system.
+*/
+require_once __DIR__ . '/../includes/role_chrome.php';
+
 
 $companyId = requireCompany();
 
@@ -58,7 +68,7 @@ if (isset($_POST['rejectLeave'])) {
     exit;
 }
 
-include("hr_header.php");
+include includeRoleHeader(__DIR__, 'hr_header.php');
 
 /*
 |--------------------------------------------------------------------------
@@ -250,4 +260,4 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 </script>
 
-<?php include("hr_footer.php"); ?>
+<?php include includeRoleFooter(__DIR__, 'hr_footer.php'); ?>

@@ -329,61 +329,234 @@ $employeeOpen = in_array($currentPage, $employeePages);
         <div class="mt-3">
             <small class="text-white-50 px-3">MENU</small>
             <ul class="nav flex-column mt-2">
+
+                <?php
+                /*
+                | Grouped, because a flat list of nineteen links is a list
+                | nobody reads. The owner reaches every module -- the business
+                | is theirs -- and the groups are the four the modules
+                | actually fall into.
+                |
+                | Each group opens when the page inside it is the current one,
+                | so arriving at Payroll from anywhere leaves HRMS open rather
+                | than making the owner hunt for where they are.
+                |
+                | The links reach into hr/, finance/ and cashier/ because that
+                | is where the pages live. They keep this sidebar: each of
+                | those pages now picks its chrome by who is reading it.
+                */
+                $hrmsPages = ['recruitment.php', 'employee_registration.php',
+                              'employee_directory.php', 'approval.php',
+                              'attendance.php', 'payroll.php'];
+
+                $financePages = ['income.php', 'expenses.php', 'tax.php',
+                                 'accounts_payable.php', 'reports.php'];
+
+                $stockPages = ['Inventory.php', 'suppliers.php', 'stock_requests.php',
+                               'receive_deliveries.php'];
+
+                /* approval.php and reports.php exist in more than one folder,
+                   so the folder decides which group is open, not the name. */
+                $here = str_replace('\\', '/', $_SERVER['SCRIPT_NAME'] ?? '');
+
+                $hrmsOpen = str_contains($here, '/hr/') && in_array($currentPage, $hrmsPages, true);
+                $financeOpen = (str_contains($here, '/finance/') && in_array($currentPage, $financePages, true))
+                    || in_array($currentPage, ['income.php', 'tax.php', 'reports.php'], true);
+                $stockOpen = in_array($currentPage, $stockPages, true)
+                    || (str_contains($here, '/inventory/') && $currentPage === 'reports.php');
+                ?>
+
                 <li class="nav-item">
-                    <a href="dashboard.php" class="nav-link <?= ($currentPage == 'dashboard.php') ? 'active' : '' ?>">
-                        <i class="bi bi-grid me-2"></i>
+                    <a href="/admin/dashboard.php" class="nav-link <?= ($currentPage == 'dashboard.php') ? 'active' : '' ?>">
+                        <i class="bi bi-grid-1x2 me-2"></i>
                         <span>Dashboard</span>
                     </a>
                 </li>
+
+                <!-- ============================ HRMS ============================ -->
                 <li class="nav-item">
-                    <a href="user_management.php"
-                        class="nav-link <?= ($currentPage == 'user_management.php') ? 'active' : '' ?>">
-                        <i class="bi bi-map me-2"></i>
-                        <span>User Management</span>
+                    <a class="nav-link d-flex justify-content-between align-items-center <?= $hrmsOpen ? '' : 'collapsed' ?>"
+                        data-bs-toggle="collapse" href="#hrmsMenu" role="button"
+                        aria-expanded="<?= $hrmsOpen ? 'true' : 'false' ?>">
+                        <span>
+                            <i class="bi bi-people me-2"></i>
+                            <span>HRMS</span>
+                        </span>
+                        <i class="bi bi-chevron-down"></i>
+                    </a>
+
+                    <div class="collapse <?= $hrmsOpen ? 'show' : '' ?>" id="hrmsMenu">
+                        <ul class="nav flex-column ms-3" id="employeeMenu">
+                            <li class="nav-item">
+                                <a href="/hr/recruitment.php" class="nav-link <?= ($hrmsOpen && $currentPage == 'recruitment.php') ? 'active' : '' ?>">
+                                    <i class="bi bi-megaphone me-2"></i><span>Recruitment</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/hr/employee_registration.php" class="nav-link <?= ($hrmsOpen && $currentPage == 'employee_registration.php') ? 'active' : '' ?>">
+                                    <i class="bi bi-person-plus me-2"></i><span>Employee Registration</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/hr/employee_directory.php" class="nav-link <?= ($hrmsOpen && $currentPage == 'employee_directory.php') ? 'active' : '' ?>">
+                                    <i class="bi bi-person-vcard me-2"></i><span>Employee Management</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/hr/approval.php" class="nav-link <?= ($hrmsOpen && $currentPage == 'approval.php') ? 'active' : '' ?>">
+                                    <i class="bi bi-calendar-check me-2"></i><span>Leave Requests</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/hr/attendance.php" class="nav-link <?= ($hrmsOpen && $currentPage == 'attendance.php') ? 'active' : '' ?>">
+                                    <i class="bi bi-clipboard2-check me-2"></i><span>Time &amp; Undertime</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/hr/payroll.php" class="nav-link <?= ($hrmsOpen && $currentPage == 'payroll.php') ? 'active' : '' ?>">
+                                    <i class="bi bi-cash-stack me-2"></i><span>Payroll</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <!-- =========================== FINANCE =========================== -->
+                <li class="nav-item">
+                    <a class="nav-link d-flex justify-content-between align-items-center <?= $financeOpen ? '' : 'collapsed' ?>"
+                        data-bs-toggle="collapse" href="#financeMenu" role="button"
+                        aria-expanded="<?= $financeOpen ? 'true' : 'false' ?>">
+                        <span>
+                            <i class="bi bi-wallet2 me-2"></i>
+                            <span>Finance</span>
+                        </span>
+                        <i class="bi bi-chevron-down"></i>
+                    </a>
+
+                    <div class="collapse <?= $financeOpen ? 'show' : '' ?>" id="financeMenu">
+                        <ul class="nav flex-column ms-3" id="employeeMenu">
+                            <li class="nav-item">
+                                <a href="/admin/income.php" class="nav-link <?= ($currentPage == 'income.php') ? 'active' : '' ?>">
+                                    <i class="bi bi-graph-up-arrow me-2"></i><span>Income</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/finance/expenses.php" class="nav-link <?= ($currentPage == 'expenses.php') ? 'active' : '' ?>">
+                                    <i class="bi bi-receipt-cutoff me-2"></i><span>Expenses</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/admin/tax.php" class="nav-link <?= ($currentPage == 'tax.php') ? 'active' : '' ?>">
+                                    <i class="bi bi-percent me-2"></i><span>Tax</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/finance/accounts_payable.php" class="nav-link <?= ($currentPage == 'accounts_payable.php') ? 'active' : '' ?>">
+                                    <i class="bi bi-journal-text me-2"></i><span>Accounts Payable</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/admin/reports.php" class="nav-link <?= (str_contains($here, '/admin/') && $currentPage == 'reports.php') ? 'active' : '' ?>">
+                                    <i class="bi bi-file-earmark-bar-graph me-2"></i><span>Reports</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <!-- ========================== INVENTORY ========================== -->
+                <li class="nav-item">
+                    <a class="nav-link d-flex justify-content-between align-items-center <?= $stockOpen ? '' : 'collapsed' ?>"
+                        data-bs-toggle="collapse" href="#stockMenu" role="button"
+                        aria-expanded="<?= $stockOpen ? 'true' : 'false' ?>">
+                        <span>
+                            <i class="bi bi-box-seam me-2"></i>
+                            <span>Inventory</span>
+                        </span>
+                        <i class="bi bi-chevron-down"></i>
+                    </a>
+
+                    <div class="collapse <?= $stockOpen ? 'show' : '' ?>" id="stockMenu">
+                        <ul class="nav flex-column ms-3" id="employeeMenu">
+                            <li class="nav-item">
+                                <a href="/admin/Inventory.php" class="nav-link <?= ($currentPage == 'Inventory.php') ? 'active' : '' ?>">
+                                    <i class="bi bi-boxes me-2"></i><span>Products</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/admin/suppliers.php" class="nav-link <?= ($currentPage == 'suppliers.php') ? 'active' : '' ?>">
+                                    <i class="bi bi-truck me-2"></i><span>Suppliers</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/admin/stock_requests.php" class="nav-link <?= ($currentPage == 'stock_requests.php') ? 'active' : '' ?>">
+                                    <i class="bi bi-clipboard-plus me-2"></i><span>Stock Requests</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/admin/receive_deliveries.php" class="nav-link <?= ($currentPage == 'receive_deliveries.php') ? 'active' : '' ?>">
+                                    <i class="bi bi-box-arrow-in-down me-2"></i><span>Receive Deliveries</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/inventory/reports.php" class="nav-link <?= (str_contains($here, '/inventory/') && $currentPage == 'reports.php') ? 'active' : '' ?>">
+                                    <i class="bi bi-bar-chart-line me-2"></i><span>Inventory Reports</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <!-- ============================ CASHIER =========================== -->
+                <li class="nav-item">
+                    <a href="/cashier/pointofsales.php" class="nav-link <?= ($currentPage == 'pointofsales.php') ? 'active' : '' ?>">
+                        <i class="bi bi-cart3 me-2"></i>
+                        <span>Point of Sale</span>
                     </a>
                 </li>
+
+                <!-- ====================== RUNNING THE BUSINESS ==================== -->
+                <li class="nav-item mt-2"><small class="text-white-50 px-3">ADMINISTRATION</small></li>
+
+                <?php if ($canHiring): ?>
+                    <li class="nav-item">
+                        <a href="/admin/approval.php" class="nav-link <?= (str_contains($here, '/admin/') && $currentPage == 'approval.php') ? 'active' : '' ?>">
+                            <i class="bi bi-person-check me-2"></i>
+                            <span>Hiring Approval</span>
+                        </a>
+                    </li>
+                <?php endif; ?>
+
                 <?php if ($canBranch): ?>
                     <li class="nav-item">
-                        <a href="branch.php" class="nav-link <?= ($currentPage == 'branch.php') ? 'active' : '' ?>">
-                            <i class="bi bi-map me-2"></i>
+                        <a href="/admin/branch.php" class="nav-link <?= ($currentPage == 'branch.php') ? 'active' : '' ?>">
+                            <i class="bi bi-shop me-2"></i>
                             <span>Branch</span>
                         </a>
                     </li>
                 <?php endif; ?>
+
                 <li class="nav-item">
-                    <a class="nav-link d-flex justify-content-between align-items-center <?= $employeeOpen ? '' : 'collapsed' ?>"
-                        data-bs-toggle="collapse" href="#employeeMenu" role="button"
-                        aria-expanded="<?= $employeeOpen ? 'true' : 'false' ?>" aria-controls="employeeMenu">
-
-                        <span>
-                            <i class="bi <?= $canHiring ? 'bi-people-fill' : 'bi-box-seam' ?> me-2"></i>
-                            <?= $canHiring ? 'Approval' : 'Stock Room' ?>
-                        </span>
-
-                        <i class="bi bi-chevron-down"></i>
+                    <a href="/admin/user_management.php" class="nav-link <?= ($currentPage == 'user_management.php') ? 'active' : '' ?>">
+                        <i class="bi bi-people-fill me-2"></i>
+                        <span>User Management</span>
                     </a>
+                </li>
 
-                    <div class="collapse <?= $employeeOpen ? 'show' : '' ?>" id="employeeMenu">
-                        <ul class="nav flex-column ms-3">
+                <li class="nav-item">
+                    <a href="/admin/admin_settings.php" class="nav-link <?= ($currentPage == 'admin_settings.php') ? 'active' : '' ?>">
+                        <i class="bi bi-gear me-2"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
 
-                            <?php if ($canHiring): ?>
-                                <li class="nav-item">
-                                    <a href="approval.php"
-                                        class="nav-link <?= ($currentPage == 'approval.php') ? 'active' : '' ?>">
-                                        <i class="bi bi-check2-circle me-2"></i>
-                                        <span>Hiring Applicant</span>
-                                    </a>
-                                </li>
-                            <?php endif; ?>
-
-                            <li class="nav-item">
-                                <a href="stock_requests.php"
-                                    class="nav-link <?= ($currentPage == 'stock_requests.php') ? 'active' : '' ?>">
-                                    <i class="bi bi-box-arrow-up me-2"></i>
-                                    <span>Stock Request</span>
-                                </a>
-                            </li>
-                        </ul>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" onclick="confirmLogout()">
+                        <i class="bi bi-box-arrow-right me-2"></i>
+                        <span>Logout</span>
+                    </a>
+                </li>
+            </ul>
                     </div>
                 </li>
                 <li class="nav-item">

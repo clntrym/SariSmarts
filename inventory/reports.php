@@ -21,7 +21,16 @@
  */
 
 require_once("../init.php");
-requireRole(['inventory']);
+requireRole(['inventory', 'admin']);
+
+/*
+| The owner reaches this too, and keeps their own sidebar.
+|
+| The first pass at this matched requireRole(['admin']) inside the
+| comment at the top of the file rather than the real guard below it,
+| so the page still refused the owner and rendered nothing at all.
+*/
+require_once __DIR__ . '/../includes/role_chrome.php';
 
 $companyId = requireCompany();
 
@@ -654,7 +663,7 @@ if (!empty($_GET['export'])) {
     reportExportCsv($reports, (string) $_GET['export'], $range, $companyName);
 }
 
-include("inventory_header.php");
+include includeRoleHeader(__DIR__, 'inventory_header.php');
 
 renderReportsPage([
     'title'   => 'Inventory Reports',
@@ -664,4 +673,4 @@ renderReportsPage([
     'reports' => $reports,
 ]);
 
-include("inventory_footer.php");
+include includeRoleFooter(__DIR__, 'inventory_footer.php');

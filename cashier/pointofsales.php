@@ -1,6 +1,16 @@
 <?php
 require_once('../init.php');
-requireRole(['cashier']);
+requireRole(['cashier', 'admin']);
+/*
+| The owner reaches this too.
+|
+| The module belongs to cashier; the business belongs to the owner, so they see
+| everything. The header and footer are chosen by who is reading rather than
+| named outright -- an owner who opened this page used to find their own menu
+| replaced by this role's, with no way back to the rest of their system.
+*/
+require_once __DIR__ . '/../includes/role_chrome.php';
+
 
 /*
 =========================================================
@@ -574,7 +584,7 @@ $productResult = mysqli_stmt_get_result($productStmt);
 // LOAD TAX
 $taxRate = getCompanyTaxRate($conn, $companyId);
 
-include('cashier_header.php');
+include includeRoleHeader(__DIR__, 'cashier_header.php');
 ?>
 
 <link rel="stylesheet" href="pos.css">
@@ -769,5 +779,5 @@ include('cashier_header.php');
 
 <?php
 include('posJS.php');
-include('cashier_footer.php');
+include includeRoleFooter(__DIR__, 'cashier_footer.php');
 ?>

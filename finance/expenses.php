@@ -1,7 +1,17 @@
 <?php
 
 require_once("../init.php");
-requireRole(['finance']);
+requireRole(['finance', 'admin']);
+/*
+| The owner reaches this too.
+|
+| The module belongs to finance; the business belongs to the owner, so they see
+| everything. The header and footer are chosen by who is reading rather than
+| named outright -- an owner who opened this page used to find their own menu
+| replaced by this role's, with no way back to the rest of their system.
+*/
+require_once __DIR__ . '/../includes/role_chrome.php';
+
 
 $companyId = requireCompany();
 
@@ -204,7 +214,7 @@ if (isset($_POST['create_expense'])) {
 }
 
 
-include("finance_header.php");
+include includeRoleHeader(__DIR__, 'finance_header.php');
 
 
 /*
@@ -1599,4 +1609,4 @@ if (isset($_SESSION['alert'])):
 <?php endif; ?>
 
 
-<?php include("finance_footer.php"); ?>
+<?php include includeRoleFooter(__DIR__, 'finance_footer.php'); ?>
