@@ -426,6 +426,12 @@ $approvalOpen = in_array($currentPage, $approvalPages);
                     </div>
                 </li>
                 <li class="nav-item">
+                    <a href="my_attendance.php" class="nav-link <?= ($currentPage == 'my_attendance.php') ? 'active' : '' ?>">
+                        <i class="bi bi-fingerprint me-2"></i>
+                        <span>My Attendance</span>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a href="attendance.php" class="nav-link <?= ($currentPage == 'attendance.php') ? 'active' : '' ?>">
                         <i class="bi bi-clipboard2-check me-2"></i>
                         <span>Time & Request</span>
