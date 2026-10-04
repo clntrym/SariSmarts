@@ -176,6 +176,32 @@ t_same('No <b>markup</b> intended', $payload['textContent'] ?? null,
 t_ok(!isset($payload['htmlContent']),
     'and not also as HTML, where its angle brackets would show as markup');
 
+/* --------------------------------------------- the two secrets that look alike */
+
+/*
+| Brevo's "SMTP & API" page hands out two secrets on adjacent tabs, shaped
+| the same -- prefix, 64 hex, dash, 16 more -- and the API refuses the wrong
+| one with "unauthorized: Key not found", the identical sentence it uses for
+| a revoked key. The deployed site hit exactly this: a 90-character secret
+| that was the SMTP password, where a 89-character API key belonged.
+|
+| The prefix is the only thing that separates them before the round trip,
+| and it is not a secret, so it can be printed.
+*/
+$sixtyFour = str_repeat('a', 64);
+$sixteen = str_repeat('b', 16);
+
+t_same('api', mailApiKeyKind('xkeysib-' . $sixtyFour . '-' . $sixteen),
+    'an API key is recognised');
+t_same('smtp', mailApiKeyKind('xsmtpsib-' . $sixtyFour . '-' . $sixteen),
+    'and the SMTP password is named as such, not merely rejected');
+t_same('empty', mailApiKeyKind('   '), 'nothing is nothing');
+t_same('unknown', mailApiKeyKind('some-other-secret'), 'anything else is unknown');
+
+/* Surrounding space is a copy-paste artefact, not a different key. */
+t_same('api', mailApiKeyKind("  xkeysib-{$sixtyFour}-{$sixteen}\n"),
+    'whitespace around a pasted key does not change what it is');
+
 /* ------------------------------------------------- both mailers can use it */
 
 $root = __DIR__ . '/../../';

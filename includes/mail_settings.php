@@ -172,6 +172,42 @@ if (!function_exists('mailApiKey')) {
     }
 }
 
+if (!function_exists('mailApiKeyKind')) {
+
+    /*
+    | Which of Brevo's two secrets this is.
+    |
+    | The "SMTP & API" page hands out both, on adjacent tabs, and they look
+    | alike: a prefix, 64 hex characters, a dash, 16 more. The SMTP tab's
+    | master password is for the SMTP relay and is rejected by the REST API
+    | with "unauthorized: Key not found" -- the same sentence as a revoked
+    | key, a typo, or an account that no longer exists. So the one piece of
+    | evidence that separates "wrong kind" from "wrong key" is the prefix,
+    | and the prefix is not a secret.
+    |
+    |   xkeysib-    a v3 API key        what the REST API wants
+    |   xsmtpsib-   the SMTP password   right secret, wrong door
+    */
+    function mailApiKeyKind(string $key): string
+    {
+        $key = trim($key);
+
+        if ($key === '') {
+            return 'empty';
+        }
+
+        if (str_starts_with($key, 'xkeysib-')) {
+            return 'api';
+        }
+
+        if (str_starts_with($key, 'xsmtpsib-')) {
+            return 'smtp';
+        }
+
+        return 'unknown';
+    }
+}
+
 if (!function_exists('mailFromAddress')) {
 
     /*

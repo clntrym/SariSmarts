@@ -82,11 +82,35 @@ if (mailTransportIsHttp()) {
 
     mailLine('Transport', true, 'HTTP API -- Brevo, over 443');
     mailLine('BREVO_API_KEY', $key !== '', $key !== '' ? strlen($key) . ' characters' : 'empty');
+
+    /*
+    | The prefix, which is the only thing that tells the SMTP password apart
+    | from an API key before the API has a chance to reject it. Both are
+    | handed out by the same page on adjacent tabs; both are refused with
+    | the identical "Key not found".
+    */
+    $kind = mailApiKeyKind($key);
+
+    mailLine('Key kind', $kind === 'api', [
+        'api' => 'xkeysib- -- a v3 API key, which is what this needs',
+        'smtp' => 'xsmtpsib- -- that is the SMTP password, from the SMTP tab',
+        'unknown' => 'unrecognised prefix -- an API key begins xkeysib-',
+        'empty' => 'empty',
+    ][$kind]);
+
     mailLine('Sending as', $from !== '', $from !== '' ? $from : 'empty -- set MAIL_FROM_ADDRESS');
 
     if ($key === '') {
         echo "\n  MAIL_TRANSPORT asks for the API but no BREVO_API_KEY is set.\n";
         echo "  Set it in the environment, or set MAIL_TRANSPORT=smtp.\n\n";
+        exit(1);
+    }
+
+    if ($kind !== 'api') {
+        echo "\n  This is not a v3 API key, so the API will refuse it with\n";
+        echo "  \"Key not found\" -- which reads like a revoked key and is not.\n";
+        echo "  In Brevo: SMTP & API -> the API Keys tab (not the SMTP tab) ->\n";
+        echo "  Generate a new API key. It begins with xkeysib-.\n\n";
         exit(1);
     }
 
