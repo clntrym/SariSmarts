@@ -39,18 +39,21 @@ if ($local) {
        reads and cannot disagree with it. */
     $host = getenv('DB_HOST') ?: 'sarismarts-db.mysql.database.azure.com';
     $user = getenv('DB_USER') ?: 'sariAdmin';
-    $pass = getenv('DB_PASS') ?: '';
+    $pass = (string) getenv('DB_PASS');
     $name = getenv('DB_NAME') ?: 'sari';
 
+    /*
+    | From the environment only, like config.php. This script will not go
+    | looking for the password anywhere else: a diagnostic tool that digs a
+    | secret out of a file is a diagnostic tool that teaches people to leave
+    | secrets in files.
+    |
+    | In the Render Shell these are already set, so it just works there.
+    */
     if ($pass === '') {
-        /* config.php still carries a fallback password. Read it from there
-           rather than printing or duplicating it here. */
-        $configPath = __DIR__ . '/../config.php';
-
-        if (is_readable($configPath)
-            && preg_match('/\$password\s*=\s*getenv\([^)]*\)\s*\?:\s*\'([^\']+)\'/', (string) file_get_contents($configPath), $m)) {
-            $pass = $m[1];
-        }
+        echo "DB_PASS is not set in this environment.\n";
+        echo "Run this in the Render Shell, where it is, or export it first.\n";
+        exit(1);
     }
 
     $conn = new mysqli($host, $user, $pass, $name);
