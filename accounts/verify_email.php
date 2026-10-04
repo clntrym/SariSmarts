@@ -334,7 +334,7 @@ if ($application['email_verified'] === '1') {
                 by the RetailCore Human Resources Department.
             </p>
 
-            <a href="apply.php?page=browse" class="btn">
+            <a href="/accounts/apply.php?page=browse" class="btn">
                 Back to RetailCore Careers
             </a>
 
@@ -542,7 +542,7 @@ $update->close();
             You will receive further updates through your email.
         </p>
 
-        <a href="apply.php?page=browse" class="btn">
+        <a href="/accounts/apply.php?page=browse" class="btn">
             Back to RetailCore Careers
         </a>
 

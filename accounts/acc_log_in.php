@@ -291,13 +291,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 ?>
 
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="/accounts/style.css">
 
 <div class="login-wrapper">
     <div class="login-box">
-        <img src="../assets/logo.png" class="logo" alt="Logo">
+        <img src="/assets/logo.png" class="logo" alt="Logo">
         <h2 class="welcome-title">
-            Welcome to <span>Sari</span>Smart!
+            Welcome to <span>Retail</span>Core!
         </h2>
         <p class="subtitle">
             Login to access your account
@@ -331,7 +331,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <input type="checkbox">
                     Remember me
                 </div>
-                <a href="forgot_password.php">Forgot Password?</a>
+                <a href="/accounts/forgot_password.php">Forgot Password?</a>
             </div>
             <button class="btn btn-login w-100">
                 <i class="fa fa-arrow-right-to-bracket"></i>
@@ -391,7 +391,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <!-- <div class="container d-flex justify-content-center align-items-center vh-100">
     <div class="login-card text-center">
         <div class="login-logo">
-            <img src="../asset/logo.png" alt="NCST Logo" class="img-fluid " style="width: 150px; height: 140px;">
+            <img src="/asset/logo.png" alt="NCST Logo" class="img-fluid " style="width: 150px; height: 140px;">
         </div>
 
         <p id="accountLabel" class="text-warning fw-bold mb-2 display-5" style="font-size: 1.25rem;">Account Login</p>
@@ -411,7 +411,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </form>
 
         <div class="mt-3">
-            <small class="form-text">Forgot your password? <a href="forgot_password.php">Click here</a></small>
+            <small class="form-text">Forgot your password? <a href="/accounts/forgot_password.php">Click here</a></small>
         </div>
     </div>
 </div> -->

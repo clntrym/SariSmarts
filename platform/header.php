@@ -23,9 +23,17 @@
     <nav class="navbar navbar-expand-lg bg-white shadow-sm py-3">
         <div class="container">
             <a class="navbar-brand d-flex align-items-center" id="navbar" href="index.php">
-                <div class="bg-sky-500 rounded-4 p-3 me-3">
-                    <i class="fa-solid fa-store text-white fs-5"></i>
-                </div>
+                <!--
+                | The mark, not a generic shop icon.
+                |
+                | This was a FontAwesome fa-store in a coloured box, which is
+                | what a site has before it has a logo. The transparent mark
+                | sits on the navbar's own background without a tile around
+                | it. Height is fixed and width follows, so the navbar cannot
+                | be pushed out of shape by a differently proportioned file.
+                -->
+                <img src="/assets/retailcore-mark.png" alt="RetailCore"
+                    class="me-3" style="height:46px;width:auto;">
                 <div>
                     <h5 class="fw-bold m-0 logo-text">RetailCore</h5>
                     <small class="text-secondary text-uppercase" style="letter-spacing:2px;">

@@ -20,6 +20,12 @@
 */
 require_once("../init.php");
 requireRole(['hr']);
+
+/* The company this record belongs to, checked rather than assumed: every row
+   this page writes carries it, and a null would be a row belonging to
+   nobody. */
+$companyId = requireCompany();
+
 include("hr_header.php");
 
 $user_id = (int) $_SESSION['user_id'];
@@ -46,36 +52,62 @@ $getEmployee = $stmt->get_result();
 $employee = $getEmployee->fetch_assoc();
 
 /*
-| An account with no employee record cannot clock in, and saying so is the
-| whole answer.
+| An account with no employee record gets one, here, on first use.
 |
-| Not every user is an employee: an owner who created the company, or an HR
-| account added before its employee record existed, has users.employee_id
-| empty. The page this was copied from reads $employee['employee_id']
-| regardless, which on such an account prints "EMP-0000" beside a blank role
-| and a clock that cannot record anything -- a broken-looking page instead of
-| an explanation.
+| Attendance is recorded against employees.employee_id, and several accounts
+| have none: users.employee_id is empty for the owner who created the company
+| and for HR officers added before anyone made them an employee record. This
+| page first refused them -- correct about the cause, useless to the person
+| standing there at eight in the morning wanting to clock in.
+|
+| So it creates the record instead, from what the account already knows: the
+| name, the email and the company. Nothing is invented.
+|
+| employment_status stays at the column's own default, Pre-Employee. That is
+| deliberate: payroll selects on 'Official Employee', so a record created to
+| let somebody clock in cannot put them into a payslip. HR promotes them when
+| the paperwork is real. Attendance does not read the status at all, so the
+| clock works immediately.
+|
+| The person is told it happened. A record appearing in the Employee
+| Directory because somebody opened a page is a surprise worth naming.
 */
+$employeeWasCreated = false;
+
 if (!$employee) {
-    /* hr_header.php is already included above, so only the body and the
-       footer are needed here. */
-    ?>
-    <div class="container py-5">
-        <div class="card border-0 shadow-sm mx-auto" style="max-width:520px;border-radius:14px;">
-            <div class="card-body p-4 text-center">
-                <i class="bi bi-person-badge" style="font-size:2.5rem;color:#00224c;"></i>
-                <h4 class="fw-bold mt-3" style="color:#00224c;">No employee record</h4>
-                <p class="text-muted mb-0">
-                    Attendance is recorded against an employee record, and your
-                    account is not linked to one yet. Ask your administrator to
-                    link it in User Management, then this page will work.
-                </p>
-            </div>
-        </div>
-    </div>
-    <?php
-    include("hr_footer.php");
-    exit;
+
+    $fullName = trim((string) ($_SESSION['fullname'] ?? ''));
+
+    /* "Juan Dela Cruz" -> first "Juan", last "Dela Cruz". A single word is
+       all first name; the column is NOT NULL, so last name falls back to a
+       stop rather than an empty string. */
+    $parts = preg_split('/\s+/', $fullName, 2) ?: [];
+    $firstName = trim($parts[0] ?? '') !== '' ? trim($parts[0]) : 'Staff';
+    $lastName = trim($parts[1] ?? '') !== '' ? trim($parts[1]) : '-';
+
+    $email = trim((string) ($_SESSION['email'] ?? ''));
+
+    $insert = $conn->prepare("
+        INSERT INTO employees (company_id, first_name, last_name, email)
+        VALUES (?, ?, ?, ?)
+    ");
+    $insert->bind_param("isss", $companyId, $firstName, $lastName, $email);
+    $insert->execute();
+    $newEmployeeId = (int) $conn->insert_id;
+    $insert->close();
+
+    /* Link the account to it, so every other page agrees from now on. */
+    $link = $conn->prepare("UPDATE users SET employee_id = ? WHERE user_id = ?");
+    $link->bind_param("ii", $newEmployeeId, $user_id);
+    $link->execute();
+    $link->close();
+
+    $_SESSION['employee_id'] = $newEmployeeId;
+    $employeeWasCreated = true;
+
+    /* Re-read, so the rest of the page works from a row like any other. */
+    $stmt->execute();
+    $employee = $stmt->get_result()->fetch_assoc();
 }
 
 $employee_id = (int) $employee['employee_id'];
@@ -534,6 +566,27 @@ if ($todayAttendance && empty($todayAttendance['time_out'])) {
             </p>
         </div>
     </div>
+
+    <?php if ($employeeWasCreated) { ?>
+        <!--
+        | Said once, on the visit that created it. A record appearing in the
+        | Employee Directory because somebody opened a page is a surprise, and
+        | an unexplained surprise is how people stop trusting a system.
+        -->
+        <div class="alert alert-info d-flex align-items-start gap-3 border-0 mb-4"
+            style="border-radius:12px;background:#e8f1fb;color:#00224c;">
+            <i class="bi bi-info-circle-fill fs-5 mt-1"></i>
+            <div>
+                <strong>An employee record was created for you.</strong><br>
+                <span style="font-size:14px;">
+                    Attendance is kept against an employee record and your account
+                    did not have one, so it was made from your name and email. It
+                    starts as <em>Pre-Employee</em> and is not on any payslip —
+                    HR completes the details in the Employee Directory.
+                </span>
+            </div>
+        </div>
+    <?php } ?>
 
     <!-- ================= TIME CLOCK ================= -->
     <div class="attn-hero mb-4">

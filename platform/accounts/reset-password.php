@@ -152,7 +152,7 @@ body{
 <div class="reset-wrapper">
     <div class="reset-card">
         <div class="text-center mb-4">
-            <img src="../assets/logo.png" class="logo mb-3">
+            <img src="/assets/logo.png" class="logo mb-3">
             <h2 class="title">Reset Your Password</h2>
             <p class="subtitle">
                 Please enter your new password

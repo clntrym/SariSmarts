@@ -397,11 +397,11 @@ ORDER BY j.created_at DESC
 
     <div class="career-header">
 
-        <img src="../assets/logo.png" class="logo">
+        <img src="/assets/logo.png" class="logo">
 
         <h3>RetailCore Careers</h3>
 
-        <a href="../../platform/careers.php" class="back-link">
+        <a href="/../platform/careers.php" class="back-link">
             <i class="bi bi-arrow-left"></i> Back to sign in
         </a>
 
@@ -631,7 +631,7 @@ ORDER BY j.created_at DESC
 
                 <div class="d-flex justify-content-between">
 
-                    <a href="?page=browse" class="btn btn-outline-secondary">
+                    <a href="/accounts/?page=browse" class="btn btn-outline-secondary">
                         Back
                     </a>
 
@@ -712,13 +712,13 @@ ORDER BY j.created_at DESC
 
             <div class="mt-4">
 
-                <a href="?page=browse" class="btn btn-primary rounded-pill px-5">
+                <a href="/accounts/?page=browse" class="btn btn-primary rounded-pill px-5">
 
                     Back to Careers
 
                 </a>
 
-                <a href="?page=interview" class="btn btn-outline-primary rounded-pill px-5">
+                <a href="/accounts/?page=interview" class="btn btn-outline-primary rounded-pill px-5">
 
                     View Application Status
 
@@ -759,7 +759,7 @@ ORDER BY j.created_at DESC
                 <!-- Banner -->
                 <div class="position-relative">
 
-                    <img src="../assets/careers-banner.jpg" class="w-100" style="height:320px;object-fit:cover;">
+                    <img src="/assets/careers-banner.jpg" class="w-100" style="height:320px;object-fit:cover;">
 
 
                     <div class="position-absolute top-50 start-50 translate-middle text-center text-white">

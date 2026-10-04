@@ -162,7 +162,7 @@ RESPONSIVE
 
 <div class="forgot-container">
     <div class="forgot-card">
-        <img src="../assets/logo.png" class="logo">
+        <img src="/assets/logo.png" class="logo">
         <h1>Forgot Password?</h1>
         <p class="description">
             No worries! Enter your registered email address and we'll send you

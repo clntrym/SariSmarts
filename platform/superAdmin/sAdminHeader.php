@@ -118,9 +118,13 @@ $bellUnread = platformFeedUnread($bellItems, $bellSeenAt, $bellNow);
     <div class="sidebar">
         <div class="sidebar-header">
             <div class="logo-box">
-                <div class="logo-icon">
-                    <i class="bi bi-shield-check"></i>
-                </div>
+                <!--
+                | The mark, in place of a generic shield icon. Same file the
+                | public navbar uses, so the two sides of the platform look
+                | like one product.
+                -->
+                <img src="/assets/retailcore-mark.png" alt="RetailCore"
+                    style="height:40px;width:auto;flex:0 0 auto;">
                 <div>
                     <h2 class="logo-title">RetailCore</h2>
                     <div class="logo-sub"><?= htmlspecialchars(platformRoleLabel()) ?></div>
