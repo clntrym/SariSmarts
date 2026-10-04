@@ -217,7 +217,8 @@ function chatConverse(
             $attempts++;
 
             if ($attempts > CHAT_MAX_TOOL_CALLS || count($toolsUsed) >= CHAT_MAX_TOOL_CALLS) {
-                $results[] = ['id' => $id, 'is_error' => true,
+                $results[] = ['id' => $id, 'name' => (string) ($call['name'] ?? ''),
+                              'is_error' => true,
                               'content' => 'Tool limit reached. Answer with what you have.'];
                 break;
             }
@@ -226,7 +227,8 @@ function chatConverse(
                 (array) ($call['input'] ?? []));
 
             if (!$outcome['ok']) {
-                $results[] = ['id' => $id, 'is_error' => true,
+                $results[] = ['id' => $id, 'name' => (string) ($call['name'] ?? ''),
+                              'is_error' => true,
                               'content' => 'Tool error: ' . $outcome['error']];
                 continue;
             }
@@ -242,7 +244,10 @@ function chatConverse(
 
             $tables[] = $table;
 
-            $results[] = ['id' => $id, 'is_error' => false,
+            /* The name travels with the id: Claude pairs a result to its
+               call by id, Gemini pairs it by the function's name. */
+            $results[] = ['id' => $id, 'name' => (string) $call['name'],
+                          'is_error' => false,
                           'content' => json_encode($table)];
         }
 

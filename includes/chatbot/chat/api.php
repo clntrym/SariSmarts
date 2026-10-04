@@ -10,6 +10,7 @@
 */
 
 require_once __DIR__ . '/../ai_client.php';
+require_once __DIR__ . '/gemini.php';
 
 const CHAT_MODEL_TIMEOUT_MS = 15000;
 const CHAT_DAILY_CAP = 100;
@@ -384,58 +385,158 @@ function chatRequestPayload(array $messages, array $toolSchemas): array
  * The callable chatConverse() drives. It throws on any failure, which the loop
  * turns into the Phase 1 fallback.
  */
+/**
+ * One Anthropic turn. Throws on anything that is not an answer.
+ */
+function chatAnthropicTurn(array $messages, array $toolSchemas): array
+{
+    $settings = chatbotAiSettings();
+
+    $payload = json_encode(chatRequestPayload($messages, $toolSchemas));
+
+    $headers = [
+        'Content-Type: application/json',
+        'x-api-key: ' . ($settings['anthropic_api_key'] ?? ''),
+        'anthropic-version: 2023-06-01',
+    ];
+
+    /* An empty anthropic-beta header is not the same as no header, so it
+       is only added when there is a beta to name. */
+    $betas = chatRequestBetas();
+
+    if ($betas !== []) {
+        $headers[] = 'anthropic-beta: ' . implode(',', $betas);
+    }
+
+    $curl = curl_init($settings['chatbot_chat_endpoint'] ?? CHAT_ENDPOINT);
+    curl_setopt_array($curl, [
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_POST => true,
+        CURLOPT_POSTFIELDS => $payload,
+        CURLOPT_TIMEOUT_MS => CHAT_MODEL_TIMEOUT_MS,
+        CURLOPT_CONNECTTIMEOUT_MS => 2000,
+        CURLOPT_HTTPHEADER => $headers,
+    ]);
+
+    $response = curl_exec($curl);
+    $status = (int) curl_getinfo($curl, CURLINFO_HTTP_CODE);
+    curl_close($curl);
+
+    if ($response === false || $status !== 200) {
+
+        /*
+        | The reason travels with the status.
+        |
+        | "credit balance is too low" arrives as a 400 with the sentence in the
+        | body, and that sentence is the one signal the reserve provider exists
+        | for. Throwing the bare status discarded it, which would have left the
+        | reserve guessing from a number that also means "malformed request".
+        */
+        $detail = '';
+        $body = json_decode((string) $response, true);
+
+        if (isset($body['error']['message'])) {
+            $detail = ': ' . (string) $body['error']['message'];
+        }
+
+        throw new RuntimeException('chat api status ' . $status . $detail);
+    }
+
+    $body = json_decode((string) $response, true);
+    $reply = chatNormaliseReply(is_array($body) ? $body : []);
+
+    /*
+    | A refusal arrives as a perfectly good HTTP 200 with no answer in it.
+    | Throwing here is what sends the question to the keyword answer rather
+    | than showing the user an empty card.
+    */
+    if ($reply['stop_reason'] === 'refusal') {
+        throw new RuntimeException('chat api refused');
+    }
+
+    return $reply;
+}
+
+/**
+ * One Gemini turn, in the shape the loop understands.
+ */
+function chatGeminiTurn(array $messages, array $toolSchemas): array
+{
+    $settings = chatbotAiSettings();
+    $key = (string) ($settings['gemini_api_key'] ?? '');
+
+    if ($key === '') {
+        throw new RuntimeException('gemini has no key');
+    }
+
+    $model = (string) ($settings['gemini_model'] ?? GEMINI_MODEL);
+
+    $payload = json_encode(
+        geminiRequestPayload($messages, geminiToolSchemas($toolSchemas), chatSystemPrompt())
+    );
+
+    $url = GEMINI_ENDPOINT . '/' . rawurlencode($model) . ':generateContent';
+
+    $curl = curl_init($url);
+    curl_setopt_array($curl, [
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_POST => true,
+        CURLOPT_POSTFIELDS => $payload,
+        CURLOPT_TIMEOUT_MS => GEMINI_TIMEOUT_MS,
+        CURLOPT_CONNECTTIMEOUT_MS => 2000,
+        CURLOPT_HTTPHEADER => [
+            'Content-Type: application/json',
+            /* In a header, not the query string: a key in a URL ends up in
+               access logs and proxy caches. */
+            'x-goog-api-key: ' . $key,
+        ],
+    ]);
+
+    $response = curl_exec($curl);
+    $status = (int) curl_getinfo($curl, CURLINFO_HTTP_CODE);
+    curl_close($curl);
+
+    if ($response === false || $status !== 200) {
+        throw new RuntimeException('gemini api status ' . $status);
+    }
+
+    $body = json_decode((string) $response, true);
+
+    return geminiNormaliseReply(is_array($body) ? $body : []);
+}
+
+/**
+ * The callable chatConverse() drives: Claude, and Gemini behind it.
+ *
+ * The loop knows about neither. It is handed something it can call, and both
+ * providers answer in the same shape -- which is what lets a second one exist
+ * at all without the loop growing a branch for each.
+ *
+ * Gemini is asked only when Claude could not answer for a reason a second
+ * provider would not share: no credit, rate limiting, overload, an outage. A
+ * safety refusal and a bad key are deliberately NOT among them; see
+ * geminiShouldTakeOver().
+ */
 function chatModelCallable(): callable
 {
     return function (array $messages, array $toolSchemas): array {
 
-        $settings = chatbotAiSettings();
+        try {
+            return chatAnthropicTurn($messages, $toolSchemas);
+        } catch (Throwable $error) {
 
-        $payload = json_encode(chatRequestPayload($messages, $toolSchemas));
+            $settings = chatbotAiSettings();
+            $reason = $error->getMessage();
 
-        $headers = [
-            'Content-Type: application/json',
-            'x-api-key: ' . $settings['anthropic_api_key'],
-            'anthropic-version: 2023-06-01',
-        ];
+            if (empty($settings['gemini_api_key']) || !geminiShouldTakeOver($reason)) {
+                throw $error;
+            }
 
-        /* An empty anthropic-beta header is not the same as no header, so it
-           is only added when there is a beta to name. */
-        $betas = chatRequestBetas();
+            /* Logged, always. A system quietly answering from its reserve is
+               a system whose owner does not know the main account is empty. */
+            error_log('chat: Claude unavailable (' . $reason . '), using the reserve provider');
 
-        if ($betas !== []) {
-            $headers[] = 'anthropic-beta: ' . implode(',', $betas);
+            return chatGeminiTurn($messages, $toolSchemas);
         }
-
-        $curl = curl_init($settings['chatbot_chat_endpoint'] ?? CHAT_ENDPOINT);
-        curl_setopt_array($curl, [
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_POST => true,
-            CURLOPT_POSTFIELDS => $payload,
-            CURLOPT_TIMEOUT_MS => CHAT_MODEL_TIMEOUT_MS,
-            CURLOPT_CONNECTTIMEOUT_MS => 2000,
-            CURLOPT_HTTPHEADER => $headers,
-        ]);
-
-        $response = curl_exec($curl);
-        $status = (int) curl_getinfo($curl, CURLINFO_HTTP_CODE);
-        curl_close($curl);
-
-        if ($response === false || $status !== 200) {
-            throw new RuntimeException('chat api status ' . $status);
-        }
-
-        $body = json_decode((string) $response, true);
-        $reply = chatNormaliseReply(is_array($body) ? $body : []);
-
-        /*
-        | A refusal arrives as a perfectly good HTTP 200 with no answer in it.
-        | Throwing here is what sends the question to the keyword answer rather
-        | than showing the user an empty card.
-        */
-        if ($reply['stop_reason'] === 'refusal') {
-            throw new RuntimeException('chat api refused');
-        }
-
-        return $reply;
     };
 }
