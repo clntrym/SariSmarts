@@ -607,7 +607,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$postTooLarge) {
 
             $companyCode = 'COMP-' . (max(1000, (int) ($codeRow['max_code'] ?? 1000)) + 1);
 
+            /*
+            | Created on demand, because it is in nobody's clone.
+            |
+            | platform/.gitignore excludes uploads/, so this folder exists on
+            | the machine the code was written on and on no other. On Render
+            | copy() therefore failed, the RuntimeException below rolled the
+            | whole registration back, and the owner was told "Registration
+            | failed. Please try again" -- at something that would fail every
+            | time, for every business, forever.
+            |
+            | The failure is raised here rather than left for copy() to find,
+            | so the log says the directory could not be made instead of
+            | saying a certificate could not be stored.
+            */
             $documentDirectory = __DIR__ . '/uploads/business_documents/';
+
+            if (!is_dir($documentDirectory)
+                && !@mkdir($documentDirectory, 0775, true)
+                && !is_dir($documentDirectory)) {
+                throw new RuntimeException(
+                    'Could not create the document directory: ' . $documentDirectory
+                );
+            }
 
             /*
             | Everything is inside the surrounding transaction, so a database
@@ -1124,7 +1146,21 @@ include __DIR__ . "/header.php";
                     <div class="alert alert-danger"><?= htmlspecialchars($errors['general']) ?></div>
                 <?php endif; ?>
 
-                <?php if (!empty($errors)): ?>
+                <?php
+                /*
+                | Only when there is a field to go and look at.
+                |
+                | This read !empty($errors), which is true when the only
+                | error is 'general' -- already shown in red immediately
+                | above. The page then said "Please correct the highlighted
+                | fields below" with nothing highlighted anywhere on it, and
+                | the person was sent hunting through a form that was
+                | entirely correct.
+                */
+                $fieldErrors = $errors;
+                unset($fieldErrors['general']);
+                ?>
+                <?php if (!empty($fieldErrors)): ?>
                     <div class="alert alert-warning">
                         Please correct the highlighted fields below.
                     </div>
