@@ -1,7 +1,22 @@
 <?php
 
 require_once('../init.php');
-requireRole(['hr']);
+requireRole(['hr', 'admin']);
+
+/*
+| The owner reaches this too.
+|
+| The module belongs to hr; the business belongs to the owner, so they see
+| everything. They already had the page that links HERE -- an admin who
+| clicked the button on it was bounced to the dashboard with no message,
+| which is worse than the button not existing: it was rendered for them and
+| then refused for being them.
+|
+| The header and footer are chosen by who is reading rather than named
+| outright, so the owner keeps their own menu instead of finding it
+| replaced by this role's with no way back.
+*/
+require_once __DIR__ . '/../includes/role_chrome.php';
 
 $companyId = requireCompany();
 
@@ -973,7 +988,7 @@ if (
 }
 
 
-include("hr_header.php");
+include includeRoleHeader(__DIR__, 'hr_header.php');
 
 
 
@@ -4679,4 +4694,4 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 </script>
 
-<?php include("hr_footer.php"); ?>
+<?php include includeRoleFooter(__DIR__, 'hr_footer.php'); ?>

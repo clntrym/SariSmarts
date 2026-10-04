@@ -11,7 +11,13 @@
 */
 
 require_once('../init.php');
-requireRole(['hr']);
+requireRole(['hr', 'admin']);
+
+/*
+| The owner reaches this too -- employee_registration.php, which they
+| already have, links straight here. It prints a contract and includes
+| no header or footer, so there is no chrome to choose.
+*/
 
 $companyId = requireCompany();
 
