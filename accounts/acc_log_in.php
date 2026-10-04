@@ -295,7 +295,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <div class="login-wrapper">
     <div class="login-box">
-        <img src="/assets/logo.png" class="logo" alt="Logo">
+        <img src="/assets/retailcore-logo.png" class="logo" alt="Logo">
         <h2 class="welcome-title">
             Welcome to <span>Retail</span>Core!
         </h2>

@@ -253,7 +253,10 @@ ORDER BY j.created_at DESC
 ?>
 <style>
     body {
-        background: url("../assets/store-bg.png") center center;
+        /* store-bg.png has never existed in this repository, so the careers
+           application page has always loaded with no background at all. It uses
+           the same image the other public pages do. */
+        background: url("/assets/retailcore_1st_bg.png") center center;
         background-size: cover;
         font-family: Poppins, sans-serif;
     }
@@ -397,7 +400,7 @@ ORDER BY j.created_at DESC
 
     <div class="career-header">
 
-        <img src="/assets/logo.png" class="logo">
+        <img src="/assets/retailcore-logo.png" class="logo">
 
         <h3>RetailCore Careers</h3>
 

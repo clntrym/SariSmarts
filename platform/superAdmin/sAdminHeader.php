@@ -123,7 +123,7 @@ $bellUnread = platformFeedUnread($bellItems, $bellSeenAt, $bellNow);
                 | public navbar uses, so the two sides of the platform look
                 | like one product.
                 -->
-                <img src="/assets/retailcore-mark.png" alt="RetailCore"
+                <img src="/assets/retailcore-logo.png" alt="RetailCore"
                     style="height:40px;width:auto;flex:0 0 auto;">
                 <div>
                     <h2 class="logo-title">RetailCore</h2>

@@ -32,7 +32,7 @@
                 | it. Height is fixed and width follows, so the navbar cannot
                 | be pushed out of shape by a differently proportioned file.
                 -->
-                <img src="/assets/retailcore-mark.png" alt="RetailCore"
+                <img src="/assets/retailcore-logo.png" alt="RetailCore"
                     class="me-3" style="height:46px;width:auto;">
                 <div>
                     <h5 class="fw-bold m-0 logo-text">RetailCore</h5>
