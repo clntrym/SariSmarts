@@ -1,28 +1,26 @@
 <?php
 require_once __DIR__ . "/config.php";
 
-// Gracefully handle case where job table doesn't exist yet
+require_once __DIR__ . "/includes/job_board.php";
+
+/*
+| "Gracefully handle case where job table doesn't exist yet" is what this
+| was for, and it did more than that: every failure became an empty board.
+|
+| A company published a cashier vacancy, HR listed it as Published, and this
+| page said "No Open Positions" -- the same screen it shows when nobody is
+| hiring. There was nothing to notice. The fault is still caught, because a
+| broken board must not be a broken site, but the two outcomes are now kept
+| apart and the page says which one it is.
+*/
+$jobs = [];
+$jobBoardFailed = null;
+
 try {
-    $jobsQuery = $conn->query("
-        SELECT
-            j.*,
-            b.branch_name
-        FROM job j
-        INNER JOIN branch b
-            ON j.branch_id = b.branch_id
-        WHERE j.status = 'Published'
-        AND (
-            j.application_deadline IS NULL
-            OR j.application_deadline = ''
-            OR j.application_deadline >= CURDATE()
-        )
-        ORDER BY j.created_at DESC
-    ");
-} catch (Exception $e) {
-    $jobsQuery = false;
-}
-if ($jobsQuery === false && $conn->errno) {
-    $jobsQuery = null;
+    $jobs = publishedJobs($conn);
+} catch (Throwable $error) {
+    $jobBoardFailed = $error->getMessage();
+    error_log('Careers board unavailable: ' . $jobBoardFailed);
 }
 
 /* Page copy comes from the Super Admin careers editor. */
@@ -90,11 +88,11 @@ include __DIR__ . "/header.php";
         </div>
 
 
-        <?php if ($jobsQuery && $jobsQuery->num_rows > 0): ?>
+        <?php if ($jobs): ?>
 
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
 
-                <?php while ($job = $jobsQuery->fetch_assoc()): ?>
+                <?php foreach ($jobs as $job): ?>
 
                     <div
                         class="bg-white rounded-2xl border border-gray-200 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col overflow-hidden">
@@ -288,7 +286,7 @@ include __DIR__ . "/header.php";
                         </div>
                     </div>
 
-                <?php endwhile; ?>
+                <?php endforeach; ?>
 
             </div>
 
@@ -298,20 +296,50 @@ include __DIR__ . "/header.php";
 
             <div class="text-center py-16">
 
-                <div
-                    class="w-20 h-20 mx-auto rounded-full bg-sky-100 flex items-center justify-center text-sky-600 text-3xl mb-6">
+                <?php if ($jobBoardFailed !== null): ?>
 
-                    <i class="fa-solid fa-briefcase"></i>
+                    <!--
+                        Not the same as nobody hiring, and no longer shown as
+                        if it were. The visitor is told the listings could not
+                        be loaded rather than that there are none -- the
+                        second is a statement about the business, and it was
+                        false. What went wrong goes to the log, not onto a
+                        public page.
+                    -->
+                    <div
+                        class="w-20 h-20 mx-auto rounded-full bg-amber-100 flex items-center justify-center text-amber-600 text-3xl mb-6">
 
-                </div>
+                        <i class="fa-solid fa-triangle-exclamation"></i>
 
-                <h3 class="text-2xl font-bold text-slate-900">
-                    <?= htmlspecialchars($careers['empty_title'] ?? 'No Open Positions') ?>
-                </h3>
+                    </div>
 
-                <p class="text-gray-500 mt-3">
-                    <?= htmlspecialchars($careers['empty_description'] ?? '') ?>
-                </p>
+                    <h3 class="text-2xl font-bold text-slate-900">
+                        Openings could not be loaded
+                    </h3>
+
+                    <p class="text-gray-500 mt-3">
+                        This is a fault on our side, not an empty list.
+                        Please try again shortly.
+                    </p>
+
+                <?php else: ?>
+
+                    <div
+                        class="w-20 h-20 mx-auto rounded-full bg-sky-100 flex items-center justify-center text-sky-600 text-3xl mb-6">
+
+                        <i class="fa-solid fa-briefcase"></i>
+
+                    </div>
+
+                    <h3 class="text-2xl font-bold text-slate-900">
+                        <?= htmlspecialchars($careers['empty_title'] ?? 'No Open Positions') ?>
+                    </h3>
+
+                    <p class="text-gray-500 mt-3">
+                        <?= htmlspecialchars($careers['empty_description'] ?? '') ?>
+                    </p>
+
+                <?php endif; ?>
 
             </div>
 
