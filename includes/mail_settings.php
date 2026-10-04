@@ -73,7 +73,7 @@ if (!function_exists('mailSettings')) {
         $environment = [];
 
         foreach (['MAIL_HOST', 'MAIL_PORT', 'MAIL_USERNAME', 'MAIL_PASSWORD',
-                  'MAIL_FROM_NAME', 'MAIL_FROM_ADDRESS'] as $name) {
+                  'MAIL_FROM_NAME', 'MAIL_FROM_ADDRESS', 'MAIL_ENCRYPTION'] as $name) {
 
             $value = getenv($name);
 

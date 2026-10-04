@@ -93,7 +93,21 @@ function getMailer()
     $mail->Username = $config['MAIL_USERNAME'] ?? '';
     $mail->Password = $config['MAIL_PASSWORD'] ?? '';
 
-    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+    /*
+    | STARTTLS on 587, SSL on 465. Set MAIL_ENCRYPTION=ssl with MAIL_PORT=465
+    | where a host blocks 587 -- the pair has to move together, and sending
+    | STARTTLS to an SSL port hangs rather than failing, which is a bad
+    | afternoon.
+    */
+    $encryption = strtolower(trim((string) ($config["MAIL_ENCRYPTION"] ?? "")));
+
+    if ($encryption === "") {
+        $encryption = ((int) ($config["MAIL_PORT"] ?? 587)) === 465 ? "ssl" : "tls";
+    }
+
+    $mail->SMTPSecure = $encryption === "ssl"
+        ? PHPMailer::ENCRYPTION_SMTPS
+        : PHPMailer::ENCRYPTION_STARTTLS;
     $mail->Port = $config['MAIL_PORT'] ?? 587;
 
     $mail->CharSet = 'UTF-8';

@@ -121,12 +121,63 @@ $socket = @fsockopen($host, $port, $errno, $errstr, 10);
 $elapsed = round(microtime(true) - $started, 2);
 
 if (!$socket) {
+
     mailLine('TCP connection', false, $host . ':' . $port . '  ' . $errstr . ' (' . $errno . ')');
-    echo "\n  The connection could not be opened, so this is not about the\n";
-    echo "  password. Either the host blocks outbound SMTP on this port, or\n";
-    echo "  nothing is listening. Port 465 with SSL sometimes works where 587\n";
-    echo "  does not; if neither does, the host blocks SMTP and mail has to go\n";
-    echo "  out over an HTTP API instead.\n\n";
+
+    /*
+    | One blocked port is not proof that all of them are, and guessing which
+    | to try next wastes an afternoon per guess. So every port mail might
+    | leave on is tried, and the host answers for itself.
+    |
+    | "Connection timed out" rather than "refused" is the signature of a
+    | firewall dropping packets silently. A refusal would mean something
+    | answered and said no; a timeout means nothing was allowed to ask.
+    |
+    | 443 is included as the control. If that is open and the mail ports are
+    | not, the host plainly reaches the internet and is blocking SMTP
+    | specifically -- which settles it, and points at an HTTP mail API as the
+    | only way out.
+    */
+    echo "\n  Trying the other ports mail can leave on\n\n";
+
+    $candidates = [
+        [$host, 587, 'SMTP with STARTTLS -- the usual one'],
+        [$host, 465, 'SMTP over SSL'],
+        [$host, 25, 'SMTP, plain'],
+        [$host, 2525, 'SMTP, the alternate port some providers offer'],
+        ['api.resend.com', 443, 'HTTPS -- the control'],
+    ];
+
+    $anySmtp = false;
+
+    foreach ($candidates as [$tryHost, $tryPort, $what]) {
+
+        $probe = @fsockopen($tryHost, $tryPort, $n, $s, 6);
+        $open = $probe !== false;
+
+        if ($probe) {
+            fclose($probe);
+        }
+
+        mailLine($tryHost . ':' . $tryPort, $open, $open ? $what : ($s ?: 'no answer'));
+
+        if ($open && $tryPort !== 443) {
+            $anySmtp = true;
+        }
+    }
+
+    echo "\n";
+
+    if ($anySmtp) {
+        echo "  One of the mail ports is open. Set MAIL_PORT to it -- 465 also\n";
+        echo "  needs MAIL_ENCRYPTION=ssl -- and run this again.\n\n";
+    } else {
+        echo "  Every mail port is closed and HTTPS is open, so this host\n";
+        echo "  reaches the internet and blocks SMTP specifically. No password\n";
+        echo "  and no port will change that. Mail has to leave over an HTTP\n";
+        echo "  API, which travels on 443 like any other web request.\n\n";
+    }
+
     exit(1);
 }
 
