@@ -32,7 +32,17 @@
 | coming back from Gemini is given one.
 */
 
-const GEMINI_MODEL = 'gemini-2.0-flash';
+/*
+| gemini-2.0-flash was written here and is retired: the API answers 404 with
+| "no longer available", naming gemini-3.8-flash as the current one. Checked
+| against the live API rather than assumed, which is the only way a model id
+| ever gets checked -- a wrong one is a 404 that this layer turns into a
+| silent fallback, exactly as the date-suffixed Claude id did.
+|
+| Overridable with GEMINI_MODEL so the next retirement is an environment
+| variable rather than a deployment.
+*/
+const GEMINI_MODEL = 'gemini-3.8-flash';
 const GEMINI_ENDPOINT = 'https://generativelanguage.googleapis.com/v1beta/models';
 const GEMINI_TIMEOUT_MS = 15000;
 

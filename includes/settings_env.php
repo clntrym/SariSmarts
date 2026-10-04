@@ -28,6 +28,7 @@ if (!function_exists('chatbotSettingsFromEnvironment')) {
         $names = [
             'anthropic_api_key' => 'ANTHROPIC_API_KEY',
             'gemini_api_key' => 'GEMINI_API_KEY',
+            'gemini_model' => 'GEMINI_MODEL',
             'chatbot_chat_enabled' => 'CHATBOT_CHAT_ENABLED',
             'chatbot_chat_model' => 'CHATBOT_CHAT_MODEL',
             'chatbot_chat_endpoint' => 'CHATBOT_CHAT_ENDPOINT',
