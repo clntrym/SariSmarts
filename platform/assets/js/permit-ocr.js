@@ -51,14 +51,29 @@
         return "";
     }
 
+    /*
+     * Returns what happened, not just whether it wrote.
+     *
+     *   "filled"  -- the field was empty and now holds the value
+     *   "already" -- the certificate gave a value and the field already had
+     *                one, so it was left alone
+     *   false     -- nothing was read for this field
+     *
+     * The three used to collapse into true/false, and the caller reported
+     * "Nothing could be read from that image" whenever nothing was written.
+     * After a failed submit every field comes back filled from the POST, so
+     * re-choosing the same file read the certificate perfectly and then
+     * announced that it had not. The owner was told their scan was unreadable
+     * by the code that had just read it.
+     */
     function setIfEmpty(el, value) {
         if (!el || !value) return false;
-        if (el.value && el.value.trim() !== "") return false;
+        if (el.value && el.value.trim() !== "") return "already";
 
         el.value = value;
         el.dispatchEvent(new Event("input", { bubbles: true }));
         el.dispatchEvent(new Event("change", { bubbles: true }));
-        return true;
+        return "filled";
     }
 
     /* ---- DTI Certificate of Business Name Registration -------------------
@@ -119,31 +134,53 @@
         var found = kind === "dti" ? readDti(text) : readBir(text);
         var box = group.querySelector("[data-ocr-note]");
         var filled = [];
+        var alreadyFilled = [];
 
         function field(name) {
             return group.querySelector('[name="' + name + '"]');
         }
 
+        function take(name, value, label) {
+            var outcome = setIfEmpty(field(name), value);
+
+            if (outcome === "filled") {
+                filled.push(label);
+            } else if (outcome === "already") {
+                alreadyFilled.push(label);
+            }
+        }
+
         if (kind === "dti") {
-            if (setIfEmpty(field("dti_registration_number"), found.number)) {
-                filled.push("Business Name No.");
-            }
-            if (setIfEmpty(field("dti_registration_date"), found.date)) {
-                filled.push("registration date");
-            }
+            take("dti_registration_number", found.number, "Business Name No.");
+            take("dti_registration_date", found.date, "registration date");
         } else {
-            if (setIfEmpty(field("bir_tin"), found.tin)) filled.push("TIN");
-            if (setIfEmpty(field("bir_registration_date"), found.date)) filled.push("registration date");
-            if (setIfEmpty(field("bir_rdo_code"), found.rdo)) filled.push("RDO code");
-            if (setIfEmpty(field("bir_ocn"), found.ocn)) filled.push("OCN");
+            take("bir_tin", found.tin, "TIN");
+            take("bir_registration_date", found.date, "registration date");
+            take("bir_rdo_code", found.rdo, "RDO code");
+            take("bir_ocn", found.ocn, "OCN");
         }
 
         if (filled.length) {
             note(box, "Read from your file: " + filled.join(", ")
                 + ". Please check each one against the certificate before you continue.", "ok");
-        } else {
-            note(box, "Nothing could be read from that image. Please type the details in yourself.", "warn");
+            return;
         }
+
+        /*
+         * The certificate was read; the fields simply already had answers --
+         * which is what happens on the second attempt after a failed submit,
+         * because the form comes back filled from the POST. Saying "nothing
+         * could be read" here tells the owner their scan is bad when it is
+         * not, and sends them looking for a better photograph of a perfectly
+         * good certificate.
+         */
+        if (alreadyFilled.length) {
+            note(box, "Read from your file: " + alreadyFilled.join(", ")
+                + ". These already match what is typed below, so nothing was changed.", "ok");
+            return;
+        }
+
+        note(box, "Nothing could be read from that image. Please type the details in yourself.", "warn");
     }
 
     function run(group, file) {

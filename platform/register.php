@@ -18,11 +18,14 @@ require_once __DIR__ . "/includes/field_rules.php";
 | moment it arrives, keyed to this browser session. On the next attempt a
 | field left empty falls back to its staged file, and the form says so.
 |
-| The folder sits outside the webroot (C:\xampp\pending_uploads): these are
-| unreviewed identity documents, and nothing should be able to fetch them by
-| URL. Staged files older than a day are swept on each request.
+| The folder sits outside the webroot -- these are unreviewed identity
+| documents and nothing should be able to fetch them by URL -- and where
+| exactly is decided by register_paths.php, because the answer differs
+| between XAMPP and the deployed container. Staged files older than a day are
+| swept on each request.
 */
-const REGISTRATION_STAGING_ROOT = __DIR__ . '/../../pending_uploads';
+require_once __DIR__ . '/register_paths.php';
+
 const REGISTRATION_STAGING_TTL = 86400;
 
 function registrationStagingDir(): string
@@ -31,10 +34,20 @@ function registrationStagingDir(): string
         $_SESSION['registration_upload_token'] = bin2hex(random_bytes(16));
     }
 
-    $dir = REGISTRATION_STAGING_ROOT . '/' . $_SESSION['registration_upload_token'];
+    $dir = registrationStagingRoot() . DIRECTORY_SEPARATOR . $_SESSION['registration_upload_token'];
 
-    if (!is_dir($dir)) {
-        mkdir($dir, 0700, true);
+    /*
+    | The result of mkdir() used to be discarded, and the move that follows
+    | was the first thing to notice the directory was not there -- by failing,
+    | and telling the owner to try again at something that could never work.
+    |
+    | A staging directory that cannot be created is not a validation error
+    | about the owner's file; it is the server being unable to do its job, and
+    | it is raised so it reaches the log with a reason instead of arriving as
+    | a sentence about their certificate.
+    */
+    if (!is_dir($dir) && !@mkdir($dir, 0700, true) && !is_dir($dir)) {
+        throw new RuntimeException('Cannot create the upload staging directory: ' . $dir);
     }
 
     return $dir;
@@ -91,7 +104,7 @@ function registrationClearStaged(): void
     }
 
     if (!empty($_SESSION['registration_upload_token'])) {
-        $dir = REGISTRATION_STAGING_ROOT . '/' . $_SESSION['registration_upload_token'];
+        $dir = registrationStagingRoot() . '/' . $_SESSION['registration_upload_token'];
         if (is_dir($dir)) {
             @rmdir($dir);
         }
@@ -102,11 +115,11 @@ function registrationClearStaged(): void
 
 function registrationSweepStaging(): void
 {
-    if (!is_dir(REGISTRATION_STAGING_ROOT)) {
+    if (!is_dir(registrationStagingRoot())) {
         return;
     }
 
-    foreach (glob(REGISTRATION_STAGING_ROOT . '/*', GLOB_ONLYDIR) ?: [] as $dir) {
+    foreach (glob(registrationStagingRoot() . '/*', GLOB_ONLYDIR) ?: [] as $dir) {
 
         $empty = true;
 
