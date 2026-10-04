@@ -208,6 +208,93 @@ if (!function_exists('mailApiKeyKind')) {
     }
 }
 
+if (!function_exists('mailSenderDomain')) {
+
+    function mailSenderDomain(string $email): string
+    {
+        $at = strrpos(trim($email), '@');
+
+        return $at === false ? '' : strtolower(trim(substr(trim($email), $at + 1)));
+    }
+}
+
+if (!function_exists('mailDmarcPolicy')) {
+
+    /*
+    | The p= tag of a DMARC record: what the domain owner tells receivers to
+    | do with mail that claims to be from them and cannot be authenticated.
+    |
+    | Absent or malformed reads as "none", which is how receivers treat it,
+    | and is the permissive answer -- guessing "reject" here would warn
+    | somebody away from an address that works.
+    */
+    function mailDmarcPolicy(string $record): string
+    {
+        if (!preg_match('~^\s*v\s*=\s*DMARC1~i', $record)) {
+            return 'none';
+        }
+
+        if (!preg_match('~[;\s]*\bp\s*=\s*(none|quarantine|reject)~i', $record, $found)) {
+            return 'none';
+        }
+
+        return strtolower($found[1]);
+    }
+}
+
+if (!function_exists('mailPolicyBlocksRelay')) {
+
+    /*
+    | Whether this policy stops a provider the domain never authorised.
+    |
+    | quarantine counts. It does not bounce -- it delivers to the spam
+    | folder, which for an approval nobody is expecting is the same as not
+    | delivering, and worse, because the sender sees a success.
+    */
+    function mailPolicyBlocksRelay(string $policy): bool
+    {
+        return in_array(strtolower(trim($policy)), ['reject', 'quarantine'], true);
+    }
+}
+
+if (!function_exists('mailSenderDmarc')) {
+
+    /**
+     * The published DMARC policy of the address mail is sent from.
+     *
+     * Looked up live, because it is the recipient's view that decides
+     * whether a message arrives, and the recipient looks it up live too.
+     * Returns 'none' where there is no record, no resolver, or no answer:
+     * this informs a warning, and a warning that fires on a failed lookup
+     * would be noise.
+     */
+    function mailSenderDmarc(string $email): string
+    {
+        $domain = mailSenderDomain($email);
+
+        if ($domain === '' || !function_exists('dns_get_record')) {
+            return 'none';
+        }
+
+        $records = @dns_get_record('_dmarc.' . $domain, DNS_TXT);
+
+        if (!is_array($records)) {
+            return 'none';
+        }
+
+        foreach ($records as $record) {
+
+            $text = (string) ($record['txt'] ?? implode('', (array) ($record['entries'] ?? [])));
+
+            if (preg_match('~^\s*v\s*=\s*DMARC1~i', $text)) {
+                return mailDmarcPolicy($text);
+            }
+        }
+
+        return 'none';
+    }
+}
+
 if (!function_exists('mailFromAddress')) {
 
     /*

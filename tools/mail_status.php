@@ -100,6 +100,44 @@ if (mailTransportIsHttp()) {
 
     mailLine('Sending as', $from !== '', $from !== '' ? $from : 'empty -- set MAIL_FROM_ADDRESS');
 
+    /*
+    | What the sending domain tells receivers about relays.
+    |
+    | Verification with Brevo and permission from the domain are different
+    | questions asked of different parties, and only the second decides
+    | whether anything arrives. RetailCore sent as an ncst.edu.ph address on
+    | the strength of a green "DMARC is configured" in Brevo's own panel --
+    | which means the domain HAS a policy, and the policy was p=reject.
+    | Every approval mail bounced with "Unauthenticated email ... is not
+    | accepted due to domain's DMARC policy".
+    |
+    | Asked here because the answer is public, costs one DNS lookup, and
+    | otherwise only shows up in the provider's logs after a real person has
+    | been told their application was approved.
+    */
+    if ($from !== '') {
+
+        $policy = mailSenderDmarc($from);
+        $domain = mailSenderDomain($from);
+        $blocked = mailPolicyBlocksRelay($policy);
+
+        mailLine('Sender domain policy', !$blocked,
+            $domain . '  DMARC p=' . $policy
+            . ($blocked ? '  -- this domain refuses relays it has not authorised' : ''));
+
+        if ($blocked) {
+            echo "\n  Mail will be sent and then refused by the recipient. p={$policy}\n";
+            echo "  tells every receiver not to accept mail from {$domain} unless\n";
+            echo "  {$domain}'s own servers authenticated it, and Brevo is not one\n";
+            echo "  of them.\n\n";
+            echo "  Two ways out. Either send from a domain you control and add\n";
+            echo "  Brevo's DKIM records to its DNS, or send from an address whose\n";
+            echo "  domain publishes p=none -- gmail.com does. A freemail sender is\n";
+            echo "  not ideal and it does arrive, which the current one does not.\n\n";
+        }
+    }
+
+
     if ($key === '') {
         echo "\n  MAIL_TRANSPORT asks for the API but no BREVO_API_KEY is set.\n";
         echo "  Set it in the environment, or set MAIL_TRANSPORT=smtp.\n\n";
