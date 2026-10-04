@@ -86,7 +86,28 @@ foreach (['hr', 'finance', 'inventory'] as $role) {
             "a Starter {$role} reaches only topics Starter bought, not {$intent}");
     }
 
-    t_ok(!in_array($role, companyPlanRoles($conn, $starter), true),
+}
+
+/*
+| Which seats Starter actually sells.
+|
+| Starter sells admin, cashier AND inventory: a sari-sari store on the cheapest
+| plan still counts stock, so Inventory Staff is part of what it buys. HR and
+| Finance are what Professional adds.
+|
+| These two assertions used to say Starter sold none of the three, which was
+| simply wrong about inventory and failed the moment anyone read the plan
+| table. Asserting the inventory seat positively, rather than leaving it out,
+| is what records the decision instead of just removing a failure.
+*/
+$starterSeats = companyPlanRoles($conn, $starter);
+
+t_ok(in_array('inventory', $starterSeats, true), 'Starter sells an inventory seat');
+t_ok(in_array('cashier', $starterSeats, true), 'and a cashier seat');
+t_ok(in_array('admin', $starterSeats, true), 'and the owner seat');
+
+foreach (['hr', 'finance'] as $role) {
+    t_ok(!in_array($role, $starterSeats, true),
         "Starter does not sell a {$role} seat, so no such account can ask");
 }
 
