@@ -455,11 +455,6 @@ $employeeOpen = in_array($currentPage, $employeePages);
                                     <i class="bi bi-journal-text me-2"></i><span>Accounts Payable</span>
                                 </a>
                             </li>
-                            <li class="nav-item">
-                                <a href="/admin/reports.php" class="nav-link <?= (str_contains($here, '/admin/') && $currentPage == 'reports.php') ? 'active' : '' ?>">
-                                    <i class="bi bi-file-earmark-bar-graph me-2"></i><span>Reports</span>
-                                </a>
-                            </li>
                         </ul>
                     </div>
                 </li>
