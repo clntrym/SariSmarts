@@ -15,7 +15,15 @@
 require_once __DIR__ . '/bootstrap.php';
 require_once __DIR__ . '/../../includes/account_access.php';
 
-$platform = __DIR__ . '/../../../platform/';
+/*
+| The platform inside the repository, not the sibling copy in htdocs.
+|
+| There are two: C:\xampp\htdocs\platform, which is nobody's deployment, and
+| <repo>/platform, which is what Render serves. This test was written against
+| the first, so it passed while saying nothing at all about the code that
+| actually runs.
+*/
+$platform = __DIR__ . '/../../platform/';
 
 function platformSource(string $path): string
 {

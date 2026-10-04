@@ -7,10 +7,19 @@ use PHPMailer\PHPMailer\PHPMailer;
 | MAILER
 |--------------------------------------------------------------------------
 |
-| The autoloader is looked up in both projects because Composer's vendor
-| folder only ever got installed under SariSmarts. This file previously
-| required platform/vendor/autoload.php, which does not exist, so every
-| email the platform tried to send died on a fatal error.
+| The autoloader is looked up in several places because Composer's vendor
+| folder only ever got installed under SariSmarts, and where that sits
+| relative to this file depends on how the project was laid out.
+|
+| Locally the two projects are siblings in htdocs, so SariSmarts is one level
+| up and across. In the deployed repository the platform lives INSIDE
+| SariSmarts, so the vendor folder is simply one level up -- and the sibling
+| path points at a directory that does not exist. That is why every platform
+| page which sends an email returned a 500 on Render while working perfectly
+| on XAMPP: register.php, the verification mails, the password reset.
+|
+| All three layouts are listed rather than one being chosen, because the file
+| cannot know which it is in, and a wrong guess is a fatal error.
 |
 | Credentials come from outside the web root — see
 | C:\xampp\private_config\sarismart_secrets.php.
@@ -18,7 +27,11 @@ use PHPMailer\PHPMailer\PHPMailer;
 */
 
 $autoloadCandidates = [
+    /* platform/vendor — if Composer is ever run inside the platform itself. */
     __DIR__ . "/../vendor/autoload.php",
+    /* The deployed layout: platform sits inside SariSmarts. */
+    __DIR__ . "/../../vendor/autoload.php",
+    /* The local layout: platform and SariSmarts are siblings in htdocs. */
     __DIR__ . "/../../SariSmarts/vendor/autoload.php",
 ];
 

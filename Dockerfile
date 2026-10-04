@@ -15,7 +15,15 @@ RUN sed -i '/<Directory \/var\/www\/>/,/<\/Directory>/ s/AllowOverride None/Allo
 # Configure PHP output buffering and include path
 RUN echo "include_path = \".:/var/www/html:/var/www/html/platform:/usr/local/lib/php\"" > /usr/local/etc/php/conf.d/custom.ini \
     && echo "output_buffering = 4096" >> /usr/local/etc/php/conf.d/custom.ini \
-    && echo "display_errors = Off" >> /usr/local/etc/php/conf.d/custom.ini
+    && echo "display_errors = Off" >> /usr/local/etc/php/conf.d/custom.ini \
+    # Errors stay hidden from visitors -- display_errors above is Off, because a
+    # PHP error names tables, columns and absolute paths. But they must reach
+    # SOMEBODY: without these two lines a fatal is a blank page here and a blank
+    # page in the logs, and the only way to find it is to guess. Sending the log
+    # to stderr puts the file and line straight into the Render log pane.
+    && echo "log_errors = On" >> /usr/local/etc/php/conf.d/custom.ini \
+    && echo "error_log = /dev/stderr" >> /usr/local/etc/php/conf.d/custom.ini \
+    && echo "error_reporting = E_ALL" >> /usr/local/etc/php/conf.d/custom.ini
 
 # Copy application files to web root
 COPY . /var/www/html/
