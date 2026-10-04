@@ -219,7 +219,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['saveContractTemplate'
         } elseif ($file['error'] !== UPLOAD_ERR_OK) {
 
             $alert = ['icon' => 'error', 'title' => 'Upload Failed',
-                      'text' => 'The file could not be uploaded.'];
+                      'text' => uploadErrorMessage((int) $file['error'])];
 
         } elseif ($file['size'] > COMPANY_CONTRACT_MAX_BYTES) {
 
@@ -234,23 +234,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['saveContractTemplate'
 
         } else {
 
-            if (!is_dir(COMPANY_CONTRACT_DIR)) {
-                mkdir(COMPANY_CONTRACT_DIR, 0777, true);
-            }
-
             $stored = 'template_' . bin2hex(random_bytes(8)) . '.pdf';
             $target = COMPANY_CONTRACT_DIR . '/' . $stored;
+            $relative = 'uploads/company_contracts/' . $stored;
 
-            if (!move_uploaded_file($file['tmp_name'], $target)) {
+            /* The uploader's own file name, kept for display only. */
+            $shownName = mb_substr(basename((string) ($file['name'] ?? 'Service Agreement.pdf')), 0, 190);
+
+            /*
+            | Into the database, which is the only storage that outlives a
+            | deploy here -- see platform/includes/platform_files.php. The
+            | template was being written to a disk Render discards, so the
+            | agreement every approved business was told to download had
+            | ceased to exist by the time they clicked.
+            */
+            $bytes = @file_get_contents($file['tmp_name']);
+
+            if ($bytes === false
+                || !platformFileStore($conn, $relative, $bytes, 'application/pdf', $shownName)) {
 
                 $alert = ['icon' => 'error', 'title' => 'Upload Failed',
                           'text' => 'Could not store the file.'];
 
             } else {
 
-                /* The uploader's own file name, kept for display only. */
-                $shownName = mb_substr(basename((string) ($file['name'] ?? 'Service Agreement.pdf')), 0, 190);
-                $relative = 'uploads/company_contracts/' . $stored;
+                /* And to the disk as well, where the host keeps one. */
+                if (is_dir(COMPANY_CONTRACT_DIR) || @mkdir(COMPANY_CONTRACT_DIR, 0777, true)) {
+                    @move_uploaded_file($file['tmp_name'], $target);
+                }
 
                 $stmt = $conn->prepare("
                     UPDATE platform_settings
@@ -276,8 +287,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['saveContractTemplate'
                     $stillUsed = $check->get_result()->num_rows > 0;
                     $check->close();
 
-                    if (!$stillUsed && is_file(dirname(__DIR__) . '/' . $old)) {
-                        @unlink(dirname(__DIR__) . '/' . $old);
+                    if (!$stillUsed) {
+
+                        /* From the store as well as the disk -- the bytes are
+                           the copy that matters now, and an orphan there
+                           would never be reached and never be removed. */
+                        platformFileForget($conn, $old);
+
+                        if (is_file(dirname(__DIR__) . '/' . $old)) {
+                            @unlink(dirname(__DIR__) . '/' . $old);
+                        }
                     }
                 }
 

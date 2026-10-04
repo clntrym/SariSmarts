@@ -32,6 +32,7 @@
 */
 
 require_once __DIR__ . '/../init.php';
+require_once __DIR__ . '/platform_files.php';
 
 if (!defined('COMPANY_CONTRACT_MAX_BYTES')) {
     define('COMPANY_CONTRACT_MAX_BYTES', 5 * 1024 * 1024);
@@ -191,8 +192,33 @@ if (!function_exists('fillMissingTemplate')) {
     */
     function fillMissingTemplate(mysqli $conn, ?array $contract): ?array
     {
-        if (!$contract || trim((string) $contract['issued_template']) !== '') {
+        if (!$contract) {
             return $contract;
+        }
+
+        $held = trim((string) $contract['issued_template']);
+
+        /*
+        | A path is not a copy.
+        |
+        | Agreements issued before the bytes were kept in the database point
+        | at files Render wiped on its next deploy. The row is not empty, so
+        | this returned early and the business was shown "That file is no
+        | longer on record" with nothing it could do about it.
+        |
+        | The rule above is unchanged -- an agreement that HAS a copy keeps
+        | it. A row whose copy cannot be retrieved from the store or from
+        | the disk does not have one, and is re-issued the current template
+        | rather than left pointing at nothing.
+        */
+        if ($held !== '') {
+
+            $missing = platformFileRead($conn, $held) === null
+                && !is_file(dirname(__DIR__) . '/' . $held);
+
+            if (!$missing) {
+                return $contract;
+            }
         }
 
         /* Nothing to give it yet. */
@@ -203,17 +229,20 @@ if (!function_exists('fillMissingTemplate')) {
         }
 
         /*
-        | Guarded on issued_template still being empty, so two requests
+        | Guarded on the row still holding what we read, so two requests
         | arriving together cannot both write and the second cannot
         | overwrite a copy the first just handed out.
+        |
+        | The guard was "still empty". It now names the exact value, because
+        | a row being repaired is not empty -- it holds the dead path.
         */
         $stmt = $conn->prepare("
             UPDATE company_contracts
             SET issued_template = ?
             WHERE contract_id = ?
-              AND (issued_template IS NULL OR issued_template = '')
+              AND (issued_template IS NULL OR issued_template = '' OR issued_template = ?)
         ");
-        $stmt->bind_param("si", $template['path'], $contract['contract_id']);
+        $stmt->bind_param("sis", $template['path'], $contract['contract_id'], $held);
         $stmt->execute();
         $stmt->close();
 
@@ -242,8 +271,13 @@ if (!function_exists('storeCompanyContractFile')) {
             return [null, 'Please choose the signed contract file.'];
         }
 
+        /*
+        | Which refusal it was. Seven codes read as one sentence before, and
+        | two of them -- no temporary folder, and a failed write -- are about
+        | the server, not the document somebody is being asked to re-check.
+        */
         if ($file['error'] !== UPLOAD_ERR_OK) {
-            return [null, 'The file could not be uploaded.'];
+            return [null, uploadErrorMessage((int) $file['error'])];
         }
 
         if ($file['size'] > COMPANY_CONTRACT_MAX_BYTES) {
@@ -256,17 +290,39 @@ if (!function_exists('storeCompanyContractFile')) {
             return [null, 'The signed contract must be a PDF.'];
         }
 
-        if (!is_dir(COMPANY_CONTRACT_DIR) && !mkdir(COMPANY_CONTRACT_DIR, 0777, true)) {
-            return [null, 'Could not open the contracts folder.'];
+        $name = $prefix . '_' . $kind . '_' . bin2hex(random_bytes(8)) . '.pdf';
+        $relative = 'uploads/company_contracts/' . $name;
+
+        /*
+        | The bytes go to the database, which is the only durable thing this
+        | deployment has: Render's free instances keep no disk between
+        | deploys, so a file written here is gone by the time the Super Admin
+        | opens it, leaving a row pointing at nothing.
+        |
+        | The returned path is unchanged -- the callers and the columns still
+        | hold the same string, and it is now a key rather than a location.
+        */
+        $bytes = @file_get_contents($file['tmp_name']);
+
+        if ($bytes === false) {
+            return [null, 'The uploaded file could not be read.'];
         }
 
-        $name = $prefix . '_' . $kind . '_' . bin2hex(random_bytes(8)) . '.pdf';
-
-        if (!move_uploaded_file($file['tmp_name'], COMPANY_CONTRACT_DIR . '/' . $name)) {
+        if (!platformFileStore($GLOBALS['conn'], $relative, $bytes, 'application/pdf',
+                               (string) ($file['name'] ?? $name))) {
             return [null, 'Could not store the file.'];
         }
 
-        return ['uploads/company_contracts/' . $name, null];
+        /*
+        | And to the disk as well, where there is one. Harmless on Render,
+        | where it disappears; on XAMPP it keeps the uploads folder looking
+        | the way the rest of the project expects.
+        */
+        if (is_dir(COMPANY_CONTRACT_DIR) || @mkdir(COMPANY_CONTRACT_DIR, 0777, true)) {
+            @move_uploaded_file($file['tmp_name'], COMPANY_CONTRACT_DIR . '/' . $name);
+        }
+
+        return [$relative, null];
     }
 }
 
@@ -394,6 +450,34 @@ if (!function_exists('sendContractFile')) {
         if ($relative === '') {
             http_response_code(404);
             exit('No file has been attached to that contract yet.');
+        }
+
+        /*
+        | The store first, the disk second.
+        |
+        | A business that was approved saw "That file is no longer on record"
+        | on an agreement whose row was perfectly intact: realpath() returned
+        | false because Render had wiped the PDF on the last deploy. The
+        | bytes live in the database now, and the path is the key to them.
+        |
+        | The disk is still consulted afterwards, so a file uploaded before
+        | this change -- on XAMPP, where it is still there -- goes on being
+        | served.
+        */
+        $stored = platformFileRead($GLOBALS['conn'], $relative);
+
+        if ($stored !== null) {
+
+            $disposition = $disposition === 'attachment' ? 'attachment' : 'inline';
+
+            header('Content-Type: ' . ($stored['mime'] ?: 'application/pdf'));
+            header('Content-Length: ' . strlen($stored['bytes']));
+            header('Content-Disposition: ' . $disposition . '; filename="' . $downloadName . '"');
+            header('Cache-Control: private, no-store');
+            header('X-Content-Type-Options: nosniff');
+
+            echo $stored['bytes'];
+            exit;
         }
 
         $real = realpath(dirname(__DIR__) . '/' . $relative);
