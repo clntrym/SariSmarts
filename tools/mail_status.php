@@ -15,10 +15,45 @@
 |
 |     php tools/mail_status.php --send you@example.com
 |
+| It also runs in a browser, because Render's free instances have no shell
+| and this is exactly the host whose mail needs explaining:
+|
+|     /tools/mail_status.php
+|     /tools/mail_status.php?send=you@example.com
+|
+| In a browser it is for the Super Admin only. What it prints -- the mail
+| account, the host, whether the server answers -- is a map of how the system
+| reaches the outside, and a stranger should not be handed one.
+|
 | Credentials are never printed, only their length.
 */
 
 require_once __DIR__ . '/../includes/mail_settings.php';
+
+$viaBrowser = PHP_SAPI !== 'cli';
+
+if ($viaBrowser) {
+
+    /*
+    | init.php starts the session and gives requireRole() -- but this page
+    | answers in plain text and must not be redirected into an HTML login
+    | screen, so the check is made here and answered in words.
+    */
+    require_once __DIR__ . '/../init.php';
+
+    header('Content-Type: text/plain; charset=utf-8');
+
+    /* No search engine, and no browser, should keep a copy of this. */
+    header('X-Robots-Tag: noindex, nofollow');
+    header('Cache-Control: no-store');
+
+    if (strtolower(trim((string) ($_SESSION['role'] ?? ''))) !== 'super admin') {
+        http_response_code(403);
+        echo "This page is for the Super Admin.\n";
+        echo "Sign in at /acc_log_in and open it again.\n";
+        exit;
+    }
+}
 
 function mailLine(string $label, bool $ok, string $detail = ''): void
 {
@@ -101,14 +136,28 @@ fclose($socket);
 mailLine('TCP connection', true, $host . ':' . $port . '  ' . $elapsed . 's');
 mailLine('Server greeting', str_starts_with($greeting, '220'), $greeting);
 
-$sendIndex = array_search('--send', $argv, true);
+if ($viaBrowser) {
+    $to = trim((string) ($_GET['send'] ?? ''));
 
-if ($sendIndex === false) {
-    echo "  Re-run with --send you@example.com to prove it end to end.\n\n";
-    exit(0);
+    if ($to === '') {
+        echo "  Add ?send=you@example.com to the address to prove it end to end.\n\n";
+        exit(0);
+    }
+
+    if (!filter_var($to, FILTER_VALIDATE_EMAIL)) {
+        echo "  That is not an email address.\n\n";
+        exit(1);
+    }
+} else {
+    $sendIndex = array_search('--send', $argv ?? [], true);
+
+    if ($sendIndex === false) {
+        echo "  Re-run with --send you@example.com to prove it end to end.\n\n";
+        exit(0);
+    }
+
+    $to = (string) ($argv[$sendIndex + 1] ?? '');
 }
-
-$to = (string) ($argv[$sendIndex + 1] ?? '');
 
 if (trim($to) === '') {
     echo "  --send needs an address to send to.\n\n";
