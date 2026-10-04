@@ -73,7 +73,8 @@ if (!function_exists('mailSettings')) {
         $environment = [];
 
         foreach (['MAIL_HOST', 'MAIL_PORT', 'MAIL_USERNAME', 'MAIL_PASSWORD',
-                  'MAIL_FROM_NAME', 'MAIL_FROM_ADDRESS', 'MAIL_ENCRYPTION'] as $name) {
+                  'MAIL_FROM_NAME', 'MAIL_FROM_ADDRESS', 'MAIL_ENCRYPTION',
+                  'MAIL_TRANSPORT', 'BREVO_API_KEY'] as $name) {
 
             $value = getenv($name);
 
@@ -115,7 +116,83 @@ if (!function_exists('mailSettingsReady')) {
     {
         $settings = mailSettings();
 
+        /*
+        | An API key is credentials too. Without this, a host that sends
+        | perfectly well over HTTP would be told "nothing can be sent"
+        | because it has no SMTP password -- which it does not need.
+        */
+        if (mailTransportIsHttp()) {
+            return true;
+        }
+
         return trim((string) ($settings['MAIL_USERNAME'] ?? '')) !== ''
             && trim((string) ($settings['MAIL_PASSWORD'] ?? '')) !== '';
+    }
+}
+
+if (!function_exists('mailTransportIsHttp')) {
+
+    /*
+    | Which way mail leaves this host.
+    |
+    | Render's free instances answer "Connection timed out" on 587, 465, 25
+    | and 2525, and open 443 without complaint: they reach the internet and
+    | block SMTP specifically. No password, port or encryption setting gets a
+    | message off such a host. Mail has to travel the way every other request
+    | does, over HTTPS, through a provider's API.
+    |
+    | The presence of an API key is the signal, because a key is only ever
+    | put there by somebody who wants it used. MAIL_TRANSPORT overrides it
+    | both ways -- "smtp" for a machine where SMTP works and the key is only
+    | in the environment for another one, "api" to insist.
+    */
+    function mailTransportIsHttp(): bool
+    {
+        $settings = mailSettings();
+
+        $choice = strtolower(trim((string) ($settings['MAIL_TRANSPORT'] ?? '')));
+
+        if ($choice === 'smtp') {
+            return false;
+        }
+
+        if ($choice === 'api' || $choice === 'http') {
+            return true;
+        }
+
+        return trim((string) ($settings['BREVO_API_KEY'] ?? '')) !== '';
+    }
+}
+
+if (!function_exists('mailApiKey')) {
+
+    function mailApiKey(): string
+    {
+        return trim((string) (mailSettings()['BREVO_API_KEY'] ?? ''));
+    }
+}
+
+if (!function_exists('mailFromAddress')) {
+
+    /*
+    | Who the message is from.
+    |
+    | Over SMTP this was always the account being authenticated as, because
+    | Gmail will not let you be anybody else. An API provider will: it sends
+    | from whatever address somebody verified with them, which is usually but
+    | not always the same mailbox. So it is its own setting, falling back to
+    | the SMTP username rather than being assumed equal to it -- a wrong
+    | sender here is not an error, it is a message that silently lands in
+    | spam.
+    */
+    function mailFromAddress(): string
+    {
+        $settings = mailSettings();
+
+        $explicit = trim((string) ($settings['MAIL_FROM_ADDRESS'] ?? ''));
+
+        return $explicit !== ''
+            ? $explicit
+            : trim((string) ($settings['MAIL_USERNAME'] ?? ''));
     }
 }

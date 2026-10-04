@@ -67,9 +67,69 @@ $path = mailSettingsPath();
 
 mailLine('Secrets file', is_readable($path), $path . (is_readable($path) ? '' : '  (not on this host)'));
 
+/*
+| Which way mail leaves, asked before anything else.
+|
+| A host with an API key does not need an SMTP password, and probing mail
+| ports on it would report "every port closed" about a system whose mail
+| works perfectly -- the diagnostic frightening somebody about a fault it
+| created by asking the wrong question.
+*/
+if (mailTransportIsHttp()) {
+
+    $key = mailApiKey();
+    $from = mailFromAddress();
+
+    mailLine('Transport', true, 'HTTP API -- Brevo, over 443');
+    mailLine('BREVO_API_KEY', $key !== '', $key !== '' ? strlen($key) . ' characters' : 'empty');
+    mailLine('Sending as', $from !== '', $from !== '' ? $from : 'empty -- set MAIL_FROM_ADDRESS');
+
+    if ($key === '') {
+        echo "\n  MAIL_TRANSPORT asks for the API but no BREVO_API_KEY is set.\n";
+        echo "  Set it in the environment, or set MAIL_TRANSPORT=smtp.\n\n";
+        exit(1);
+    }
+
+    if ($from === '') {
+        echo "\n  Nothing can be sent without a sender. Set MAIL_FROM_ADDRESS to\n";
+        echo "  the address verified with Brevo -- an unverified sender is\n";
+        echo "  refused, and that refusal is what you would see instead.\n\n";
+        exit(1);
+    }
+
+    echo "\n  Configuration is complete.\n\nReaching the mail API\n\n";
+
+    $probe = @fsockopen('api.brevo.com', 443, $errno, $errstr, 10);
+
+    mailLine('TCP connection', $probe !== false,
+        'api.brevo.com:443  ' . ($probe !== false ? 'open' : $errstr . ' (' . $errno . ')'));
+
+    if ($probe) {
+        fclose($probe);
+    } else {
+        echo "\n  This host cannot reach the API either, which is a different\n";
+        echo "  fault from the SMTP block -- check outbound HTTPS.\n\n";
+        exit(1);
+    }
+
+    echo "\n";
+
+    /*
+    | Past this point the SMTP checks make no sense, so the script jumps to
+    | the live send -- which goes through getMailer() and therefore through
+    | the same transport the real pages use.
+    */
+    $skipSmtpChecks = true;
+} else {
+    $skipSmtpChecks = false;
+}
+
 $user = (string) ($settings['MAIL_USERNAME'] ?? '');
 $pass = (string) ($settings['MAIL_PASSWORD'] ?? '');
 
+if (!$skipSmtpChecks):
+
+mailLine('Transport', true, 'SMTP -- ' . (string) $settings['MAIL_HOST']);
 mailLine('MAIL_USERNAME', $user !== '', $user !== '' ? $user : 'empty');
 mailLine('MAIL_PASSWORD', $pass !== '', $pass !== '' ? strlen($pass) . ' characters' : 'empty');
 mailLine('MAIL_HOST', true, (string) $settings['MAIL_HOST']);
@@ -187,6 +247,8 @@ fclose($socket);
 mailLine('TCP connection', true, $host . ':' . $port . '  ' . $elapsed . 's');
 mailLine('Server greeting', str_starts_with($greeting, '220'), $greeting);
 
+endif; /* !$skipSmtpChecks */
+
 if ($viaBrowser) {
     $to = trim((string) ($_GET['send'] ?? ''));
 
@@ -242,10 +304,20 @@ try {
     mailLine('Sent', true, 'check the inbox, and the spam folder');
     echo "\n";
 } catch (Throwable $error) {
+
     mailLine('Sent', false, $error->getMessage());
-    echo "\n  Authentication failed is usually one of two things: the password\n";
-    echo "  is the account password rather than an App Password, or the Google\n";
-    echo "  account does not have 2-Step Verification on, which is what makes\n";
-    echo "  App Passwords available at all.\n\n";
+
+    if ($skipSmtpChecks) {
+        echo "\n  The API answered and refused. The usual cause is the sender:\n";
+        echo "  Brevo only sends from an address somebody verified with them,\n";
+        echo "  and MAIL_FROM_ADDRESS has to be that address. A 401 instead\n";
+        echo "  means the key is wrong or revoked.\n\n";
+    } else {
+        echo "\n  Authentication failed is usually one of two things: the password\n";
+        echo "  is the account password rather than an App Password, or the Google\n";
+        echo "  account does not have 2-Step Verification on, which is what makes\n";
+        echo "  App Passwords available at all.\n\n";
+    }
+
     exit(1);
 }

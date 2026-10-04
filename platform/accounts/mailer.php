@@ -67,10 +67,7 @@ function getMailerConfig()
     | every message the system tried to send failed authentication -- the
     | Super Admin's approval mail among them.
     */
-    /* Either layout: platform inside the main folder, or beside it. */
-    $shared = is_file(__DIR__ . '/../../includes/mail_settings.php')
-        ? __DIR__ . '/../../includes/mail_settings.php'
-        : __DIR__ . '/../../../SariSmarts/includes/mail_settings.php';
+    $shared = mailerIncludesPath() . '/mail_settings.php';
 
     if (is_readable($shared)) {
         require_once $shared;
@@ -80,9 +77,33 @@ function getMailerConfig()
 }
 
 
+function mailerIncludesPath(): string
+{
+    /* Either layout: platform inside the main folder, or beside it. */
+    return is_dir(__DIR__ . '/../../includes')
+        ? __DIR__ . '/../../includes'
+        : __DIR__ . '/../../../SariSmarts/includes';
+}
+
+
 function getMailer()
 {
     $config = getMailerConfig();
+
+    /*
+    | Over HTTPS, where the host blocks SMTP. See accounts/mailer.php and
+    | includes/http_mailer.php -- the object is a PHPMailer either way, so
+    | register.php, the verification mail and the reset mail are unchanged.
+    */
+    if (function_exists('mailTransportIsHttp') && mailTransportIsHttp()) {
+
+        require_once mailerIncludesPath() . '/http_mailer.php';
+
+        $mail = new HttpApiMailer(true);
+        $mail->setFrom(mailFromAddress(), $config['MAIL_FROM_NAME'] ?? 'RetailCore');
+
+        return $mail;
+    }
 
     $mail = new PHPMailer(true);
 

@@ -34,9 +34,7 @@ function getMailerConfig()
     | every message the system tried to send failed authentication -- the
     | Super Admin's approval mail among them.
     */
-    $shared = is_file(__DIR__ . '/../includes/mail_settings.php')
-        ? __DIR__ . '/../includes/mail_settings.php'
-        : __DIR__ . '/../../includes/mail_settings.php';
+    $shared = mailerIncludesPath() . '/mail_settings.php';
 
     if (is_readable($shared)) {
         require_once $shared;
@@ -46,9 +44,38 @@ function getMailerConfig()
 }
 
 
+function mailerIncludesPath(): string
+{
+    return is_dir(__DIR__ . '/../includes')
+        ? __DIR__ . '/../includes'
+        : __DIR__ . '/../../includes';
+}
+
+
 function getMailer()
 {
     $config = getMailerConfig();
+
+    /*
+    | Over HTTPS, where the host blocks SMTP.
+    |
+    | Render's free instances time out on every mail port and open 443, so no
+    | SMTP setting below can get a message off them. Asked first, because
+    | what follows configures a connection that would never be made.
+    |
+    | The object returned is a PHPMailer either way -- see
+    | includes/http_mailer.php -- so nothing that calls getMailer() has to
+    | know which transport it got.
+    */
+    if (function_exists('mailTransportIsHttp') && mailTransportIsHttp()) {
+
+        require_once mailerIncludesPath() . '/http_mailer.php';
+
+        $mail = new HttpApiMailer(true);
+        $mail->setFrom(mailFromAddress(), 'RetailCore HR');
+
+        return $mail;
+    }
 
     $mail = new PHPMailer(true);
 
