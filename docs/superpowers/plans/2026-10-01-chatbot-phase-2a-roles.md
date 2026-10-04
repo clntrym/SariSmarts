@@ -8,7 +8,7 @@
 
 **Tech Stack:** PHP 8.2.12 (XAMPP), MariaDB 10.4, mysqli. Tests: the CLI harness in `tests/chatbot/bootstrap.php`, plus `tests/chatbot/query_audit.py`.
 
-**Spec:** `docs/superpowers/specs/2026-09-29-sarismarts-chatbot-design.md` §6 (role matrix) and `docs/superpowers/specs/2026-09-30-sarismarts-chatbot-conversational-design.md` §3 (tool catalog, and "Payroll: answerable, but never by the AI")
+**Spec:** `docs/superpowers/specs/2026-09-29-retailcore-chatbot-design.md` §6 (role matrix) and `docs/superpowers/specs/2026-09-30-retailcore-chatbot-conversational-design.md` §3 (tool catalog, and "Payroll: answerable, but never by the AI")
 
 ## Global Constraints
 

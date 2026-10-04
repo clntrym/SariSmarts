@@ -13,7 +13,7 @@ require_once __DIR__ . '/config.php';
 | The rule for who may use the system, shared with the tenant app rather than
 | copied into it.
 |
-| Copying is what caused the bug this closes: SariSmart's User Management
+| Copying is what caused the bug this closes: RetailCore's User Management
 | deactivated a user by writing 'disabled', the platform writes 'inactive',
 | and the login page refused only 'inactive'. Three files, two spellings, one
 | idea -- and deactivating a tenant user did nothing at all. The rule now

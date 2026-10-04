@@ -5,7 +5,7 @@
 | PAYMONGO CLIENT
 |--------------------------------------------------------------------------
 |
-| Thin wrapper around the PayMongo REST API, matching the one SariSmarts
+| Thin wrapper around the PayMongo REST API, matching the one RetailCore
 | already uses for supplier invoices so both sides behave the same way.
 |
 | Nothing here decides whether a payment happened. The browser coming back

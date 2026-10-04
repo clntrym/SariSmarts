@@ -343,7 +343,7 @@ if (isset($_POST['create_gcash_intent'])) {
                     'amount' => $amountCentavos,
                     'currency' => 'PHP',
                     'capture_type' => 'automatic',
-                    'description' => 'SariSmart POS Sale',
+                    'description' => 'RetailCore POS Sale',
                     'payment_method_allowed' => ['gcash']
                 ]
             ]

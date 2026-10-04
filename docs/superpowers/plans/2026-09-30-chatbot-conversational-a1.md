@@ -8,7 +8,7 @@
 
 **Tech Stack:** PHP 8.2.12 (XAMPP), MariaDB 10.4, mysqli, vanilla JS. No new Composer packages. Tests are the plain PHP CLI harness built in Phase 1 (`tests/chatbot/bootstrap.php`), plus the Python static audit.
 
-**Spec:** `docs/superpowers/specs/2026-09-30-sarismarts-chatbot-conversational-design.md` (extends `docs/superpowers/specs/2026-09-29-sarismarts-chatbot-design.md`)
+**Spec:** `docs/superpowers/specs/2026-09-30-retailcore-chatbot-conversational-design.md` (extends `docs/superpowers/specs/2026-09-29-retailcore-chatbot-design.md`)
 
 ## Global Constraints
 
@@ -1823,7 +1823,7 @@ const CHAT_ENDPOINT = 'https://api.anthropic.com/v1/messages';
  */
 function chatSystemPrompt(): string
 {
-    return "You are the assistant inside SariSmart, a Philippine sari-sari store "
+    return "You are the assistant inside RetailCore, a Philippine sari-sari store "
         . "system. Answer only from the tools provided. Never invent a number: if "
         . "no tool gives you the figure, say you could not retrieve it. Keep "
         . "answers short, and reply in the language the user used (Tagalog or "

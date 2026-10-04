@@ -15,14 +15,22 @@ function sendVerificationEmail(
 
     $mail->addAddress($email, $fullname);
 
-    $baseUrl = "http://localhost/SariSmarts";
+    /*
+    | Built from the address this request arrived on.
+    |
+    | This was the literal "http://localhost/SariSmarts" -- right on the
+    | machine it was typed on, and useless anywhere else. Every verification
+    | mail the deployed site sent pointed the new user at their own computer,
+    | so nobody signing up outside XAMPP could ever confirm their address.
+    | The password reset mails had the same fault.
+    */
+    require_once __DIR__ . "/../includes/app_url.php";
 
-    $verificationLink =
-        $baseUrl .
-        "/accounts/verify_email.php?token=" .
-        urlencode($verification_token);
+    $verificationLink = appUrl(
+        "/accounts/verify_email.php?token=" . urlencode($verification_token)
+    );
 
-    $mail->Subject = "Verify Your Email - SariSmart Careers";
+    $mail->Subject = "Verify Your Email - RetailCore Careers";
 
     $mail->Body = "
 
@@ -46,7 +54,7 @@ function sendVerificationEmail(
 
         <p>
             Thank you for applying to
-            <strong>SariSmart Retail OS</strong>.
+            <strong>RetailCore Retail OS</strong>.
         </p>
 
         <p>
@@ -92,7 +100,7 @@ function sendVerificationEmail(
         <p style='font-size:13px;color:#777;'>
 
             If you did not submit an application to
-            SariSmart, you may safely ignore this email.
+            RetailCore, you may safely ignore this email.
 
         </p>
 
@@ -101,7 +109,7 @@ function sendVerificationEmail(
             Regards,<br>
 
             <strong>
-                SariSmart Human Resources Department
+                RetailCore Human Resources Department
             </strong>
 
         </p>
@@ -115,7 +123,7 @@ function sendVerificationEmail(
 
         <p style='font-size:12px;color:#999;'>
 
-            This is an automated email from SariSmart Careers.
+            This is an automated email from RetailCore Careers.
             Please do not reply to this message.
 
         </p>

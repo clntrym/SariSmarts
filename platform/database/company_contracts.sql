@@ -1,5 +1,5 @@
 -- ============================================================
--- SariSmart - the service agreement a business signs
+-- RetailCore - the service agreement a business signs
 --
 -- A business that avails a subscription is agreeing to terms,
 -- and nothing recorded that. It chose a plan and waited to be

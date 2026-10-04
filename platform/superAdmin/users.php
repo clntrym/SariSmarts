@@ -453,7 +453,7 @@ foreach ($users as $u) {
                 <div class="modal-body">
 
                     <p class="sa-muted">
-                        For SariSmart staff. A tenant's own users are created by their company.
+                        For RetailCore staff. A tenant's own users are created by their company.
                     </p>
 
                     <div class="row g-3">

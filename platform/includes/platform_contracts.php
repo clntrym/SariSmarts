@@ -2,7 +2,7 @@
 
 /*
 |--------------------------------------------------------------------------
-| EMPLOYMENT CONTRACTS FOR SARISMART'S OWN STAFF
+| EMPLOYMENT CONTRACTS FOR RETAILCORE'S OWN STAFF
 |--------------------------------------------------------------------------
 |
 | A contract exists only once somebody is hired. In the Employees module

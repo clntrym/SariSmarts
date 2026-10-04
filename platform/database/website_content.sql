@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS website_hero_badges (
 
 
 -- ------------------------------------------------------------
--- WHY SARISMART
+-- WHY RETAILCORE
 -- ------------------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS website_why_section (

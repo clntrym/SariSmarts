@@ -1,5 +1,5 @@
 -- ============================================================
--- SariSmart - separate name parts on user accounts
+-- RetailCore - separate name parts on user accounts
 --
 -- Add Platform User now asks for last, first and middle name
 -- rather than one free-text field, so the parts are stored as

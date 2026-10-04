@@ -67,7 +67,7 @@ if (!isset($_GET['token']) || empty($_GET['token'])) {
                 </p>
 
                 <a href='apply.php?page=browse' class='btn'>
-                    Back to SariSmart Careers
+                    Back to RetailCore Careers
                 </a>
 
             </div>
@@ -175,7 +175,7 @@ if ($result->num_rows === 0) {
                 </p>
 
                 <a href='apply.php?page=browse' class='btn'>
-                    Back to SariSmart Careers
+                    Back to RetailCore Careers
                 </a>
 
             </div>
@@ -211,7 +211,7 @@ if ($application['email_verified'] === 'Yes') {
         <meta name="viewport"
               content="width=device-width, initial-scale=1.0">
 
-        <title>Email Already Verified - SariSmart Careers</title>
+        <title>Email Already Verified - RetailCore Careers</title>
 
         <style>
 
@@ -326,11 +326,11 @@ if ($application['email_verified'] === 'Yes') {
 
             <p>
                 Your application is currently being processed
-                by the SariSmart Human Resources Department.
+                by the RetailCore Human Resources Department.
             </p>
 
             <a href="apply.php?page=browse" class="btn">
-                Back to SariSmart Careers
+                Back to RetailCore Careers
             </a>
 
         </div>
@@ -385,7 +385,7 @@ $update->close();
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
 
-    <title>Email Verified - SariSmart Careers</title>
+    <title>Email Verified - RetailCore Careers</title>
 
     <style>
 
@@ -529,7 +529,7 @@ $update->close();
 
         <p>
             Your application has been received by the
-            <strong>SariSmart Human Resources Department</strong>.
+            <strong>RetailCore Human Resources Department</strong>.
         </p>
 
         <p>
@@ -538,7 +538,7 @@ $update->close();
         </p>
 
         <a href="apply.php?page=browse" class="btn">
-            Back to SariSmart Careers
+            Back to RetailCore Careers
         </a>
 
     </div>

@@ -122,7 +122,7 @@ $footerCopyright = str_replace(
                         <i class="fa-solid fa-store text-white text-xl"></i>
                     </div>
                     <h3 class="fw-bold fs-3 m-0">
-                        <?= htmlspecialchars($footerContent['brand_name'] ?? 'SariSmart') ?>
+                        <?= htmlspecialchars($footerContent['brand_name'] ?? 'RetailCore') ?>
                     </h3>
                 </div>
 
@@ -211,7 +211,7 @@ $chatHere = basename((string) ($_SERVER['PHP_SELF'] ?? ''));
 <?php if (!in_array($chatHere, $chatHiddenOn, true)): ?>
 
     <style>
-        #sarismartChat {
+        #retailcoreChat {
             position: fixed;
             right: 20px;
             bottom: 20px;
@@ -409,20 +409,20 @@ $chatHere = basename((string) ($_SERVER['PHP_SELF'] ?? ''));
         }
 
         @media (max-width: 420px) {
-            #sarismartChat {
+            #retailcoreChat {
                 right: 12px;
                 bottom: 12px;
             }
         }
     </style>
 
-    <div id="sarismartChat" data-base="<?= htmlspecialchars(rtrim($BASE_URL ?? '', '/') . '/') ?>">
+    <div id="retailcoreChat" data-base="<?= htmlspecialchars(rtrim($BASE_URL ?? '', '/') . '/') ?>">
 
         <div class="sc-panel">
 
             <div class="sc-head">
                 <div>
-                    <strong>Ask SariSmart</strong>
+                    <strong>Ask RetailCore</strong>
                     <div>Plans, pricing and how to sign up</div>
                 </div>
                 <button type="button" class="sc-close" aria-label="Close">&times;</button>
@@ -452,7 +452,7 @@ $chatHere = basename((string) ($_SERVER['PHP_SELF'] ?? ''));
 
         </div>
 
-        <button type="button" class="sc-toggle" aria-label="Ask SariSmart">
+        <button type="button" class="sc-toggle" aria-label="Ask RetailCore">
             <i class="bi bi-chat-dots"></i>
         </button>
 

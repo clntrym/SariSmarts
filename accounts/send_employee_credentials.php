@@ -12,11 +12,11 @@ function sendEmployeeCredentials(
 
     $mail->addAddress($email, $fullname);
 
-    $mail->Subject = "Welcome to SariSmart - Your Employee Account";
+    $mail->Subject = "Welcome to RetailCore - Your Employee Account";
 
     $mail->Body = "
 
-    <h2>Welcome to SariSmart!</h2>
+    <h2>Welcome to RetailCore!</h2>
 
     Dear <b>$fullname</b>,<br><br>
 
@@ -41,7 +41,7 @@ function sendEmployeeCredentials(
 
     <br>
 
-    You may now log in to the SariSmart Employee Portal to:
+    You may now log in to the RetailCore Employee Portal to:
 
     <ul>
         <li>Time In / Time Out</li>
@@ -59,7 +59,7 @@ function sendEmployeeCredentials(
 
     Regards,<br>
 
-    <b>SariSmart HR Department</b>
+    <b>RetailCore HR Department</b>
 
     ";
 

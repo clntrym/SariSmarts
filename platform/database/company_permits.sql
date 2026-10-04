@@ -1,5 +1,5 @@
 -- ============================================================
--- SariSmart - DTI and BIR registration details
+-- RetailCore - DTI and BIR registration details
 --
 -- Registration now asks for two documents instead of four, and
 -- for the details printed on them rather than a bare number.

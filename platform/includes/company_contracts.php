@@ -6,8 +6,8 @@
 |--------------------------------------------------------------------------
 |
 | Separate from platform_employee_contracts, which is an employment
-| contract between SariSmart and a member of its own staff. This one is
-| between SariSmart and a customer, and it is issued when they avail a
+| contract between RetailCore and a member of its own staff. This one is
+| between RetailCore and a customer, and it is issued when they avail a
 | subscription.
 |
 |   Issued   they have it, nothing back yet

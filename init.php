@@ -107,7 +107,7 @@ if (!function_exists('currentCompanyId')) {
  * predates this falls back to the product name instead of a blank space.
  */
 if (!function_exists('currentCompanyName')) {
-    function currentCompanyName(string $fallback = 'SariSmart'): string
+    function currentCompanyName(string $fallback = 'RetailCore'): string
     {
         $name = trim((string) ($_SESSION['company_name'] ?? ''));
 

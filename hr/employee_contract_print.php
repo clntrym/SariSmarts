@@ -2,7 +2,7 @@
 
 /*
 |--------------------------------------------------------------------------
-| SariSmart Employment Contract — Printable / PDF View
+| RetailCore Employment Contract — Printable / PDF View
 |--------------------------------------------------------------------------
 | Combined single file (PHP + CSS + JS).
 | Pulls live employee, employment, job, branch, and contract data
@@ -195,7 +195,7 @@ $employee = [
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>
-        SariSmart Employment Contract -
+        RetailCore Employment Contract -
         <?= htmlspecialchars($employee['full_name']); ?>
     </title>
 
@@ -961,7 +961,7 @@ $employee = [
 
                 <div class="logo-area">
 
-                    <img src="../assets/sarismart-logo.png" alt="SariSmart Logo">
+                    <img src="../assets/retailcore-logo.png" alt="RetailCore Logo">
 
                 </div>
 
@@ -1000,7 +1000,7 @@ $employee = [
 
                 <p>
 
-                    <strong>SARISMART RETAIL, INC.</strong>,
+                    <strong>RETAILCORE RETAIL, INC.</strong>,
                     a corporation duly organized and existing under
                     the laws of the Republic of the Philippines,
                     with principal office at __________________________,
@@ -1151,7 +1151,7 @@ $employee = [
                 <p>
 
                     The Employee is engaged to contribute to the efficient
-                    and orderly operation of SariSmart's retail and
+                    and orderly operation of RetailCore's retail and
                     sari-sari store business.
 
                 </p>
@@ -1220,7 +1220,7 @@ $employee = [
             <div class="page-footer">
 
                 <span>
-                    SariSmart Retail, Inc.
+                    RetailCore Retail, Inc.
                 </span>
 
                 <span>
@@ -1493,7 +1493,7 @@ $employee = [
             <div class="page-footer">
 
                 <span>
-                    SariSmart Retail, Inc.
+                    RetailCore Retail, Inc.
                 </span>
 
                 <span>
@@ -1621,7 +1621,7 @@ $employee = [
                     the terms and conditions stated in this Employment
                     Contract. I understand my duties, responsibilities,
                     employment terms, and obligations as an employee
-                    of SariSmart.
+                    of RetailCore.
 
                 </p>
 
@@ -1807,7 +1807,7 @@ $employee = [
             <div class="page-footer">
 
                 <span>
-                    SariSmart Retail, Inc.
+                    RetailCore Retail, Inc.
                 </span>
 
                 <span>
@@ -1829,7 +1829,7 @@ $employee = [
     <script>
         document.addEventListener("DOMContentLoaded", function () {
 
-            console.log("SariSmart Employment Contract Loaded.");
+            console.log("RetailCore Employment Contract Loaded.");
 
         });
     </script>

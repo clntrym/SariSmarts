@@ -142,7 +142,7 @@ registrationSweepStaging();
 | owner pays, so an unreviewed application never carries a price.
 |
 | The role is stored as "admin" because that is what init.php already
-| routes to the SariSmarts admin dashboard. A new "owner" role would mean
+| routes to the RetailCore admin dashboard. A new "owner" role would mean
 | teaching every redirect switch in both projects about it.
 |
 */

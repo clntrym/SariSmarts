@@ -45,7 +45,7 @@ function sendInterviewInvitation(
 
     Regards,<br>
 
-    SariSmart HR Department
+    RetailCore HR Department
 
     ";
 

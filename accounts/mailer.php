@@ -51,13 +51,13 @@ function getMailer()
     $mail->CharSet = 'UTF-8';
 
     /*
-    | "SariSmart HR" rather than the platform's MAIL_FROM_NAME: mail from this
+    | "RetailCore HR" rather than the platform's MAIL_FROM_NAME: mail from this
     | side of the system is HR correspondence - interview invitations, contracts,
     | credentials - and the name on it is not a secret, so it stays here.
     */
     $mail->setFrom(
         $config['MAIL_USERNAME'] ?? '',
-        'SariSmart HR'
+        'RetailCore HR'
     );
 
     $mail->isHTML(true);

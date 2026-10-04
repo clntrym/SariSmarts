@@ -1078,14 +1078,14 @@ $highlightApId = (int) ($_GET['ap'] ?? 0);
             }
 
             const html = "<html><head><meta charset='UTF-8'><title>Supplier Invoices</title></head><body>" +
-                "<h2>SariSmart Supplier Invoices</h2><p>Generated: " + new Date().toLocaleString() + "</p>" +
+                "<h2>RetailCore Supplier Invoices</h2><p>Generated: " + new Date().toLocaleString() + "</p>" +
                 buildTableHtml() + "</body></html>";
 
             const blob = new Blob([html], { type: "application/vnd.ms-excel" });
             const url = URL.createObjectURL(blob);
             const link = document.createElement("a");
             link.href = url;
-            link.download = "sarismart_supplier_invoices.xls";
+            link.download = "retailcore_supplier_invoices.xls";
             link.click();
             URL.revokeObjectURL(url);
 
@@ -1112,7 +1112,7 @@ $highlightApId = (int) ($_GET['ap'] ?? 0);
                 "table{width:100%;border-collapse:collapse;margin-top:25px;font-size:11px;}" +
                 "th{background:#f1f5f9;color:#0f172a;font-weight:600;}th,td{border:1px solid #cbd5e1;padding:8px;text-align:left;}" +
                 "@media print{body{padding:10px;}@page{size:landscape;margin:10mm;}}</style></head><body>" +
-                "<h1>SariSmart Supplier Invoices</h1><p>Generated: " + new Date().toLocaleString() + "</p>" +
+                "<h1>RetailCore Supplier Invoices</h1><p>Generated: " + new Date().toLocaleString() + "</p>" +
                 buildTableHtml() + "</body></html>"
             );
 

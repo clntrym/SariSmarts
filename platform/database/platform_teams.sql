@@ -1,5 +1,5 @@
 -- ============================================================
--- SariSmart - Marketing leads and platform employees
+-- RetailCore - Marketing leads and platform employees
 --
 -- The two modules the Marketing & HR role owns. Finance needs no
 -- table of its own: subscriptions, billing and revenue already
@@ -53,11 +53,11 @@ CREATE TABLE IF NOT EXISTS marketing_leads (
 -- HR: PLATFORM EMPLOYEES
 -- ------------------------------------------------------------
 
--- SariSmart's own staff.
+-- RetailCore's own staff.
 --
 -- Kept apart from the employees table, which belongs to tenants: a
 -- row there is scoped to a company and a branch, and our own people
--- have neither. Mixing them would put SariSmart staff inside a
+-- have neither. Mixing them would put RetailCore staff inside a
 -- customer's HR screens.
 --
 -- user_id links an employee to their login when they have one. Not

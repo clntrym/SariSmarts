@@ -104,7 +104,7 @@ function processApPayment($conn, $ap_id, $amount_paid, $payment_method, $referen
         $pdf->AddPage();
 
         $pdf->SetFont('Arial', 'B', 16);
-        $pdf->Cell(0, 10, 'SariSmart', 0, 1, 'C');
+        $pdf->Cell(0, 10, 'RetailCore', 0, 1, 'C');
 
         $pdf->SetFont('Arial', '', 10);
         $pdf->Cell(0, 6, 'Official Payment Receipt', 0, 1, 'C');
@@ -146,7 +146,7 @@ function processApPayment($conn, $ap_id, $amount_paid, $payment_method, $referen
 
         $pdf->Ln(8);
         $pdf->SetFont('Arial', 'I', 9);
-        $pdf->Cell(0, 6, 'This receipt was generated automatically by SariSmart Finance.', 0, 1, 'C');
+        $pdf->Cell(0, 6, 'This receipt was generated automatically by RetailCore Finance.', 0, 1, 'C');
 
         $receiptDir = __DIR__ . '/../../uploads/ap_receipts';
 

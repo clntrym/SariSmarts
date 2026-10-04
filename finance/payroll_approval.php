@@ -520,7 +520,7 @@ ksort($deptData);
             <div class="modal-body">
                 <div class="border p-4" style="font-family:Courier New, monospace;">
                     <div class="text-center mb-3">
-                        <h4 class="fw-bold mb-0">SariSmart</h4>
+                        <h4 class="fw-bold mb-0">RetailCore</h4>
                         <h5 class="mb-3">PAYSLIP DETAILS</h5>
                     </div>
                     <table class="table table-borderless table-sm mb-3">

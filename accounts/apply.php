@@ -399,7 +399,7 @@ ORDER BY j.created_at DESC
 
         <img src="../assets/logo.png" class="logo">
 
-        <h3>SariSmart Careers</h3>
+        <h3>RetailCore Careers</h3>
 
         <a href="../../platform/careers.php" class="back-link">
             <i class="bi bi-arrow-left"></i> Back to sign in
@@ -661,7 +661,7 @@ ORDER BY j.created_at DESC
 
             <p class="mt-3">
                 Thank you for applying to
-                <strong>SariSmart</strong>.
+                <strong>RetailCore</strong>.
             </p>
 
             <p class="text-muted">
@@ -775,7 +775,7 @@ ORDER BY j.created_at DESC
 
 
                         <p>
-                            SariSmart Retail OS
+                            RetailCore Retail OS
                         </p>
 
                     </div>

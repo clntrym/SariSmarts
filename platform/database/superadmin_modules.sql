@@ -1,5 +1,5 @@
 -- ============================================================
--- SariSmart - Marketplace and Customer Support modules
+-- RetailCore - Marketplace and Customer Support modules
 --
 -- The Super Admin sidebar has linked Marketplace, Billing and
 -- Customer Support for a while. Marketplace was a two line stub

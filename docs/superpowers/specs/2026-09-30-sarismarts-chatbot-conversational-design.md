@@ -1,8 +1,8 @@
-# SariSmarts Conversational Assistant — Design Spec
+# RetailCore Conversational Assistant — Design Spec
 
 Date: 2026-09-30
 Status: Approved in conversation; awaiting written-spec review
-Extends: `docs/superpowers/specs/2026-09-29-sarismarts-chatbot-design.md` (Phase 1)
+Extends: `docs/superpowers/specs/2026-09-29-retailcore-chatbot-design.md` (Phase 1)
 
 ---
 

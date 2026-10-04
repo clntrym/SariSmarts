@@ -8,7 +8,7 @@
 
 **Tech Stack:** PHP 8.2.12 (XAMPP), MariaDB 10.4, mysqli. Tests: the CLI harness in `tests/chatbot/bootstrap.php`, plus `tests/chatbot/query_audit.py`.
 
-**Spec:** `docs/superpowers/specs/2026-09-29-sarismarts-chatbot-design.md` §6.5 ("Advisories — the suggestions the bot makes"), §1 non-goals (read-only; no unprompted notifications)
+**Spec:** `docs/superpowers/specs/2026-09-29-retailcore-chatbot-design.md` §6.5 ("Advisories — the suggestions the bot makes"), §1 non-goals (read-only; no unprompted notifications)
 
 ## Global Constraints
 

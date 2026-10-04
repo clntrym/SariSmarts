@@ -1,5 +1,5 @@
 -- ============================================================
--- SariSmart - scope per-tenant unique names to the tenant
+-- RetailCore - scope per-tenant unique names to the tenant
 --
 -- suppliers.unique_supplier_name was UNIQUE on supplier_name
 -- alone. Supplier names are chosen by the shop owner, and two

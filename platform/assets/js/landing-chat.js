@@ -3,7 +3,7 @@
 | THE INQUIRY ASSISTANT
 |--------------------------------------------------------------------------
 |
-| A bubble on the public pages. A visitor asks about SariSmart, and when
+| A bubble on the public pages. A visitor asks about RetailCore, and when
 | they show interest it offers a short form whose answers become a lead.
 |
 | EVERY REPLY IS INSERTED AS TEXT
@@ -34,9 +34,9 @@
     "use strict";
 
     var ENDPOINT = "chat.php";
-    var STORE = "sarismart_chat_token";
+    var STORE = "retailcore_chat_token";
 
-    var root = document.getElementById("sarismartChat");
+    var root = document.getElementById("retailcoreChat");
 
     if (!root) {
         return;
@@ -140,7 +140,7 @@
 
         if (!log.children.length) {
             bubble(
-                "Hi! I can answer questions about SariSmart - our plans, what they include, "
+                "Hi! I can answer questions about RetailCore - our plans, what they include, "
                 + "and how to sign up. What would you like to know?",
                 "bot"
             );

@@ -103,7 +103,7 @@ try {
 
     $mail->addAddress($user['email'], $user['fullname']);
 
-    $mail->Subject = "SariSmart — Password Reset Request";
+    $mail->Subject = "RetailCore — Password Reset Request";
 
     $safeName = htmlspecialchars($user['fullname'], ENT_QUOTES);
     $safeLink = htmlspecialchars($resetLink, ENT_QUOTES);
@@ -112,7 +112,7 @@ try {
         <div style='font-family:Poppins,Arial,sans-serif; color:#0A2A63;'>
             <h2 style='margin-bottom:4px;'>Password Reset Request</h2>
             <p>Hi {$safeName},</p>
-            <p>An administrator initiated a password reset for your SariSmart account.
+            <p>An administrator initiated a password reset for your RetailCore account.
                Click the button below to set a new password. This link expires in 1 hour.</p>
             <p style='margin:24px 0;'>
                 <a href='{$safeLink}'
@@ -128,7 +128,7 @@ try {
         </div>
     ";
 
-    $mail->AltBody = "Reset your SariSmart password using this link (expires in 1 hour): {$resetLink}";
+    $mail->AltBody = "Reset your RetailCore password using this link (expires in 1 hour): {$resetLink}";
 
     $mail->send();
 

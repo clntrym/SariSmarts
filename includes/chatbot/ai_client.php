@@ -28,9 +28,18 @@ const CHATBOT_AI_TIMEOUT_MS = 2500;
 const CHATBOT_AI_ENDPOINT = 'https://api.anthropic.com/v1/messages';
 const CHATBOT_AI_DAILY_CAP = 200;
 
-/* Outside the webroot, like the registration staging folder: a key inside
-   htdocs is one misconfiguration away from being downloadable. */
-const CHATBOT_SECRETS = 'C:\\xampp\\sarismart_secrets.php';
+/*
+| Outside the webroot, like the registration staging folder: a key inside
+| htdocs is one misconfiguration away from being downloadable.
+|
+| Two names, because the product was renamed and the file on disk was not.
+| The new name is preferred and the old one still works, so the rename can
+| happen whenever it is convenient and nothing breaks on either side of it --
+| the alternative is an edit that silently switches the AI layer off until
+| somebody notices the key is "missing".
+*/
+const CHATBOT_SECRETS = 'C:\\xampp\\retailcore_secrets.php';
+const CHATBOT_SECRETS_LEGACY = 'C:\\xampp\\sarismart_secrets.php';
 
 /**
  * Where the key lives. Overridable only from PHP itself, never from a request,
@@ -38,7 +47,15 @@ const CHATBOT_SECRETS = 'C:\\xampp\\sarismart_secrets.php';
  */
 function chatbotSecretsPath(): string
 {
-    return (string) ($GLOBALS['chatbot_secrets_path'] ?? CHATBOT_SECRETS);
+    $override = $GLOBALS['chatbot_secrets_path'] ?? null;
+
+    if ($override !== null) {
+        return (string) $override;
+    }
+
+    /* The new name wins when it is there; the old one keeps working until
+       somebody renames the file. */
+    return is_readable(CHATBOT_SECRETS) ? CHATBOT_SECRETS : CHATBOT_SECRETS_LEGACY;
 }
 
 /**

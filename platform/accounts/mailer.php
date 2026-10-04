@@ -8,8 +8,12 @@ use PHPMailer\PHPMailer\PHPMailer;
 |--------------------------------------------------------------------------
 |
 | The autoloader is looked up in several places because Composer's vendor
-| folder only ever got installed under SariSmarts, and where that sits
+| folder only ever got installed in the main application, and where that sits
 | relative to this file depends on how the project was laid out.
+|
+| The folder names below are folder names, not the product name: the
+| repository is still called SariSmarts on disk, and these paths have to match
+| what is actually there. Renaming the product did not rename the directory.
 |
 | Locally the two projects are siblings in htdocs, so SariSmarts is one level
 | up and across. In the deployed repository the platform lives INSIDE
@@ -29,7 +33,7 @@ use PHPMailer\PHPMailer\PHPMailer;
 $autoloadCandidates = [
     /* platform/vendor — if Composer is ever run inside the platform itself. */
     __DIR__ . "/../vendor/autoload.php",
-    /* The deployed layout: platform sits inside SariSmarts. */
+    /* The deployed layout: platform sits inside the SariSmarts folder. */
     __DIR__ . "/../../vendor/autoload.php",
     /* The local layout: platform and SariSmarts are siblings in htdocs. */
     __DIR__ . "/../../SariSmarts/vendor/autoload.php",

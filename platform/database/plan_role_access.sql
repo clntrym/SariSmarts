@@ -6,12 +6,12 @@
 | subscription_plan_roles already listed the roles each plan advertises, but
 | role_name is a marketing label ("Owner / Admin", "HR Officer") that only
 | platform/pricing.php ever read. Nothing connected those labels to the role
-| slugs SariSmart actually authorises with ('admin', 'hr', 'finance',
+| slugs RetailCore actually authorises with ('admin', 'hr', 'finance',
 | 'inventory', 'cashier'), so a company on Retail Starter could still be given
 | a Finance account.
 |
 | This adds an explicit slug column beside the label. pricing.php keeps
-| rendering role_name untouched; SariSmart reads system_role.
+| rendering role_name untouched; RetailCore reads system_role.
 |
 | Enterprise is intentionally left with no rows of its own -- its copy reads
 | "Includes everything in Professional PLUS:", and the pricing page relies on

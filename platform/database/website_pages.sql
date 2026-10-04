@@ -1,5 +1,5 @@
 -- ============================================================
--- SariSmart - pricing, careers and footer content tables
+-- RetailCore - pricing, careers and footer content tables
 --
 -- The plan cards on pricing.php already come from
 -- subscription_plans, and the job cards on careers.php from the
@@ -212,7 +212,7 @@ SELECT * FROM (
            'Yes. Payroll supports SSS, PhilHealth, Pag-IBIG and other payroll deductions.'
     UNION ALL SELECT 6,
            'What hardware do we need?',
-           'SariSmart works with most barcode scanners, receipt printers, cash drawers and POS terminals.'
+           'RetailCore works with most barcode scanners, receipt printers, cash drawers and POS terminals.'
 ) AS seed
 WHERE NOT EXISTS (SELECT 1 FROM website_pricing_faq);
 
@@ -242,15 +242,15 @@ SELECT
     1,
     'Ready to Get Started?',
     'Transform your retail business',
-    'with SariSmart today.',
-    'Join hundreds of retailers using SariSmart to simplify operations, improve inventory accuracy, manage employees, and increase profitability.',
+    'with RetailCore today.',
+    'Join hundreds of retailers using RetailCore to simplify operations, improve inventory accuracy, manage employees, and increase profitability.',
     'Get Started',
     'pricing.php',
-    'SariSmart',
+    'RetailCore',
     'Cloud-based enterprise retail management for convenience chains, mini marts, groceries, supermarkets and wholesalers.',
-    'hello@sarismart.ph',
+    'hello@retailcore.ph',
     '+63 2 8123 4567',
-    'Copyright {year} SariSmart Retail OS. All rights reserved.'
+    'Copyright {year} RetailCore Retail OS. All rights reserved.'
 WHERE NOT EXISTS (SELECT 1 FROM website_footer);
 
 

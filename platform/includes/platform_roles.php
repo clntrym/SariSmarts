@@ -5,7 +5,7 @@
 | PLATFORM ROLES
 |--------------------------------------------------------------------------
 |
-| Who on the SariSmart side can open which module. One file, so the answer
+| Who on the RetailCore side can open which module. One file, so the answer
 | to "can this person do that" lives in exactly one place and a change to
 | the split is a change to the array below.
 |
@@ -40,7 +40,7 @@ if (!function_exists('platformRoles')) {
 
             'super admin' => [
                 'label' => 'Super Admin',
-                'blurb' => 'Pamamahala ng SARISMART platform',
+                'blurb' => 'Pamamahala ng RETAILCORE platform',
                 'landing' => 'dashboard.php',
                 /*
                 | Everything, including the modules the other roles own.
@@ -51,12 +51,12 @@ if (!function_exists('platformRoles')) {
 
             'marketing hr' => [
                 'label' => 'Marketing & HR',
-                'blurb' => 'Pagpapatakbo ng SARISMART people & sales',
+                'blurb' => 'Pagpapatakbo ng RETAILCORE people & sales',
                 'landing' => 'leads.php',
                 /*
                 | Marketing owns customers and leads, and with them the
                 | public pages and announcements that sell the product. HR
-                | owns SariSmart's own employees. Support is here because the
+                | owns RetailCore's own employees. Support is here because the
                 | people answering customers are the people who know them.
                 */
                 'modules' => array_merge([
@@ -67,7 +67,7 @@ if (!function_exists('platformRoles')) {
 
             'platform finance' => [
                 'label' => 'Finance',
-                'blurb' => 'Pera ng SARISMART',
+                'blurb' => 'Pera ng RETAILCORE',
                 'landing' => 'billing.php',
                 /*
                 | Subscriptions, billing, payments and revenue. Company

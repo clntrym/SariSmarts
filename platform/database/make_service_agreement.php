@@ -13,7 +13,7 @@
 |
 |     php database/make_service_agreement.php
 |
-| The wording follows the document already drafted for SariSmart. It is a
+| The wording follows the document already drafted for RetailCore. It is a
 | working draft produced from that design, not legal advice, and the terms
 | are yours to confirm before anybody signs one.
 |
@@ -25,7 +25,7 @@
 
 require_once __DIR__ . '/../libs/fpdf/fpdf.php';
 
-const AGREEMENT_OUT = __DIR__ . '/../uploads/SariSmart_Service_Agreement.pdf';
+const AGREEMENT_OUT = __DIR__ . '/../uploads/RetailCore_Service_Agreement.pdf';
 
 /* The navy and yellow the rest of the site uses. */
 const NAVY = [0, 34, 76];
@@ -49,7 +49,7 @@ class AgreementPdf extends FPDF
         $this->SetY(7);
         $this->SetFont('Helvetica', 'B', 14);
         $this->SetTextColor(255, 255, 255);
-        $this->Cell(0, 8, 'SariSmart', 0, 0, 'L');
+        $this->Cell(0, 8, 'RetailCore', 0, 0, 'L');
 
         $this->SetFont('Helvetica', '', 8.5);
         $this->Cell(0, 8, 'Your Smart Partner for Every Sale', 0, 0, 'R');
@@ -69,7 +69,7 @@ class AgreementPdf extends FPDF
         $this->SetFont('Helvetica', '', 8);
         $this->SetTextColor(...MUTE);
 
-        $this->Cell(0, 6, 'SariSmart Retail, Inc.  |  (02) 8123-4567  |  info@sarismart.ph', 0, 0, 'L');
+        $this->Cell(0, 6, 'RetailCore Retail, Inc.  |  (02) 8123-4567  |  info@retailcore.ph', 0, 0, 'L');
         $this->Cell(0, 6, 'Page ' . $this->PageNo() . ' of {nb}', 0, 0, 'R');
 
         $this->SetTextColor(...INK);
@@ -171,8 +171,8 @@ $pdf = new AgreementPdf();
 $pdf->AliasNbPages();
 $pdf->SetAutoPageBreak(true, 22);
 $pdf->SetMargins(15, 32, 15);
-$pdf->SetTitle('SariSmart Business Subscription and Service Agreement');
-$pdf->SetAuthor('SariSmart Retail, Inc.');
+$pdf->SetTitle('RetailCore Business Subscription and Service Agreement');
+$pdf->SetAuthor('RetailCore Retail, Inc.');
 
 
 /* ==========================================================
@@ -199,7 +199,7 @@ $pdf->body(
 );
 
 $pdf->SetFont('Helvetica', 'B', 9.5);
-$pdf->Cell(0, 5, 'SARISMART RETAIL, INC.,', 0, 1);
+$pdf->Cell(0, 5, 'RETAILCORE RETAIL, INC.,', 0, 1);
 $pdf->SetFont('Helvetica', '', 9.5);
 $pdf->body(
     'a corporation duly organized and existing under the laws of the Republic of the Philippines, '
@@ -207,7 +207,7 @@ $pdf->body(
 );
 
 $pdf->fillIn('', 180);
-$pdf->body('hereinafter referred to as the "COMPANY" or "SariSmart";');
+$pdf->body('hereinafter referred to as the "COMPANY" or "RetailCore";');
 
 $pdf->SetFont('Helvetica', 'B', 9.5);
 $pdf->Cell(0, 5, '- and -', 0, 1, 'C');
@@ -269,10 +269,10 @@ $pdf->AddPage();
 $pdf->section('1', 'Purpose of the Agreement');
 $pdf->body(
     'The purpose of this Agreement is to establish the terms and conditions under which the '
-    . 'SUBSCRIBER may access and use the SariSmart Retail OS Platform and its available business '
+    . 'SUBSCRIBER may access and use the RetailCore Retail OS Platform and its available business '
     . 'management features.'
 );
-$pdf->body('The SariSmart platform may provide business management functionality including, depending on the selected plan:');
+$pdf->body('The RetailCore platform may provide business management functionality including, depending on the selected plan:');
 
 foreach ([
     'Point of Sale (POS)',
@@ -331,7 +331,7 @@ foreach ([
 }
 
 $pdf->Ln(1);
-$pdf->body('The SUBSCRIBER shall notify SariSmart of any suspected unauthorized access or security incident affecting its account.');
+$pdf->body('The SUBSCRIBER shall notify RetailCore of any suspected unauthorized access or security incident affecting its account.');
 
 
 /* ==========================================================
@@ -355,7 +355,7 @@ foreach ([
 }
 
 $pdf->Ln(1);
-$pdf->body('The SUBSCRIBER is responsible for determining which employees or representatives are authorized to access its SariSmart account.');
+$pdf->body('The SUBSCRIBER is responsible for determining which employees or representatives are authorized to access its RetailCore account.');
 
 $pdf->section('5', 'Business Data');
 $pdf->body(
@@ -365,7 +365,7 @@ $pdf->body(
     . 'and the platform\'s terms and policies.'
 );
 $pdf->body(
-    'SariSmart shall not disclose the Subscriber\'s business data to another subscriber. Each '
+    'RetailCore shall not disclose the Subscriber\'s business data to another subscriber. Each '
     . 'business\'s records are kept separate from every other business on the platform.'
 );
 
@@ -406,7 +406,7 @@ $pdf->body(
     'IN WITNESS WHEREOF, the Parties have signed this Agreement on the dates written below.'
 );
 $pdf->body(
-    'The SUBSCRIBER signs first and returns the signed copy through the SariSmart subscription '
+    'The SUBSCRIBER signs first and returns the signed copy through the RetailCore subscription '
     . 'page. The COMPANY countersigns on acceptance, and the subscription is activated once '
     . 'payment is settled.'
 );
@@ -458,7 +458,7 @@ $signature = function (AgreementPdf $pdf, float $x, float $y, string $party, str
 };
 
 $signature($pdf, 15, $blockTop, 'THE SUBSCRIBER', 'The business availing the subscription');
-$signature($pdf, 110, $blockTop, 'SARISMART RETAIL, INC.', 'The Company');
+$signature($pdf, 110, $blockTop, 'RETAILCORE RETAIL, INC.', 'The Company');
 
 $pdf->SetY($blockTop + 62);
 
@@ -483,7 +483,7 @@ $pdf->SetY($witnessTop + 14);
 $pdf->SetFont('Helvetica', 'I', 8.5);
 $pdf->SetTextColor(...MUTE);
 $pdf->MultiCell(0, 4.5,
-    'Return the signed copy through your SariSmart subscription page. Keep one copy for your '
+    'Return the signed copy through your RetailCore subscription page. Keep one copy for your '
     . 'records. Our team reads the signed agreement before the subscription is switched on.',
     0, 'C');
 

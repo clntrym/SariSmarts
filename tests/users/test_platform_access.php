@@ -3,12 +3,12 @@
 | The platform's door, held to the same rule as the tenant app's.
 |
 | The platform has its own copy of requireRole(), in platform/init.php. It is
-| the same shape as the one in SariSmarts and it had the same gap: nothing
+| the same shape as the one in RetailCore and it had the same gap: nothing
 | re-read the account's status, so a deactivated operator kept working until
 | they chose to sign out.
 |
 | The two apps also spell deactivation differently -- the platform writes
-| 'inactive', SariSmart's User Management writes 'disabled' -- which is exactly
+| 'inactive', RetailCore's User Management writes 'disabled' -- which is exactly
 | why the old login check caught one and missed the other. Both must now be
 | refused by the same shared function.
 */
@@ -80,7 +80,7 @@ foreach ($written as $status) {
 | says so in words rather than leaving it to a regex.
 */
 t_ok(!accountStatusAllowsAccess('inactive'), "the platform's 'inactive' is refused");
-t_ok(!accountStatusAllowsAccess('disabled'), "and SariSmart's 'disabled' too");
+t_ok(!accountStatusAllowsAccess('disabled'), "and RetailCore's 'disabled' too");
 
 /* Platform staff sign in through the tenant login page, so that one door
    already covers them -- but only because it asks the same function. */

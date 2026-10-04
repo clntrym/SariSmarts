@@ -1,5 +1,5 @@
 -- ============================================================
--- SariSmart - unread marker for the platform notification bell
+-- RetailCore - unread marker for the platform notification bell
 --
 -- The bell builds its list from live data rather than from a
 -- table of copies: an application awaiting review is the row in

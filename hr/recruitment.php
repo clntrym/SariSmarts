@@ -855,7 +855,7 @@ $jobQuery = mysqli_query($conn, $sql);
 
                                             <p class="mb-0">
 
-                                                SariSmart Retail OS
+                                                RetailCore Retail OS
 
                                             </p>
 

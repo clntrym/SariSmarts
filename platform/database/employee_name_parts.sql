@@ -1,5 +1,5 @@
 -- ============================================================
--- SariSmart - separate name parts on platform employees
+-- RetailCore - separate name parts on platform employees
 --
 -- The HR employee form now asks for last, first and middle name
 -- instead of one free-text field, the same way Add Platform User

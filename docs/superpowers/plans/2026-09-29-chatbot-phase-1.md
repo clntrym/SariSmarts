@@ -1,4 +1,4 @@
-# SariSmarts Chatbot — Phase 1 Implementation Plan
+# RetailCore Chatbot — Phase 1 Implementation Plan
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
@@ -8,7 +8,7 @@
 
 **Tech Stack:** PHP 8.2.12 (XAMPP), MariaDB 10.4, mysqli, Bootstrap 5.3.8, vanilla JS. No new Composer packages. Tests are plain PHP CLI scripts (no framework is installed) plus one Python static audit, matching the audit scripts already used in this project.
 
-**Spec:** `docs/superpowers/specs/2026-09-29-sarismarts-chatbot-design.md`
+**Spec:** `docs/superpowers/specs/2026-09-29-retailcore-chatbot-design.md`
 
 ## Global Constraints
 
@@ -20,7 +20,7 @@
 - Plan gating is **deny by default**: a topic with no row in `chatbot_topic_plans` is refused for every plan.
 - AI model id: `claude-haiku-4-5-20251001`. Timeout 2.5 seconds. Key read from `C:\xampp\sarismart_secrets.php`, outside the webroot.
 - Existing project files use CRLF. When editing an existing file, preserve CRLF; new files under `includes/chatbot/` and `tests/` use LF.
-- **This project is not a git repository.** Every task therefore ends with a *Checkpoint* step (run the full suite) instead of a commit. Running `git init` in `c:\xampp\htdocs\SariSmarts` first is recommended, so each checkpoint can also be a commit; the plan works either way.
+- **This project is not a git repository.** Every task therefore ends with a *Checkpoint* step (run the full suite) instead of a commit. Running `git init` in `c:\xampp\htdocs\RetailCore` first is recommended, so each checkpoint can also be a commit; the plan works either way.
 - Tests live in `tests/` with an `.htaccess` that denies web access, because the project root is inside `htdocs`.
 
 ## Review Focus

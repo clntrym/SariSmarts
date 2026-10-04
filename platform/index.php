@@ -117,7 +117,7 @@ $uspSection = $conn->query("SELECT * FROM website_usp_section ORDER BY section_i
 
 
 <!-- =========================================================
-     WHY SARISMART
+     WHY RETAILCORE
 ========================================================== -->
 
 <?php if ($whySection): ?>

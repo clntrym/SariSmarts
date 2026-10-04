@@ -1,5 +1,5 @@
 -- ============================================================
--- SariSmart - separate owner name parts on company
+-- RetailCore - separate owner name parts on company
 --
 -- Registration now asks for the owner's last, first and middle
 -- name instead of first and last, the same way Add Platform User

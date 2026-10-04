@@ -704,8 +704,8 @@ $value = function (string $field) use ($employee): string {
             <h3 class="sa-page-title mb-0"><?= $isEdit ? 'Edit Employee' : 'Add Employee' ?></h3>
             <p class="sa-page-sub mb-0">
                 <?= $isEdit
-                    ? 'Update this internal employee of the SariSmart platform.'
-                    : 'Create a new internal employee for the SariSmart platform.' ?>
+                    ? 'Update this internal employee of the RetailCore platform.'
+                    : 'Create a new internal employee for the RetailCore platform.' ?>
             </p>
         </div>
     </div>
@@ -760,7 +760,7 @@ $value = function (string $field) use ($employee): string {
                         <div class="col-md-4">
                             <label class="form-label">Email Address <span class="text-danger">*</span></label>
                             <input type="email" name="work_email" class="form-control" required maxlength="150"
-                                placeholder="employee@sarismart.com" value="<?= $value('work_email') ?>">
+                                placeholder="employee@retailcore.com" value="<?= $value('work_email') ?>">
                         </div>
 
                         <div class="col-md-4">

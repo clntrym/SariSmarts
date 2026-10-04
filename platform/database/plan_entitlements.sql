@@ -1,5 +1,5 @@
 -- ============================================================
--- SariSmart - make a plan's entitlements enforceable
+-- RetailCore - make a plan's entitlements enforceable
 --
 -- subscription_plan_roles.role_name and
 -- subscription_plan_features.feature_name are display text from

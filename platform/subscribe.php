@@ -567,7 +567,7 @@ if ($company && $_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['payNow'])
                             'quantity' => 1,
                         ]],
                         'payment_method_types' => ['gcash', 'card', 'paymaya'],
-                        'description' => 'SariSmart subscription for ' . $company['company_name'],
+                        'description' => 'RetailCore subscription for ' . $company['company_name'],
                         'success_url' => $baseUrl . '/subscribe_callback.php?ref=' . $token,
                         'cancel_url' => $baseUrl . '/subscribe.php',
                         'reference_number' => $token,

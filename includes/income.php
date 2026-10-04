@@ -1101,8 +1101,8 @@ foreach ($incomeRows as $row) {
                 return;
             }
 
-            var html = '<html><head><meta charset="UTF-8"><title>SariSmart Income Report</title></head><body>';
-            html += '<h2>SariSmart POS Income Report</h2>';
+            var html = '<html><head><meta charset="UTF-8"><title>RetailCore Income Report</title></head><body>';
+            html += '<h2>RetailCore POS Income Report</h2>';
             html += '<p>Generated: ' + new Date().toLocaleString() + '</p>';
             html += '<table border="1"><thead><tr>';
             html += '<th>#</th><th>Transaction No.</th><th>Date</th><th>Source Module</th>';
@@ -1125,7 +1125,7 @@ foreach ($incomeRows as $row) {
             var url = URL.createObjectURL(blob);
             var link = document.createElement("a");
             link.href = url;
-            link.download = "sarismart_income.xls";
+            link.download = "retailcore_income.xls";
             link.click();
             URL.revokeObjectURL(url);
 
@@ -1167,7 +1167,7 @@ foreach ($incomeRows as $row) {
 
             printWindow.document.write(
                 '<!DOCTYPE html><html><head><meta charset="UTF-8">' +
-                '<title>SariSmart POS Income Report</title>' +
+                '<title>RetailCore POS Income Report</title>' +
                 '<style>' +
                 '* { box-sizing: border-box; }' +
                 'body { font-family: Arial, sans-serif; padding: 30px; color: #111827; }' +
@@ -1180,7 +1180,7 @@ foreach ($incomeRows as $row) {
                 '@media print { body { padding: 10px; } @page { size: landscape; margin: 10mm; } }' +
                 '</style></head><body>' +
                 '<div class="report-header">' +
-                '<h1>SariSmart POS Income Report</h1>' +
+                '<h1>RetailCore POS Income Report</h1>' +
                 '<p>Generated: ' + new Date().toLocaleString() + '</p>' +
                 '</div>' +
                 '<table><thead><tr>' +

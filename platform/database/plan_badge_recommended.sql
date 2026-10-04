@@ -1,5 +1,5 @@
 -- ============================================================
--- SariSmart - allow the "Recommended" plan badge
+-- RetailCore - allow the "Recommended" plan badge
 --
 -- Both plan modals have always offered Recommended in the badge
 -- dropdown, but the column only accepted None, Most Popular and

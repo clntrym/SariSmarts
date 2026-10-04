@@ -48,7 +48,7 @@ $saInitials = $saInitials !== '' ? $saInitials : 'PS';
 | the list, and because a query belongs above the markup that uses it.
 |
 | platformFeed() reads live rows from the database both apps share, so an
-| application submitted or an account created inside SariSmarts shows up
+| application submitted or an account created inside RetailCore shows up
 | here without anything being pushed across.
 */
 $bellItems = platformFeed($conn);
@@ -74,7 +74,7 @@ $bellUnread = platformFeedUnread($bellItems, $bellSeenAt, $bellNow);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>SariSmart Super Admin</title>
+    <title>RetailCore Super Admin</title>
 
     <!-- Bootstrap -->
     <link rel="stylesheet" href="<?= $BASE_URL ?>/bootstrap-5.3.8-dist/css/bootstrap.min.css">
@@ -122,7 +122,7 @@ $bellUnread = platformFeedUnread($bellItems, $bellSeenAt, $bellNow);
                     <i class="bi bi-shield-check"></i>
                 </div>
                 <div>
-                    <h2 class="logo-title">SariSmart</h2>
+                    <h2 class="logo-title">RetailCore</h2>
                     <div class="logo-sub"><?= htmlspecialchars(platformRoleLabel()) ?></div>
                 </div>
             </div>

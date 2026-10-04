@@ -1,5 +1,5 @@
 /* ============================================================
-   SariSmart - shared DataTables defaults
+   RetailCore - shared DataTables defaults
 
    Pairs with assets/css/datatable-theme.css. Every table in the
    system inherits the same search box, record count, pagination

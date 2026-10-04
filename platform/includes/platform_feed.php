@@ -14,9 +14,9 @@
 | by itself the moment somebody deals with it - no cleanup job, no stale
 | copy pointing at a record that has moved on.
 |
-| This is also where the two apps meet. SariSmarts and the platform run on
+| This is also where the two apps meet. RetailCore and the platform run on
 | the same `sari` database, so a business registering, paying or being
-| approved inside SariSmarts writes the same rows this file reads. Nothing
+| approved inside RetailCore writes the same rows this file reads. Nothing
 | has to be pushed or synced: the event is already here.
 |
 | Every item declares the module it belongs to, and the feed is filtered
@@ -295,7 +295,7 @@ if (!function_exists('platformFeed')) {
             }
         }
 
-        /* ---- Accounts created inside SariSmarts -------------------------
+        /* ---- Accounts created inside RetailCore -------------------------
            A tenant adding staff in their own app writes to the same users
            table, which is the clearest sign the two halves are connected. */
         $sql = "

@@ -1,5 +1,5 @@
 -- ============================================================
--- SariSmart - the rest of an employee's record
+-- RetailCore - the rest of an employee's record
 --
 -- The Add Employee screen was a modal with ten boxes. The new
 -- one is a full page, and it asks for six things the table had

@@ -8,7 +8,7 @@
             We started in a sari-sari store back room
         </h1>
         <p class="pricing-description mt-4">
-            SariSmart began when a family retail group asked why running six branches required eleven spreadsheets.
+            RetailCore began when a family retail group asked why running six branches required eleven spreadsheets.
             We built the answer, then rebuilt it for chains of two hundred.
         </p>
     </div>

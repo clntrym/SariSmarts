@@ -32,7 +32,7 @@ function sendRejectionEmail(
 
     <br><br>
 
-    We sincerely appreciate your interest in joining SariSmarts.
+    We sincerely appreciate your interest in joining RetailCore.
     We encourage you to apply again for future opportunities that match your skills and experience.
 
     <br><br>
@@ -43,7 +43,7 @@ function sendRejectionEmail(
 
     Best regards,<br>
 
-    <b>SariSmarts HR Department</b>
+    <b>RetailCore HR Department</b>
 
     ";
 

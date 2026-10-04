@@ -11,7 +11,7 @@ requirePlatformAccess('homePage');
 |--------------------------------------------------------------------------
 |
 | Covers the two homepage sections that sit between the hero and the core
-| modules: "Why SariSmart" (heading plus its four highlight cards) and the
+| modules: "Why RetailCore" (heading plus its four highlight cards) and the
 | Unique Selling Point band.
 |
 */
@@ -124,7 +124,7 @@ $cards = $conn->query("SELECT * FROM website_why_cards ORDER BY card_order");
 
         <div class="sa-panel h-100">
 
-            <div class="sa-panel-head">Why SariSmart</div>
+            <div class="sa-panel-head">Why RetailCore</div>
 
             <?php if (!$why): ?>
                 <div class="p-4 text-muted">No row yet - run <code>database/website_seed.sql</code>.</div>

@@ -38,7 +38,7 @@ INSERT INTO website_hero_badges (badge_order, icon, label) VALUES
 
 
 -- ------------------------------------------------------------
--- WHY SARISMART
+-- WHY RETAILCORE
 -- ------------------------------------------------------------
 
 DELETE FROM website_why_section;
@@ -46,9 +46,9 @@ DELETE FROM website_why_section;
 INSERT INTO website_why_section (section_id, badge, title, description)
 VALUES
     (1,
-     'WHY SARISMART',
+     'WHY RETAILCORE',
      'Everything your retail business needs, connected in one platform.',
-     'SariSmart connects sales, inventory, purchasing, workforce management, finance, and business analytics into one centralized retail operating system.');
+     'RetailCore connects sales, inventory, purchasing, workforce management, finance, and business analytics into one centralized retail operating system.');
 
 
 DELETE FROM website_why_cards;

@@ -307,7 +307,7 @@ CREATE TABLE `audit_log` (
 --
 
 /*!40000 ALTER TABLE `audit_log` DISABLE KEYS */;
-INSERT INTO `audit_log` VALUES (34,21,'Super Admin','Application approved','company','5946','NCST PUREMART','::1','2026-10-03 05:40:00'),(35,21,'System','Agreement template updated','settings','1','SariSmart_Service_Agreement.pdf','::1','2026-10-03 05:54:33'),(36,21,'Super Admin','Agreement approved','contract','3','AGR-20261003-05946 - NCST PUREMART','::1','2026-10-03 06:21:53');
+INSERT INTO `audit_log` VALUES (34,21,'Super Admin','Application approved','company','5946','NCST PUREMART','::1','2026-10-03 05:40:00'),(35,21,'System','Agreement template updated','settings','1','RetailCore_Service_Agreement.pdf','::1','2026-10-03 05:54:33'),(36,21,'Super Admin','Agreement approved','contract','3','AGR-20261003-05946 - NCST PUREMART','::1','2026-10-03 06:21:53');
 /*!40000 ALTER TABLE `audit_log` ENABLE KEYS */;
 
 --
@@ -1637,8 +1637,8 @@ DROP TABLE IF EXISTS `platform_settings`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `platform_settings` (
   `setting_id` int(11) NOT NULL AUTO_INCREMENT,
-  `platform_name` varchar(120) NOT NULL DEFAULT 'SariSmart',
-  `support_email` varchar(150) NOT NULL DEFAULT 'hello@sarismart.ph',
+  `platform_name` varchar(120) NOT NULL DEFAULT 'RetailCore',
+  `support_email` varchar(150) NOT NULL DEFAULT 'hello@retailcore.ph',
   `support_phone` varchar(60) NOT NULL DEFAULT '',
   `registration_open` tinyint(1) NOT NULL DEFAULT 1,
   `maintenance_mode` tinyint(1) NOT NULL DEFAULT 0,
@@ -1658,7 +1658,7 @@ CREATE TABLE `platform_settings` (
 --
 
 /*!40000 ALTER TABLE `platform_settings` DISABLE KEYS */;
-INSERT INTO `platform_settings` VALUES (1,'SariSmart','hello@sarismart.ph','+63 2 8123 4567',1,0,'We are carrying out scheduled maintenance. Please try again shortly.',NULL,14,'uploads/company_contracts/template_97ebdb2681d76599.pdf','SariSmart_Service_Agreement.pdf',25,'2026-10-03 05:55:54');
+INSERT INTO `platform_settings` VALUES (1,'RetailCore','hello@retailcore.ph','+63 2 8123 4567',1,0,'We are carrying out scheduled maintenance. Please try again shortly.',NULL,14,'uploads/company_contracts/template_97ebdb2681d76599.pdf','RetailCore_Service_Agreement.pdf',25,'2026-10-03 05:55:54');
 /*!40000 ALTER TABLE `platform_settings` ENABLE KEYS */;
 
 --
@@ -2307,7 +2307,7 @@ CREATE TABLE `website_footer` (
 --
 
 /*!40000 ALTER TABLE `website_footer` DISABLE KEYS */;
-INSERT INTO `website_footer` VALUES (1,'Ready to Get Started?','Transform your retail business','with SariSmart today.','Join hundreds of retailers using SariSmart to simplify operations, improve inventory accuracy, manage employees, and increase profitability.','Get Started','pricing.php','SariSmart','Cloud-based enterprise retail management for convenience chains, mini marts, groceries, supermarkets and wholesalers.','hello@sarismart.ph','+63 2 8123 4567','Copyright {year} SariSmart Retail OS. All rights reserved.','2026-09-30 16:09:54');
+INSERT INTO `website_footer` VALUES (1,'Ready to Get Started?','Transform your retail business','with RetailCore today.','Join hundreds of retailers using RetailCore to simplify operations, improve inventory accuracy, manage employees, and increase profitability.','Get Started','pricing.php','RetailCore','Cloud-based enterprise retail management for convenience chains, mini marts, groceries, supermarkets and wholesalers.','hello@retailcore.ph','+63 2 8123 4567','Copyright {year} RetailCore Retail OS. All rights reserved.','2026-09-30 16:09:54');
 /*!40000 ALTER TABLE `website_footer` ENABLE KEYS */;
 
 --
@@ -2677,7 +2677,7 @@ CREATE TABLE `website_pricing_faq` (
 --
 
 /*!40000 ALTER TABLE `website_pricing_faq` DISABLE KEYS */;
-INSERT INTO `website_pricing_faq` VALUES (1,1,'How long does implementation take?','Most stores are fully operational within one to two weeks depending on the number of branches.','Active'),(2,2,'Does the POS work without internet?','Yes. Transactions continue offline and automatically sync once the connection is restored.','Active'),(3,3,'Can we start with POS only and add HR later?','Yes. Additional modules can be enabled whenever your business is ready.','Active'),(4,4,'Is our business data secure?','Yes. All information is encrypted and securely stored with regular backups.','Active'),(5,5,'Do you support payroll and government contributions?','Yes. Payroll supports SSS, PhilHealth, Pag-IBIG and other payroll deductions.','Active'),(6,6,'What hardware do we need?','SariSmart works with most barcode scanners, receipt printers, cash drawers and POS terminals.','Active');
+INSERT INTO `website_pricing_faq` VALUES (1,1,'How long does implementation take?','Most stores are fully operational within one to two weeks depending on the number of branches.','Active'),(2,2,'Does the POS work without internet?','Yes. Transactions continue offline and automatically sync once the connection is restored.','Active'),(3,3,'Can we start with POS only and add HR later?','Yes. Additional modules can be enabled whenever your business is ready.','Active'),(4,4,'Is our business data secure?','Yes. All information is encrypted and securely stored with regular backups.','Active'),(5,5,'Do you support payroll and government contributions?','Yes. Payroll supports SSS, PhilHealth, Pag-IBIG and other payroll deductions.','Active'),(6,6,'What hardware do we need?','RetailCore works with most barcode scanners, receipt printers, cash drawers and POS terminals.','Active');
 /*!40000 ALTER TABLE `website_pricing_faq` ENABLE KEYS */;
 
 --
@@ -2785,7 +2785,7 @@ CREATE TABLE `website_why_section` (
 --
 
 /*!40000 ALTER TABLE `website_why_section` DISABLE KEYS */;
-INSERT INTO `website_why_section` VALUES (1,'WHY SARISMART','Everything your retail business needs, connected in one platform.','SariSmart connects sales, inventory, purchasing, workforce management, finance, and business analytics into one centralized retail operating system.','2026-09-30 23:47:41');
+INSERT INTO `website_why_section` VALUES (1,'WHY RETAILCORE','Everything your retail business needs, connected in one platform.','RetailCore connects sales, inventory, purchasing, workforce management, finance, and business analytics into one centralized retail operating system.','2026-09-30 23:47:41');
 /*!40000 ALTER TABLE `website_why_section` ENABLE KEYS */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 

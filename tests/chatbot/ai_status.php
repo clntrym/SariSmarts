@@ -28,7 +28,7 @@ function statusLine(string $label, bool $ok, string $detail = ''): void
     echo '  [', $ok ? 'OK  ' : 'FAIL', '] ', str_pad($label, 34), $detail, "\n";
 }
 
-echo "\nSariSmart AI assistant -- configuration\n\n";
+echo "\nRetailCore AI assistant -- configuration\n\n";
 
 $path = chatbotSecretsPath();
 $found = is_readable($path);

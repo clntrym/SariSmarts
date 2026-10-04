@@ -1,5 +1,5 @@
 -- ============================================================
--- SariSmart - the inquiry assistant on the public pages
+-- RetailCore - the inquiry assistant on the public pages
 --
 -- A visitor asks about plans, pricing or what the system does.
 -- When they show real interest the assistant asks for their
@@ -16,7 +16,7 @@
 -- WHERE THE API KEY IS NOT
 --
 -- Not here. It lives in C:\xampp\sarismart_secrets.php, outside
--- the webroot, which is where the SariSmarts chatbot already
+-- the webroot, which is where the RetailCore chatbot already
 -- keeps it. A key in a database is one query away from a log,
 -- and a key under htdocs is one misconfiguration away from being
 -- downloaded.

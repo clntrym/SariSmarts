@@ -1,4 +1,4 @@
-# SariSmarts Chatbot — Design Spec
+# RetailCore Chatbot — Design Spec
 
 Date: 2026-09-29
 Status: Approved in conversation; awaiting written-spec review
@@ -7,7 +7,7 @@ Status: Approved in conversation; awaiting written-spec review
 
 ## Buod (Tagalog)
 
-Isang katulong sa loob ng SariSmarts na sumasagot ng tanong tungkol sa **sariling
+Isang katulong sa loob ng RetailCore na sumasagot ng tanong tungkol sa **sariling
 datos ng company** — benta, stock, empleyado, attendance, payroll, finance —
 ayon sa **role** ng nagtatanong at sa **plano** ng negosyo.
 

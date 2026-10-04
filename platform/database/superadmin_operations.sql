@@ -1,5 +1,5 @@
 -- ============================================================
--- SariSmart - Notifications, Media, Audit and Settings
+-- RetailCore - Notifications, Media, Audit and Settings
 --
 -- The last four Super Admin sidebar links that went nowhere.
 -- Reports needs no table of its own: it reads what the other
@@ -96,8 +96,8 @@ CREATE TABLE IF NOT EXISTS audit_log (
 -- the database hold both.
 CREATE TABLE IF NOT EXISTS platform_settings (
     setting_id           INT(11) NOT NULL AUTO_INCREMENT,
-    platform_name        VARCHAR(120) NOT NULL DEFAULT 'SariSmart',
-    support_email        VARCHAR(150) NOT NULL DEFAULT 'hello@sarismart.ph',
+    platform_name        VARCHAR(120) NOT NULL DEFAULT 'RetailCore',
+    support_email        VARCHAR(150) NOT NULL DEFAULT 'hello@retailcore.ph',
     support_phone        VARCHAR(60) NOT NULL DEFAULT '',
     registration_open    TINYINT(1) NOT NULL DEFAULT 1,
     maintenance_mode     TINYINT(1) NOT NULL DEFAULT 0,
@@ -117,8 +117,8 @@ INSERT INTO platform_settings
      trial_days, records_per_page)
 SELECT
     1,
-    'SariSmart',
-    'hello@sarismart.ph',
+    'RetailCore',
+    'hello@retailcore.ph',
     '+63 2 8123 4567',
     1,
     0,

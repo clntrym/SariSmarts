@@ -50,7 +50,7 @@ const CHAT_FALLBACK_BETA = 'server-side-fallback-2026-07-01';
  */
 function chatSystemPrompt(): string
 {
-    return "You are the assistant inside SariSmart, a system Philippine "
+    return "You are the assistant inside RetailCore, a system Philippine "
         . "sari-sari store owners and staff use to run their shop. The person "
         . "asking is signed in, and the tools you are given read their own "
         . "company's data and nobody else's.\n\n"

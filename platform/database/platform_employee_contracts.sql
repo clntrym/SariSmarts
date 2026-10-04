@@ -1,11 +1,11 @@
 -- ============================================================
--- SariSmart - employment contracts for the platform's own staff
+-- RetailCore - employment contracts for the platform's own staff
 --
--- SariSmarts gives a tenant's new hire a contract through
+-- RetailCore gives a tenant's new hire a contract through
 -- employee_contracts: a number, a title, the company's copy, the
 -- signed copy back, a status and an HR review.
 --
--- SariSmart's own people had nothing of the kind.
+-- RetailCore's own people had nothing of the kind.
 -- superAdmin/employees.php was a plain record of who works here.
 --
 -- This is the same shape, for platform_employees.
@@ -13,9 +13,9 @@
 -- WHY A SEPARATE TABLE
 --
 -- employee_contracts.company_id is NOT NULL with a foreign key to
--- company, and SariSmart is not one of its own tenants. Putting
+-- company, and RetailCore is not one of its own tenants. Putting
 -- our staff in there would mean inventing a company row for
--- ourselves, and every tenant-scoped query in SariSmarts would
+-- ourselves, and every tenant-scoped query in RetailCore would
 -- then have to learn to skip it. The two are kept apart for the
 -- same reason platform_employees is kept apart from employees.
 --

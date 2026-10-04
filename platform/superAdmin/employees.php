@@ -14,11 +14,11 @@ requirePlatformAccess('employees');
 | EMPLOYEES
 |--------------------------------------------------------------------------
 |
-| HR's side of the platform: SariSmart's own staff.
+| HR's side of the platform: RetailCore's own staff.
 |
 | These are not the employees table. That one belongs to tenants, where a
 | row is scoped to a company and a branch, and our own people have neither.
-| Keeping them apart is what stops SariSmart staff appearing inside a
+| Keeping them apart is what stops RetailCore staff appearing inside a
 | customer's HR screens.
 |
 | Leaving is a status with a date, not a deletion. Somebody who resigned
@@ -417,7 +417,7 @@ $logins = $conn->query("
     <div>
         <h3 class="sa-page-title">Employees</h3>
         <p class="sa-page-sub">
-            SariSmart's own staff. Tenants' employees live in their own company.
+            RetailCore's own staff. Tenants' employees live in their own company.
         </p>
     </div>
     <?php

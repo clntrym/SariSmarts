@@ -5,13 +5,13 @@
 | THE INQUIRY ASSISTANT ON THE PUBLIC PAGES
 |--------------------------------------------------------------------------
 |
-| A visitor who has not signed up asks what SariSmart costs, what a plan
+| A visitor who has not signed up asks what RetailCore costs, what a plan
 | includes, how to register. It answers, and when they show real interest
 | it asks for their details and files them in marketing_leads.
 |
 | WHAT IT IS ALLOWED TO TALK ABOUT
 |
-| SariSmart, and nothing else. The system prompt says so and the plan data
+| RetailCore, and nothing else. The system prompt says so and the plan data
 | is handed to it as fact, so it answers from what is actually in
 | subscription_plans rather than from whatever it remembers about retail
 | software. A price it invented would be a price we then have to honour.
@@ -19,7 +19,7 @@
 | WHERE THE KEY IS
 |
 | C:\xampp\sarismart_secrets.php, outside the webroot, the same file the
-| SariSmarts chatbot already reads. It is never sent to the browser and
+| RetailCore chatbot already reads. It is never sent to the browser and
 | never written to the database.
 |
 | WHAT STOPS IT COSTING MONEY
@@ -40,7 +40,7 @@
 require_once __DIR__ . '/../init.php';
 
 /* Verified against the API: both this and the dated id answer. The
-   unsuffixed form is what the SariSmarts client already uses. */
+   unsuffixed form is what the RetailCore client already uses. */
 if (!defined('LANDING_CHAT_MODEL')) {
     define('LANDING_CHAT_MODEL', 'claude-haiku-4-5');
 }
@@ -49,10 +49,22 @@ if (!defined('LANDING_CHAT_ENDPOINT')) {
     define('LANDING_CHAT_ENDPOINT', 'https://api.anthropic.com/v1/messages');
 }
 
-/* Outside the webroot. A key under htdocs is one misconfiguration away
-   from being downloadable. */
+/*
+| Outside the webroot. A key under htdocs is one misconfiguration away from
+| being downloadable.
+|
+| Two names, for the same reason ai_client.php carries two: the product was
+| renamed and the file on disk was not. Picking whichever exists means the
+| rename can happen whenever it suits, and this chat does not quietly stop
+| answering on the day it does.
+*/
 if (!defined('LANDING_CHAT_SECRETS')) {
-    define('LANDING_CHAT_SECRETS', 'C:\\xampp\\sarismart_secrets.php');
+    define(
+        'LANDING_CHAT_SECRETS',
+        is_readable('C:\\xampp\\retailcore_secrets.php')
+            ? 'C:\\xampp\\retailcore_secrets.php'
+            : 'C:\\xampp\\sarismart_secrets.php'
+    );
 }
 
 /* A visitor asking in good faith does not need more than this. */
@@ -201,12 +213,12 @@ if (!function_exists('landingChatSystemPrompt')) {
             : implode("\n", $lines);
 
         return <<<PROMPT
-You are the inquiry assistant on the public website of SariSmart, a retail
+You are the inquiry assistant on the public website of RetailCore, a retail
 management system for Philippine businesses - sari-sari stores, convenience
 stores and small retail chains.
 
 You are talking to a visitor who has not signed up. Your job is to answer
-questions about SariSmart and, when someone is genuinely interested, invite
+questions about RetailCore and, when someone is genuinely interested, invite
 them to leave their details so the team can follow up.
 
 THE PLANS, WHICH ARE THE ONLY PRICES YOU MAY QUOTE:
@@ -220,8 +232,8 @@ payment is settled.
 
 RULES
 
-- Only discuss SariSmart: its plans, prices, features, and how to sign up.
-  If asked about anything else, say that you can only help with SariSmart
+- Only discuss RetailCore: its plans, prices, features, and how to sign up.
+  If asked about anything else, say that you can only help with RetailCore
   and offer to pass the question to the team.
 - Never invent a price, a discount, a feature or a date. If it is not in the
   plan list above, say you are not sure and offer to have someone confirm.
@@ -405,7 +417,7 @@ if (!function_exists('landingChatScripted')) {
                 . 'and the team will get in touch.';
         }
 
-        return 'I can help with questions about SariSmart - our plans, what they include, and how '
+        return 'I can help with questions about RetailCore - our plans, what they include, and how '
             . 'to sign up. Leave your details and someone from the team will answer anything '
             . 'I have missed.';
     }

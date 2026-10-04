@@ -47,7 +47,7 @@ body{
     margin:0;
     min-height:100vh;
     font-family:'Poppins',sans-serif;
-    background:url('../assets/SariSmart_2nd_bg.png') center center/cover no-repeat;
+    background:url('../assets/retailcore_2nd_bg.png') center center/cover no-repeat;
     display:flex;
     justify-content:center;
     align-items:center;

@@ -363,7 +363,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
         </div>
         <div class="copy">
-            © 2026 SariSmart Enterprise. All rights reserved.
+            © 2026 RetailCore Enterprise. All rights reserved.
         </div>
     </div>
 </div>

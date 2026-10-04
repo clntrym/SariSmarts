@@ -286,7 +286,7 @@
         <div class="sidebar-brand">
             <h5>
                 <i class="bi bi-shop"></i>
-                <span>SariSmart</span>
+                <span>RetailCore</span>
             </h5>
             <small>Store POS</small>
         </div>
@@ -414,7 +414,7 @@
 
             <div class="sidebar-footer">
                 <div class="sidebar-copy">
-                    <small>© 2026 SariSmart</small>
+                    <small>© 2026 RetailCore</small>
                 </div>
             </div>
         </div>

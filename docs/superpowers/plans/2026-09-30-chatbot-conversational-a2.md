@@ -8,7 +8,7 @@
 
 **Tech Stack:** PHP 8.2.12 (XAMPP), MariaDB 10.4, mysqli. Tests are the CLI harness in `tests/chatbot/bootstrap.php` plus the Python audit.
 
-**Spec:** `docs/superpowers/specs/2026-09-30-sarismarts-chatbot-conversational-design.md` §3 (Stage A2 table), §8
+**Spec:** `docs/superpowers/specs/2026-09-30-retailcore-chatbot-conversational-design.md` §3 (Stage A2 table), §8
 
 ## Global Constraints
 

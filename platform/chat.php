@@ -132,7 +132,7 @@ if ($action === 'ask') {
     $question = trim((string) ($input['message'] ?? ''));
 
     if ($question === '') {
-        chatReply(['ok' => false, 'reply' => 'Ask me anything about SariSmart.']);
+        chatReply(['ok' => false, 'reply' => 'Ask me anything about RetailCore.']);
     }
 
     if (mb_strlen($question) > LANDING_CHAT_MAX_INPUT) {

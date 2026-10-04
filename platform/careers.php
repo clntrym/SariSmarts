@@ -110,7 +110,7 @@ include __DIR__ . "/header.php";
 
                             <?php else: ?>
 
-                                <img src="../assets/careers-banner.jpg" alt="SariSmart Careers"
+                                <img src="../assets/careers-banner.jpg" alt="RetailCore Careers"
                                     class="w-full h-full object-cover">
 
 
@@ -364,7 +364,7 @@ include __DIR__ . "/header.php";
 
 
                         <p>
-                            SariSmart Retail OS
+                            RetailCore Retail OS
                         </p>
 
                     </div>
@@ -537,7 +537,7 @@ include __DIR__ . "/header.php";
             // APPLY BUTTON
 
             document.getElementById("applyButton").href =
-                "../SARISMARTS/accounts/apply.php?page=apply&job_id=" +
+                "../RETAILCORE/accounts/apply.php?page=apply&job_id=" +
                 this.dataset.id;
 
         });

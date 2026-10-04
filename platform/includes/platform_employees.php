@@ -2,7 +2,7 @@
 
 /*
 |--------------------------------------------------------------------------
-| SARISMART'S OWN STAFF, SHARED
+| RETAILCORE'S OWN STAFF, SHARED
 |--------------------------------------------------------------------------
 |
 | The list screen and the add/edit form both need these, and when each kept

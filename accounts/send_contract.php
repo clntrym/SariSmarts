@@ -12,7 +12,7 @@ function sendContract(
 
     $mail->addAddress($email, $fullname);
 
-    $mail->Subject = "SariSmart Employment Contract";
+    $mail->Subject = "RetailCore Employment Contract";
 
     $mail->Body = "
 
@@ -20,7 +20,7 @@ function sendContract(
 
     Dear <b>$fullname</b>,<br><br>
 
-    We are pleased to inform you that your application has been officially approved by the SariSmart HR Department.
+    We are pleased to inform you that your application has been officially approved by the RetailCore HR Department.
 
     <br><br>
 
@@ -46,13 +46,13 @@ function sendContract(
 
     <br><br>
 
-    Welcome to the SariSmart family!
+    Welcome to the RetailCore family!
 
     <br><br>
 
     Regards,<br>
 
-    <b>SariSmart HR Department</b>
+    <b>RetailCore HR Department</b>
 
     ";
 

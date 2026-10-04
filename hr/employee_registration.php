@@ -4362,7 +4362,7 @@ while ($row = mysqli_fetch_assoc($query)) {
 
                                 <p class="text-muted small mb-0">
 
-                                    Create the employee's account for accessing the SariSmart platform.
+                                    Create the employee's account for accessing the RetailCore platform.
 
                                 </p>
 
@@ -4446,7 +4446,7 @@ while ($row = mysqli_fetch_assoc($query)) {
 
                                                     <div class="form-text">
 
-                                                        Username will be used to log in to the SariSmart platform.
+                                                        Username will be used to log in to the RetailCore platform.
 
                                                     </div>
 

@@ -1,9 +1,22 @@
 <?php
-// =============================================
-// ENVIRONMENT DETECTION
-// Switch between local (XAMPP) and production
-// =============================================
-$isLocal = ($_SERVER['SERVER_NAME'] === 'localhost' || $_SERVER['SERVER_NAME'] === '127.0.0.1');
+/*
+| ENVIRONMENT DETECTION
+|
+| Production is the place that was given database credentials. Nowhere else
+| is.
+|
+| This used to read $_SERVER['SERVER_NAME'], which has two faults. On the
+| command line there is no such key at all, so every CLI script -- cron jobs,
+| diagnostics, the whole test suite -- took the PRODUCTION branch and, while
+| config.php still carried a literal password, connected to the live database.
+| And a new hostname, a preview URL or a custom domain would each have needed
+| adding to the list.
+|
+| DB_PASS is set on Render and nowhere else, so it answers the question
+| directly rather than by inference, and it answers it the same way in a
+| browser request, a cron job and a shell.
+*/
+$isLocal = (string) getenv('DB_PASS') === '';
 
 $BASE_URL = "/platform";
 

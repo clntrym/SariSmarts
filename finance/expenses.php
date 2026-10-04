@@ -1378,10 +1378,10 @@ $averageAmount = $totalTransactions > 0
                 <html>
                 <head>
                     <meta charset="UTF-8">
-                    <title>SariSmart Expense Report</title>
+                    <title>RetailCore Expense Report</title>
                 </head>
                 <body>
-                    <h2>SariSmart Expense Report</h2>
+                    <h2>RetailCore Expense Report</h2>
                     <p>Generated: ${new Date().toLocaleString()}</p>
                     <table border="1">
                         <thead>
@@ -1432,7 +1432,7 @@ $averageAmount = $totalTransactions > 0
 
             const link = document.createElement("a");
             link.href = url;
-            link.download = "sarismart_expenses.xls";
+            link.download = "retailcore_expenses.xls";
             link.click();
 
             URL.revokeObjectURL(url);
@@ -1489,7 +1489,7 @@ $averageAmount = $totalTransactions > 0
             <html>
             <head>
                 <meta charset="UTF-8">
-                <title>SariSmart Expense Report</title>
+                <title>RetailCore Expense Report</title>
                 <style>
                     * { box-sizing: border-box; }
                     body { font-family: Arial, sans-serif; padding: 30px; color: #111827; }
@@ -1507,7 +1507,7 @@ $averageAmount = $totalTransactions > 0
             </head>
             <body>
                 <div class="report-header">
-                    <h1>SariSmart Expense Report</h1>
+                    <h1>RetailCore Expense Report</h1>
                     <p>Generated: ${new Date().toLocaleString()}</p>
                 </div>
                 <table>
