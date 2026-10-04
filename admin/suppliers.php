@@ -428,6 +428,59 @@ include("admin_header.php");
         border-color: #00224c;
     }
 
+    /*
+    | The page's primary action.
+    |
+    | .btn-add-supplier was on the button from the start and no rule for it
+    | existed anywhere in the project, so it rendered as a bare Bootstrap
+    | .btn: black text on nothing, beside a plus. It did not look like a
+    | button, which is why nobody could tell it was the way to add a supplier.
+    |
+    | The colours are the ones this page already uses -- the same navy as
+    | .btn-edit-supplier's hover, the same 9px corner -- so it reads as the
+    | filled version of a control that is already here rather than a new
+    | thing.
+    */
+    .btn-add-supplier {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+
+        padding: 10px 20px;
+        border: 1px solid #00224c;
+        border-radius: 9px;
+
+        background: #00224c;
+        color: #fff;
+
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 1;
+        white-space: nowrap;
+
+        transition: background .15s ease, box-shadow .15s ease, transform .15s ease;
+    }
+
+    .btn-add-supplier:hover,
+    .btn-add-supplier:focus {
+        background: #001836;
+        border-color: #001836;
+        color: #fff;
+        box-shadow: 0 6px 16px rgba(0, 34, 76, .28);
+    }
+
+    /* Pressed, so the click is felt as well as seen. */
+    .btn-add-supplier:active {
+        transform: translateY(1px);
+        box-shadow: none;
+    }
+
+    /* Keyboard focus stays visible; the hover shadow alone is not an outline. */
+    .btn-add-supplier:focus-visible {
+        outline: 3px solid rgba(0, 34, 76, .35);
+        outline-offset: 2px;
+    }
+
 
     /* =========================================================
    MOBILE

@@ -354,10 +354,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <p>Multi-Branch Management</p>
             </div>
             <div class="feature">
-                <i class="fa-solid fa-wallet"></i>
-                <p>Utang Serye Management</p>
-            </div>
-            <div class="feature">
                 <i class="fa-solid fa-users"></i>
                 <p>HR & Payroll System</p>
             </div>
