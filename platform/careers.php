@@ -564,8 +564,19 @@ include __DIR__ . "/header.php";
 
             // APPLY BUTTON
 
+            /*
+                Root-absolute, not "../RETAILCORE/...".
+
+                That prefix was the name of the folder this project happened
+                to be checked out into on one computer. Everywhere else --
+                including the deployed site, where the application is served
+                from the root and no such folder exists -- it was a 404, and
+                it failed the way these always do: the page rendered
+                perfectly, nothing was logged, and only the person who
+                clicked Apply ever found out.
+            */
             document.getElementById("applyButton").href =
-                "../RETAILCORE/accounts/apply.php?page=apply&job_id=" +
+                "/accounts/apply.php?page=apply&job_id=" +
                 this.dataset.id;
 
         });
