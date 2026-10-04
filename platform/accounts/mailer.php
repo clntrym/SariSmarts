@@ -67,9 +67,10 @@ function getMailerConfig()
     | every message the system tried to send failed authentication -- the
     | Super Admin's approval mail among them.
     */
+    /* Either layout: platform inside the main folder, or beside it. */
     $shared = is_file(__DIR__ . '/../../includes/mail_settings.php')
         ? __DIR__ . '/../../includes/mail_settings.php'
-        : __DIR__ . '/../../includes/mail_settings.php';
+        : __DIR__ . '/../../../SariSmarts/includes/mail_settings.php';
 
     if (is_readable($shared)) {
         require_once $shared;
