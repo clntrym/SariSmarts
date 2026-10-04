@@ -233,7 +233,7 @@ include __DIR__ . "/header.php";
                 You can sign in and start using the system.
             </p>
 
-            <a href="/SariSmarts/accounts/acc_log_in.php" class="btn text-white px-4 py-2 mt-2"
+            <a href="/accounts/acc_log_in.php" class="btn text-white px-4 py-2 mt-2"
                 style="background:#00224c;">
                 Sign In
             </a>
@@ -242,7 +242,7 @@ include __DIR__ . "/header.php";
 
             <p class="text-muted"><?= htmlspecialchars($message) ?></p>
 
-            <a href="/SariSmarts/accounts/acc_log_in.php" class="btn text-white px-4 py-2 mt-2"
+            <a href="/accounts/acc_log_in.php" class="btn text-white px-4 py-2 mt-2"
                 style="background:#00224c;">
                 Sign In
             </a>

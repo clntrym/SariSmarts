@@ -40,5 +40,5 @@ session_regenerate_id(true);
 
 $_SESSION['logout_success'] = "You have been logged out successfully.";
 
-header("Location: /SariSmarts/accounts/acc_log_in.php");
+header("Location: /acc_log_in");
 exit();

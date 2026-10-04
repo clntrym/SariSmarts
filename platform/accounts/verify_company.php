@@ -134,7 +134,7 @@ $message = $messages[$state];
         </p>
 
         <?php if (in_array($state, ['verified', 'already'], true)): ?>
-            <a href="/SariSmarts/accounts/acc_log_in.php" class="btn text-white px-4 py-2" style="background:#00224c;">
+            <a href="/accounts/acc_log_in.php" class="btn text-white px-4 py-2" style="background:#00224c;">
                 Sign In
             </a>
         <?php else: ?>

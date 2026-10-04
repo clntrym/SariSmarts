@@ -211,7 +211,7 @@ body{
         </form>
         <div class="login-link">
             Remember your password?
-            <a href="/SariSmarts/accounts/acc_log_in.php">
+            <a href="/accounts/acc_log_in.php">
                 Login
             </a>
         </div>

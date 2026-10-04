@@ -274,7 +274,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
                     </a>
                 </li> -->
                 <li class="nav-item">
-                    <a href="Attendance.php" class="nav-link <?= ($currentPage == 'Attendance.php') ? 'active' : '' ?>">
+                    <a href="attendance.php" class="nav-link <?= ($currentPage == 'attendance.php') ? 'active' : '' ?>">
                         <i class="bi bi-clipboard2-check me-2"></i>
                         <span>Attendance</span>
                     </a>

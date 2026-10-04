@@ -11,5 +11,5 @@ unset($_SESSION['email']);
 unset($_SESSION['role']);
 
 // Redirect to login
-header("Location: /accounts/acc_log_in.php");
+header("Location: /acc_log_in");
 exit();

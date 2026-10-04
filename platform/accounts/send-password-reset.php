@@ -28,11 +28,23 @@ echo "<!DOCTYPE html>
 if ($conn->affected_rows) {
     $mail = require __DIR__ . "/mailer.php";
 
+    /*
+    | The link is built from the address this request arrived on.
+    |
+    | It used to be the literal "http://localhost/SariSmarts/accounts/..." --
+    | right on the machine it was typed on, and useless everywhere else. Every
+    | reset mail the deployed site sent pointed the recipient at their own
+    | computer, so password reset has never worked outside XAMPP.
+    */
+    require_once __DIR__ . "/../../includes/app_url.php";
+
+    $resetLink = appUrl('/accounts/reset-password.php?token=' . $token);
+
     $mail->setFrom("noreply@example.com");
     $mail->addAddress($email);
     $mail->Subject = "Password Reset";
     $mail->Body = <<<END
-    Click <a href="http://localhost/SariSmarts/accounts/reset-password.php?token=$token">here</a> 
+    Click <a href="{$resetLink}">here</a>
     to reset your password. This link will expire in 30 minutes.
     END;
 

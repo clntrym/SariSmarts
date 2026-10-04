@@ -14,7 +14,16 @@ header('Content-Type: application/json');
 |--------------------------------------------------------------------------
 */
 
-$resetBaseUrl = "http://localhost/SariSmarts/accounts/reset-password.php";
+/*
+| Built from the request, not written down.
+|
+| This was the literal string "http://localhost/SariSmarts/..." -- correct on
+| the machine it was typed on, and useless anywhere else. Every reset link
+| the deployed site sent pointed the recipient at their own computer.
+*/
+require_once __DIR__ . '/../includes/app_url.php';
+
+$resetBaseUrl = appUrl('/accounts/reset-password.php');
 
 /*
 |--------------------------------------------------------------------------

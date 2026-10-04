@@ -1553,7 +1553,7 @@ include __DIR__ . "/header.php";
 
                     <div class="text-center mt-3 text-muted">
                         Already have an account?
-                        <a href="/SariSmarts/accounts/acc_log_in.php" style="color:#00224c;font-weight:600;">Sign in</a>
+                        <a href="/accounts/acc_log_in.php" style="color:#00224c;font-weight:600;">Sign in</a>
                     </div>
 
                 </form>

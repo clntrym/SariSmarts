@@ -185,7 +185,7 @@ RESPONSIVE
         </form>
         <div class="bottom-text">
             Remember your password?
-            <a href="/SariSmarts/accounts/acc_log_in.php">Login</a>
+            <a href="/accounts/acc_log_in.php">Login</a>
         </div>
     </div>
 </div>

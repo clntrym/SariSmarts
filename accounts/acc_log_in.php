@@ -95,7 +95,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             */
             if (!accountStatusAllowsAccess($row['status'] ?? null)) {
                 $_SESSION['login_error'] = accountAccessMessage($row['status'] ?? null);
-                header("Location: /accounts/acc_log_in.php");
+                header("Location: /acc_log_in");
                 exit();
             }
 
@@ -271,17 +271,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 default:
                     $_SESSION['login_error'] = "Invalid role assigned to this account.";
-                    header("Location: /accounts/acc_log_in.php");
+                    header("Location: /acc_log_in");
                     exit();
             }
         } else {
             $_SESSION['login_error'] = "Invalid Password";
-            header("Location: /accounts/acc_log_in.php");
+            header("Location: /acc_log_in");
             exit();
         }
     } else {
         $_SESSION['login_error'] = "User ID / Email not found";
-        header("Location: /accounts/acc_log_in.php");
+        header("Location: /acc_log_in");
         exit();
     }
 

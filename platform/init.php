@@ -79,7 +79,7 @@ if (!function_exists('requireRole')) {
 
         if (!isset($_SESSION['user_id']) || !isset($_SESSION['role'])) {
             $_SESSION['session_expired'] = "Please log in to access this page.";
-            header("Location: /SariSmarts/accounts/acc_log_in.php");
+            header("Location: /acc_log_in");
             exit();
         }
 
@@ -103,7 +103,7 @@ if (!function_exists('requireRole')) {
             session_start();
             $_SESSION['login_error'] = accountAccessMessage(null);
 
-            header("Location: /SariSmarts/accounts/acc_log_in.php");
+            header("Location: /acc_log_in");
             exit();
         }
 
@@ -115,23 +115,23 @@ if (!function_exists('requireRole')) {
             switch ($userRole) {
 
                 case "admin":
-                    header("Location: /SariSmarts/admin/dashboard.php");
+                    header("Location: /admin/dashboard.php");
                     break;
 
                 case "hr":
-                    header("Location: /SariSmarts/hr/dashboard.php");
+                    header("Location: /hr/dashboard.php");
                     break;
 
                 case "finance":
-                    header("Location: /SariSmarts/finance/dashboard.php");
+                    header("Location: /finance/dashboard.php");
                     exit();
 
                 case "inventory":
-                    header("Location: /SariSmarts/inventory/dashboard.php");
+                    header("Location: /inventory/dashboard.php");
                     exit();
 
                 case "cashier":
-                    header("Location: /SariSmarts/cashier/pointofsales.php");
+                    header("Location: /cashier/pointofsales.php");
                     exit();
 
                 case "super admin":
@@ -139,7 +139,7 @@ if (!function_exists('requireRole')) {
                     exit();
 
                 default:
-                    header("Location: /SariSmarts/accounts/acc_log_in.php");
+                    header("Location: /acc_log_in");
                     break;
             }
 

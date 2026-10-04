@@ -655,7 +655,7 @@ if (!function_exists('requireRole')) {
 
         if (!isset($_SESSION['user_id']) || !isset($_SESSION['role'])) {
             $_SESSION['session_expired'] = "Please log in to access this page.";
-            header("Location: /accounts/acc_log_in.php");
+            header("Location: /acc_log_in");
             exit();
         }
 
@@ -682,7 +682,7 @@ if (!function_exists('requireRole')) {
             session_start();
             $_SESSION['login_error'] = accountAccessMessage(null);
 
-            header("Location: /accounts/acc_log_in.php");
+            header("Location: /acc_log_in");
             exit();
         }
 
@@ -732,7 +732,7 @@ if (!function_exists('requireRole')) {
                     exit();
 
                 default:
-                    header("Location: /accounts/acc_log_in.php");
+                    header("Location: /acc_log_in");
                     break;
             }
 

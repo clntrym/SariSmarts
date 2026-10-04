@@ -976,7 +976,7 @@ include __DIR__ . "/header.php";
                         You can sign in to the system now.
                     </div>
 
-                    <a href="/SariSmarts/accounts/acc_log_in.php" class="btn text-white"
+                    <a href="/accounts/acc_log_in.php" class="btn text-white"
                         style="background:#00224c;">Sign In</a>
 
                 <?php else: ?>

@@ -7,7 +7,42 @@ RewriteCond %{REQUEST_FILENAME} -f [OR]
 RewriteCond %{REQUEST_FILENAME} -d
 RewriteRule ^ - [L]
 
-# If appending .php exists, rewrite internally (no external 301 redirect)
+# ---------------------------------------------------------------------------
+# Short addresses for the pages a visitor types or is sent in an email.
+#
+# These are rewrites, not redirects: the browser keeps showing /acc_log_in
+# while Apache serves accounts/acc_log_in.php.
+#
+# Only public entry points get one, and the reason is collisions. Forty-two
+# filenames in this project exist in more than one folder -- dashboard.php
+# alone is in admin, hr, finance, inventory, employee and superAdmin -- so
+# there is no such thing as /dashboard. A folderless address can only be given
+# to a name that is unique, and every name below is.
+#
+# Pages behind a login keep their folder (/hr/dashboard, /admin/reports). They
+# are not typed or linked from outside, and the folder is what makes them
+# unambiguous.
+# ---------------------------------------------------------------------------
+
+RewriteRule ^acc_log_in/?$        accounts/acc_log_in.php        [L,QSA]
+RewriteRule ^login/?$             accounts/acc_log_in.php        [L,QSA]
+RewriteRule ^acc_log_out/?$       accounts/acc_log_out.php       [L,QSA]
+RewriteRule ^logout/?$            accounts/acc_log_out.php       [L,QSA]
+RewriteRule ^forgot_password/?$   accounts/forgot_password.php   [L,QSA]
+RewriteRule ^reset-password/?$    accounts/reset-password.php    [L,QSA]
+RewriteRule ^verify_email/?$      accounts/verify_email.php      [L,QSA]
+RewriteRule ^apply/?$             accounts/apply.php             [L,QSA]
+
+# The public side of the platform.
+RewriteRule ^register/?$          platform/register.php          [L,QSA]
+RewriteRule ^pricing/?$           platform/pricing.php           [L,QSA]
+RewriteRule ^features/?$          platform/features.php          [L,QSA]
+RewriteRule ^careers/?$           platform/careers.php           [L,QSA]
+RewriteRule ^aboutUs/?$           platform/aboutUs.php           [L,QSA]
+RewriteRule ^contactUs/?$         platform/contactUs.php         [L,QSA]
+RewriteRule ^marketPlace/?$       platform/marketPlace.php       [L,QSA]
+RewriteRule ^bookDemo/?$          platform/bookDemo.php          [L,QSA]
+
+# Everything else: drop the .php, so /hr/dashboard serves hr/dashboard.php.
 RewriteCond %{REQUEST_FILENAME}.php -f
 RewriteRule ^(.*)$ $1.php [L,QSA]
-

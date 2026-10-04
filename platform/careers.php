@@ -105,12 +105,12 @@ include __DIR__ . "/header.php";
 
                             <?php if (!empty($job['job_image'])): ?>
 
-                                <img src="../SariSmarts/assets/job-images/<?= htmlspecialchars($job['job_image']); ?>"
+                                <img src="../assets/job-images/<?= htmlspecialchars($job['job_image']); ?>"
                                     alt="<?= htmlspecialchars($job['job_title']); ?>" class="w-full h-full object-cover">
 
                             <?php else: ?>
 
-                                <img src="../SariSmarts/assets/careers-banner.jpg" alt="SariSmart Careers"
+                                <img src="../assets/careers-banner.jpg" alt="SariSmart Careers"
                                     class="w-full h-full object-cover">
 
 
@@ -347,7 +347,7 @@ include __DIR__ . "/header.php";
                 <!-- Banner -->
                 <div class="position-relative">
 
-                    <img src="../SariSmarts/assets/careers-banner.jpg" class="w-100"
+                    <img src="../assets/careers-banner.jpg" class="w-100"
                         style="height:320px;object-fit:cover;">
 
 

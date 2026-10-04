@@ -274,7 +274,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="inventory.php" class="nav-link <?= ($currentPage == 'inventory.php') ? 'active' : '' ?>">
+                    <a href="Inventory.php" class="nav-link <?= ($currentPage == 'Inventory.php') ? 'active' : '' ?>">
                         <i class="bi bi-box-seam me-2"></i>
                         <span>Inventory</span>
                     </a>
@@ -287,7 +287,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="Suppliers.php" class="nav-link <?= ($currentPage == 'Suppliers.php') ? 'active' : '' ?>">
+                    <a href="suppliers.php" class="nav-link <?= ($currentPage == 'suppliers.php') ? 'active' : '' ?>">
                         <i class="bi bi-truck me-2"></i>
                         <span>Suppliers</span>
                     </a>
