@@ -542,46 +542,8 @@ $employeeOpen = in_array($currentPage, $employeePages);
                         <span>User Management</span>
                     </a>
                 </li>
-
-                <li class="nav-item">
-                    <a href="/admin/admin_settings.php" class="nav-link <?= ($currentPage == 'admin_settings.php') ? 'active' : '' ?>">
-                        <i class="bi bi-gear me-2"></i>
-                        <span>Settings</span>
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a href="#" class="nav-link" onclick="confirmLogout()">
-                        <i class="bi bi-box-arrow-right me-2"></i>
-                        <span>Logout</span>
-                    </a>
-                </li>
             </ul>
                     </div>
-                </li>
-                <li class="nav-item">
-                    <a href="Inventory.php" class="nav-link <?= ($currentPage == 'Inventory.php') ? 'active' : '' ?>">
-                        <i class="bi bi-box-seam me-2"></i>
-                        <span>Inventory</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="suppliers.php" class="nav-link <?= ($currentPage == 'suppliers.php') ? 'active' : '' ?>">
-                        <i class="bi bi-truck me-2"></i>
-                        <span>Suppliers</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="income.php" class="nav-link <?= ($currentPage == 'income.php') ? 'active' : '' ?>">
-                        <i class="bi bi-cash-stack me-2"></i>
-                        <span>Income</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="tax.php" class="nav-link <?= ($currentPage == 'tax.php') ? 'active' : '' ?>">
-                        <i class="bi bi-percent me-2"></i>
-                        <span>Tax</span>
-                    </a>
                 </li>
                 <li class="nav-item">
                     <a href="../admin/reports.php"
