@@ -110,10 +110,26 @@ function chatConverse(
     array $ctx,
     string $question,
     array $history,
-    callable $model
+    callable $model,
+    ?array $schemas = null,
+    ?callable $runner = null
 ): array {
-    $tools = chatToolsFor($conn, $ctx);
-    $schemas = chatToolSchemas($tools);
+    /*
+    | The catalogue and the runner are injectable so one loop can serve two
+    | assistants. The tenant one reads a single company; the platform one
+    | reads across companies for an operator. Both want the same rounds, the
+    | same deadline, the same grounding rule and the same batching of results
+    | -- duplicating the loop to get a second catalogue would mean fixing
+    | every future bug twice.
+    |
+    | Left out, it behaves exactly as before.
+    */
+    if ($schemas === null) {
+        $schemas = chatToolSchemas(chatToolsFor($conn, $ctx));
+    }
+
+    $runner = $runner ?? static fn(string $name, array $input): array
+        => chatRunTool($conn, $ctx, $name, $input);
 
     $messages = [];
 
@@ -223,7 +239,7 @@ function chatConverse(
                 break;
             }
 
-            $outcome = chatRunTool($conn, $ctx, (string) ($call['name'] ?? ''),
+            $outcome = $runner((string) ($call['name'] ?? ''),
                 (array) ($call['input'] ?? []));
 
             if (!$outcome['ok']) {
