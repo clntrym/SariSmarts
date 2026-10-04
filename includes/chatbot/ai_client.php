@@ -38,6 +38,8 @@ const CHATBOT_AI_DAILY_CAP = 200;
 | the alternative is an edit that silently switches the AI layer off until
 | somebody notices the key is "missing".
 */
+require_once __DIR__ . '/../settings_env.php';
+
 const CHATBOT_SECRETS = 'C:\\xampp\\retailcore_secrets.php';
 const CHATBOT_SECRETS_LEGACY = 'C:\\xampp\\sarismart_secrets.php';
 
@@ -79,7 +81,17 @@ function chatbotAiSettings(): array
     $path = chatbotSecretsPath();
 
     if (!array_key_exists($path, $cache)) {
-        $cache[$path] = is_readable($path) ? (array) require $path : [];
+
+        $file = is_readable($path) ? (array) require $path : [];
+
+        /*
+        | The file wins where both speak. Putting a key in a file outside the
+        | webroot is the more deliberate act of the two, and on a developer's
+        | machine it should not be silently overridden by a variable left in a
+        | shell. A setting the file omits still comes from the environment, so
+        | one can be added on the host without editing anything.
+        */
+        $cache[$path] = $file + chatbotSettingsFromEnvironment();
     }
 
     return $cache[$path];

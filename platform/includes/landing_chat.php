@@ -102,8 +102,32 @@ if (!function_exists('landingChatSettings')) {
         }
 
         $path = (string) ($GLOBALS['landing_chat_secrets_path'] ?? LANDING_CHAT_SECRETS);
+        $file = is_readable($path) ? (array) require $path : [];
 
-        return $cache = is_readable($path) ? (array) require $path : [];
+        /*
+        | The environment as well as the file, and for the same reason the
+        | tenant assistant now reads both: LANDING_CHAT_SECRETS names a path
+        | under C:\xampp, the deployed site runs Linux, and so this chat has
+        | never had a key in production. The bubble drew, the question posted,
+        | and the answer came back from the scripted fallback every time.
+        |
+        | The file wins where both speak; a setting it omits is filled from
+        | the environment.
+        */
+        /* Either layout: platform inside the main folder, or beside it. */
+        $shared = is_file(__DIR__ . '/../../includes/settings_env.php')
+            ? __DIR__ . '/../../includes/settings_env.php'
+            : __DIR__ . '/../../SariSmarts/includes/settings_env.php';
+
+        if (is_readable($shared)) {
+            require_once $shared;
+        }
+
+        $environment = function_exists('chatbotSettingsFromEnvironment')
+            ? chatbotSettingsFromEnvironment()
+            : [];
+
+        return $cache = $file + $environment;
     }
 }
 
