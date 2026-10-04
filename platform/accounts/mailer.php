@@ -58,9 +58,24 @@ if (!$autoloaderFound) {
 
 function getMailerConfig()
 {
-    $secretsFile = 'C:/xampp/private_config/sarismart_secrets.php';
+    /*
+    | The shared reader, which looks at the environment as well as the file.
+    |
+    | This named C:/xampp/private_config/sarismart_secrets.php outright. That
+    | is a Windows path on a site that runs on Linux, so on Render the file
+    | was never found, PHPMailer got an empty username and password, and
+    | every message the system tried to send failed authentication -- the
+    | Super Admin's approval mail among them.
+    */
+    $shared = is_file(__DIR__ . '/../../includes/mail_settings.php')
+        ? __DIR__ . '/../../includes/mail_settings.php'
+        : __DIR__ . '/../../includes/mail_settings.php';
 
-    return is_readable($secretsFile) ? require $secretsFile : [];
+    if (is_readable($shared)) {
+        require_once $shared;
+    }
+
+    return function_exists('mailSettings') ? mailSettings() : [];
 }
 
 
