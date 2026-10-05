@@ -454,9 +454,27 @@ if (isset($_POST['createStockRequest'])) {
                 | payment_type is pinned to Capital here for the same reason
                 | the auto-approved path pins it: with no Accounts Payable
                 | screen, capital is the only way it can ever be settled.
+                |
+                | AND WHERE THERE IS A FINANCE APPROVER
+                |
+                | This was null, to mean "Finance has not chosen yet". The
+                | column is enum('Capital','Payable') NOT NULL DEFAULT
+                | 'Capital', and writing null into a NOT NULL column is an
+                | error under STRICT_TRANS_TABLES -- which MySQL 8.4 has on
+                | by default and the MariaDB here does not. So every request
+                | raised by a company that HAS a Finance approver succeeded
+                | on XAMPP and failed on the deployed site with "Column
+                | 'payment_type' cannot be null". The fifth time these two
+                | servers have disagreed in this project.
+                |
+                | Capital is not a decision recorded on Finance's behalf. It
+                | is the same pre-selection the Finance approval screen
+                | already shows -- the Capital radio is rendered checked --
+                | and Finance's choice overwrites it on approval. The column
+                | now says what the form says.
                 */
                 $startingStatus = $hasFinanceApprover ? 'Pending Finance' : 'Pending Admin';
-                $startingPayment = $hasFinanceApprover ? null : 'Capital';
+                $startingPayment = 'Capital';
 
                 $insertHeader = $conn->prepare("
                     INSERT INTO stock_requests
