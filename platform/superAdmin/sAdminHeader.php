@@ -158,7 +158,6 @@ $bellUnread = platformFeedUnread($bellItems, $bellSeenAt, $bellNow);
             ],
 
             'People &amp; Sales' => [
-                ['leads', 'leads.php', 'bi-person-lines-fill', 'Leads'],
                 ['employees', 'employees.php', 'bi-person-vcard', 'Employees'],
                 ['support', 'support.php', 'bi-headset', 'Customer Support'],
                 ['notifications', 'notifications.php', 'bi-bell', 'Notifications'],
