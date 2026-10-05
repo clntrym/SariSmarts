@@ -134,6 +134,32 @@ function userTestCleanup(mysqli $conn): void
     @$conn->query("DELETE FROM `company` WHERE company_id IN ({$ids})");
 
     $conn->query("SET FOREIGN_KEY_CHECKS = 1");
+
+    userTestForgetFiles($conn);
+}
+
+/**
+ * Stored files the tests left behind.
+ *
+ * platform_files is keyed by path and carries no company_id, so the sweep
+ * above -- which finds its tables by that column -- cannot see it. A
+ * contract PDF written by test_platform_files.php survived every run and
+ * sat in the database afterwards.
+ *
+ * The same gap caught the production wipe: deleting a company left its
+ * signed agreement behind, bytes nobody could reach. Worth fixing in both
+ * places rather than remembering it twice.
+ */
+function userTestForgetFiles(mysqli $conn): void
+{
+    /* Both spellings: "USERTEST " names a company, "USERTEST_" a file. */
+    $probe = @$conn->query("SELECT 1 FROM platform_files LIMIT 1");
+
+    if ($probe === false) {
+        return;
+    }
+
+    @$conn->query("DELETE FROM platform_files WHERE file_path LIKE '%USERTEST%'");
 }
 
 /*
