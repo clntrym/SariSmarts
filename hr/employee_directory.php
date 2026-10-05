@@ -13,6 +13,16 @@ require_once __DIR__ . '/../includes/role_chrome.php';
 
 
 $companyId = requireCompany();
+/*
+| And whether the plan has this department at all.
+|
+| requireRole() above admits an admin, and role says nothing about the
+| plan: Retail Starter sells Owner/Admin, Cashier and Inventory Staff, so
+| an owner on it has no HR people and no HRMS to manage. Hiding the
+| sidebar entry is presentation; this is what holds when the address is
+| typed.
+*/
+requirePlanRole($conn, $companyId, 'hr', 'HRMS');
 include includeRoleHeader(__DIR__, 'hr_header.php');
 
 /*

@@ -16,6 +16,23 @@ $navCompanyId = requireCompany();
 $canBranch = companyHasModule($conn, $navCompanyId, 'branch');
 $canHiring = companyHasModule($conn, $navCompanyId, 'hiring');
 
+/*
+| Which departments this company's plan actually has.
+|
+| Retail Starter sells three roles -- Owner/Admin, Cashier, Inventory Staff
+| -- and the RBAC work gave every owner the HRMS and Finance dropdowns
+| without asking. So a Retail Starter owner was shown Recruitment, Payroll
+| and Accounts Payable: screens for staff their plan cannot create, in
+| modules they did not buy.
+|
+| The pages themselves call requirePlanRole(), for the same reason the
+| module links call requireModule(): this hides the entry, that refuses the
+| address.
+*/
+$navPlanRoles = companyPlanRoles($conn, $navCompanyId);
+$canHrms = in_array('hr', $navPlanRoles, true);
+$canFinance = in_array('finance', $navPlanRoles, true);
+
 $employeePages = [
     'approval.php',
     'stock_requests.php',
@@ -374,6 +391,7 @@ $employeeOpen = in_array($currentPage, $employeePages);
                 </li>
 
                 <!-- ============================ HRMS ============================ -->
+                <?php if ($canHrms): ?>
                 <li class="nav-item">
                     <a class="nav-link d-flex justify-content-between align-items-center <?= $hrmsOpen ? '' : 'collapsed' ?>"
                         data-bs-toggle="collapse" href="#hrmsMenu" role="button"
@@ -421,7 +439,10 @@ $employeeOpen = in_array($currentPage, $employeePages);
                     </div>
                 </li>
 
+                <?php endif; ?>
+
                 <!-- =========================== FINANCE =========================== -->
+                <?php if ($canFinance): ?>
                 <li class="nav-item">
                     <a class="nav-link d-flex justify-content-between align-items-center <?= $financeOpen ? '' : 'collapsed' ?>"
                         data-bs-toggle="collapse" href="#financeMenu" role="button"
@@ -458,6 +479,8 @@ $employeeOpen = in_array($currentPage, $employeePages);
                         </ul>
                     </div>
                 </li>
+
+                <?php endif; ?>
 
                 <!-- ========================== INVENTORY ========================== -->
                 <li class="nav-item">

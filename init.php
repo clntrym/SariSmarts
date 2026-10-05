@@ -357,6 +357,50 @@ if (!function_exists('requireModule')) {
 }
 
 /**
+ * Stop a request for a module belonging to a role the company's plan does
+ * not sell.
+ *
+ * Retail Starter hands out Owner/Admin, Cashier and Inventory Staff. It has
+ * no HR and no Finance, so HRMS and Finance are not modules its owner is
+ * choosing not to use -- they are not part of what they bought.
+ *
+ * Separate from requireModule(), which asks about subscription_plan_features
+ * and governs things like hiring approval. This asks about
+ * subscription_plan_roles: whether the company may have such a person at
+ * all. The HR pages admit an admin by role -- requireRole(['hr', 'admin'])
+ * -- and role says nothing about the plan, so without this an owner on the
+ * smallest plan could open Payroll by typing its address.
+ *
+ * Hiding the sidebar entry is presentation. This is the part that holds.
+ */
+if (!function_exists('requirePlanRole')) {
+    function requirePlanRole(mysqli $conn, int $companyId, string $role, string $label = ''): void
+    {
+        $role = strtolower(trim($role));
+
+        if (in_array($role, companyPlanRoles($conn, $companyId), true)) {
+            return;
+        }
+
+        $plan = currentCompanyPlan($conn, $companyId);
+        $planName = $plan['plan_name'] ?? 'current';
+        $what = $label !== '' ? $label : ucfirst($role);
+
+        http_response_code(403);
+        exit(
+            '<!doctype html><meta charset="utf-8">'
+            . '<div style="font:15px/1.6 system-ui,sans-serif;max-width:520px;margin:12vh auto;padding:0 24px;color:#00224c">'
+            . '<h2 style="margin:0 0 8px">' . htmlspecialchars($what) . ' is not part of your plan</h2>'
+            . '<p style="color:#5b6b82;margin:0 0 20px">The ' . htmlspecialchars($planName)
+            . ' plan does not include this department, so there is nothing here to manage. '
+            . 'Upgrade the plan to add it.</p>'
+            . '<a href="/admin/dashboard.php" style="color:#00224c;font-weight:600">Back to dashboard</a>'
+            . '</div>'
+        );
+    }
+}
+
+/**
  * How many branches the company's plan allows, or null for no ceiling.
  *
  * A NULL or non-positive max_branches means unlimited, matching how
