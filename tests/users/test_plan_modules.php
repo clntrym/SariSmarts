@@ -103,6 +103,45 @@ foreach (['canHrms' => 'HRMS', 'canFinance' => 'Finance'] as $flag => $what) {
         "the {$what} section is shown only where the plan includes it");
 }
 
+/* --------------------------- a module nobody sells is a module everybody has */
+
+/*
+| companyHasModule()'s rule: a module no plan claims is denied to nobody, so
+| that adding a page never silently hides it from everybody. Right -- and it
+| means a slug missing from subscription_plan_features does not fail, it
+| GRANTS.
+|
+| That is how a Retail Starter store ended up with finance_approval. Its
+| stock request went to a Finance step it has no Finance user to perform,
+| and sat there: the owner's page showed it waiting on somebody who does not
+| exist, and nobody could approve it. Hiring Approval stayed in the sidebar
+| for the same reason.
+|
+| Every module the code gates on has to be sold by somebody, or the gate is
+| scenery.
+*/
+$sold = [];
+$result = $conn->query("
+    SELECT DISTINCT system_module
+    FROM subscription_plan_features
+    WHERE system_module IS NOT NULL AND system_module <> ''
+");
+
+while ($row = $result->fetch_assoc()) {
+    $sold[] = strtolower(trim((string) $row['system_module']));
+}
+
+foreach (['branch', 'hiring', 'finance_approval'] as $module) {
+    t_ok(in_array($module, $sold, true),
+        "'{$module}' is sold by some plan, so the gate on it means something");
+}
+
+/* And Retail Starter buys none of the three. */
+foreach (['branch', 'hiring', 'finance_approval'] as $module) {
+    t_ok(!companyHasModule($conn, $companyId, $module),
+        "a Retail Starter company does not get '{$module}'");
+}
+
 /* ------------------------------------- the fallback, and why it is silent */
 
 /*
