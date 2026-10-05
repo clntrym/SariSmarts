@@ -5,142 +5,102 @@
             MARKETPLACE
         </span>
         <h1 class="pricing-title mt-4">
-            Same platform, configured for how your stores actually trade
+            Built for how a sari-sari store actually trades
         </h1>
         <p class="pricing-description mt-4">
-            A 24-hour convenience store and a 12,000-SKU supermarket need
-            different defaults. We ship both.
+            Built for the sari-sari store first: one counter, one owner,
+            and no IT staff to call.
         </p>
     </div>
 </section>
 
+<?php
+/*
+| One card, for the store this was built for.
+|
+| There were two here and they were the same card: both titled
+| "Convenience Stores", with the same subtitle, the same five modules, the
+| same three bullets and the same 42-store anecdote. A copy that was never
+| edited. The hero promised "a 24-hour convenience store and a 12,000-SKU
+| supermarket", which no card on the page delivered.
+|
+| A sari-sari store is the customer: one owner, no IT staff, one counter.
+| The claims below are things this system actually does -- low stock
+| alerts, face attendance, a single screen -- rather than a chain-store
+| statistic nobody here can stand behind.
+|
+| A PHP comment and not an HTML one, which is the difference between a note
+| to the next developer and a note shipped to every prospect who opens view
+| source.
+*/
+?>
 <section class="bg-slate-50 py-16">
-    <div class="mx-auto max-w-7xl px-6">
-        <div class="row">
-            <div class="col-6 grid gap-8">
-                <div class="rounded-3xl border border-slate-200 bg-white p-7 shadow-sm transition hover:shadow-lg">
-                    <div class="flex items-start justify-between">
-                        <div>
-                            <h3 class="text-2xl font-semibold text-slate-900">
-                                Convenience Stores
-                            </h3>
-                            <p class="mt-2 text-sm text-slate-500">
-                                24/7 operations with shift-proof accountability.
-                            </p>
-                        </div>
-                        <span class="rounded-full bg-orange-100 px-4 py-1 text-xs font-medium text-orange-600">
-                            ~38% stock discrepancies
-                        </span>
-                    </div>
-                    <div class="mt-8">
-                        <p class="mb-3 text-[11px] font-semibold uppercase tracking-[0.25em] text-slate-400">
-                            Modules Used
-                        </p>
-                        <div class="flex flex-wrap gap-2">
-                            <span class="rounded-full border bg-slate-100 px-3 py-1 text-xs">POS</span>
-                            <span class="rounded-full border bg-slate-100 px-3 py-1 text-xs">Inventory</span>
-                            <span class="rounded-full border bg-slate-100 px-3 py-1 text-xs">Shift Management</span>
-                            <span class="rounded-full border bg-slate-100 px-3 py-1 text-xs">Attendance</span>
-                            <span class="rounded-full border bg-slate-100 px-3 py-1 text-xs">Promotions</span>
-                        </div>
-                    </div>
-                    <ul class="mt-8 space-y-3 text-sm text-slate-700">
-                        <li class="flex gap-3">
-                            <svg class="mt-0.5 h-5 w-5 text-blue-500" fill="none" stroke="currentColor" stroke-width="2"
-                                viewBox="0 0 24 24">
-                                <path d="M5 12l5 5L20 7" />
-                            </svg>
-                            <span>Per-shift cash drawer reconciliation</span>
-                        </li>
-                        <li class="flex gap-3">
-                            <svg class="mt-0.5 h-5 w-5 text-blue-500" fill="none" stroke="currentColor" stroke-width="2"
-                                viewBox="0 0 24 24">
-                                <path d="M5 12l5 5L20 7" />
-                            </svg>
-                            <span>Expiration alerts on fast-moving perishables</span>
-                        </li>
-                        <li class="flex gap-3">
-                            <svg class="mt-0.5 h-5 w-5 text-blue-500" fill="none" stroke="currentColor" stroke-width="2"
-                                viewBox="0 0 24 24">
-                                <path d="M5 12l5 5L20 7" />
-                            </svg>
-                            <span>Offline selling when the connection drops</span>
-                        </li>
-                    </ul>
-                    <div
-                        class="mt-8 rounded-2xl border-l-4 border-blue-500 bg-blue-50 p-5 text-sm leading-6 text-slate-700">
-                        A 42-store chain cut nightly reconciliation from 25 minutes to 4 by
-                        moving cash counts into the POS close-out.
-                    </div>
-                    <button
-                        class="mt-8 inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-medium transition hover:bg-slate-900 hover:text-white">
-                        Demo this setup
-                        <span>&rarr;</span>
-                    </button>
+    <div class="mx-auto max-w-4xl px-6">
+        <div class="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm transition hover:shadow-lg">
+
+            <div class="flex items-start justify-between flex-wrap gap-3">
+                <div>
+                    <h3 class="text-2xl font-semibold text-slate-900">
+                        Sari-Sari Stores
+                    </h3>
+                    <p class="mt-2 text-sm text-slate-500">
+                        The neighbourhood store, run by the family that owns it.
+                    </p>
+                </div>
+                <span class="rounded-full bg-orange-100 px-4 py-1 text-xs font-medium text-orange-600">
+                    One counter, no IT staff
+                </span>
+            </div>
+
+            <div class="mt-8">
+                <p class="mb-3 text-[11px] font-semibold uppercase tracking-[0.25em] text-slate-400">
+                    Modules Used
+                </p>
+                <div class="flex flex-wrap gap-2">
+                    <span class="rounded-full border bg-slate-100 px-3 py-1 text-xs">POS</span>
+                    <span class="rounded-full border bg-slate-100 px-3 py-1 text-xs">Inventory</span>
+                    <span class="rounded-full border bg-slate-100 px-3 py-1 text-xs">Suppliers</span>
+                    <span class="rounded-full border bg-slate-100 px-3 py-1 text-xs">Attendance</span>
+                    <span class="rounded-full border bg-slate-100 px-3 py-1 text-xs">Promotions</span>
                 </div>
             </div>
-            <div class="col-6 grid gap-8">
-                <div class="rounded-3xl border border-slate-200 bg-white p-7 shadow-sm transition hover:shadow-lg">
-                    <div class="flex items-start justify-between">
-                        <div>
-                            <h3 class="text-2xl font-semibold text-slate-900">
-                                Convenience Stores
-                            </h3>
-                            <p class="mt-2 text-sm text-slate-500">
-                                24/7 operations with shift-proof accountability.
-                            </p>
-                        </div>
-                        <span class="rounded-full bg-orange-100 px-4 py-1 text-xs font-medium text-orange-600">
-                            ~38% stock discrepancies
-                        </span>
-                    </div>
-                    <div class="mt-8">
-                        <p class="mb-3 text-[11px] font-semibold uppercase tracking-[0.25em] text-slate-400">
-                            Modules Used
-                        </p>
-                        <div class="flex flex-wrap gap-2">
-                            <span class="rounded-full border bg-slate-100 px-3 py-1 text-xs">POS</span>
-                            <span class="rounded-full border bg-slate-100 px-3 py-1 text-xs">Inventory</span>
-                            <span class="rounded-full border bg-slate-100 px-3 py-1 text-xs">Shift Management</span>
-                            <span class="rounded-full border bg-slate-100 px-3 py-1 text-xs">Attendance</span>
-                            <span class="rounded-full border bg-slate-100 px-3 py-1 text-xs">Promotions</span>
-                        </div>
-                    </div>
-                    <ul class="mt-8 space-y-3 text-sm text-slate-700">
-                        <li class="flex gap-3">
-                            <svg class="mt-0.5 h-5 w-5 text-blue-500" fill="none" stroke="currentColor" stroke-width="2"
-                                viewBox="0 0 24 24">
-                                <path d="M5 12l5 5L20 7" />
-                            </svg>
-                            <span>Per-shift cash drawer reconciliation</span>
-                        </li>
-                        <li class="flex gap-3">
-                            <svg class="mt-0.5 h-5 w-5 text-blue-500" fill="none" stroke="currentColor" stroke-width="2"
-                                viewBox="0 0 24 24">
-                                <path d="M5 12l5 5L20 7" />
-                            </svg>
-                            <span>Expiration alerts on fast-moving perishables</span>
-                        </li>
-                        <li class="flex gap-3">
-                            <svg class="mt-0.5 h-5 w-5 text-blue-500" fill="none" stroke="currentColor" stroke-width="2"
-                                viewBox="0 0 24 24">
-                                <path d="M5 12l5 5L20 7" />
-                            </svg>
-                            <span>Offline selling when the connection drops</span>
-                        </li>
-                    </ul>
-                    <div
-                        class="mt-8 rounded-2xl border-l-4 border-blue-500 bg-blue-50 p-5 text-sm leading-6 text-slate-700">
-                        A 42-store chain cut nightly reconciliation from 25 minutes to 4 by
-                        moving cash counts into the POS close-out.
-                    </div>
-                    <button
-                        class="mt-8 inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-medium transition hover:bg-slate-900 hover:text-white">
-                        Demo this setup
-                        <span>&rarr;</span>
-                    </button>
-                </div>
+
+            <ul class="mt-8 space-y-3 text-sm text-slate-700">
+                <li class="flex gap-3">
+                    <svg class="mt-0.5 h-5 w-5 text-blue-500" fill="none" stroke="currentColor" stroke-width="2"
+                        viewBox="0 0 24 24">
+                        <path d="M5 12l5 5L20 7" />
+                    </svg>
+                    <span>Low stock alerts on the items that actually move</span>
+                </li>
+                <li class="flex gap-3">
+                    <svg class="mt-0.5 h-5 w-5 text-blue-500" fill="none" stroke="currentColor" stroke-width="2"
+                        viewBox="0 0 24 24">
+                        <path d="M5 12l5 5L20 7" />
+                    </svg>
+                    <span>Time in by face, so a helper's hours are not an argument</span>
+                </li>
+                <li class="flex gap-3">
+                    <svg class="mt-0.5 h-5 w-5 text-blue-500" fill="none" stroke="currentColor" stroke-width="2"
+                        viewBox="0 0 24 24">
+                        <path d="M5 12l5 5L20 7" />
+                    </svg>
+                    <span>One owner, one screen, and nobody to call IT about</span>
+                </li>
+            </ul>
+
+            <div
+                class="mt-8 rounded-2xl border-l-4 border-blue-500 bg-blue-50 p-5 text-sm leading-6 text-slate-700">
+                Starts at one branch and up to ten staff. The plan grows when the
+                store does -- nothing here assumes a head office.
             </div>
+
+            <a href="/platform/pricing.php"
+                class="mt-8 inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-medium transition hover:bg-slate-900 hover:text-white">
+                See what it costs
+                <span>&rarr;</span>
+            </a>
+
         </div>
     </div>
 </section>
