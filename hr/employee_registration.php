@@ -3611,16 +3611,45 @@ while ($row = mysqli_fetch_assoc($query)) {
                                                     Resume / CV
                                                 </span>
 
-                                                <?php if (!empty($selectedEmployee['resume'])): ?>
+                                                <?php
+                                                /*
+                                                | Three states, not two.
+                                                |
+                                                | This asked whether the column was empty and
+                                                | answered both "nobody attached a CV" and "the
+                                                | CV is gone" with the word Missing. Those want
+                                                | different things done -- ask the applicant, or
+                                                | stop looking -- and somebody spent an evening
+                                                | hunting for a file that had been wiped with
+                                                | the disk it sat on.
+                                                */
+                                                require_once __DIR__ . '/../includes/resume_file.php';
+
+                                                $resumeState = resumeState(
+                                                    $conn,
+                                                    $selectedEmployee['resume'] ?? '',
+                                                    dirname(__DIR__)
+                                                );
+
+                                                $resumeLink = resumePath($selectedEmployee['resume'] ?? '');
+                                                ?>
+
+                                                <?php if ($resumeState === 'stored'): ?>
 
                                                     <span class="badge rounded-pill bg-success-subtle text-success">
                                                         Verified
                                                     </span>
 
+                                                <?php elseif ($resumeState === 'lost'): ?>
+
+                                                    <span class="badge rounded-pill bg-warning-subtle text-warning-emphasis">
+                                                        File lost
+                                                    </span>
+
                                                 <?php else: ?>
 
                                                     <span class="badge rounded-pill bg-light text-secondary">
-                                                        Missing
+                                                        Not attached
                                                     </span>
 
                                                 <?php endif; ?>
@@ -3628,11 +3657,18 @@ while ($row = mysqli_fetch_assoc($query)) {
                                             </div>
 
 
-                                            <?php if (!empty($selectedEmployee['resume'])): ?>
+                                            <?php if ($resumeState === 'stored'): ?>
 
                                                 <div class="d-flex gap-2">
 
-                                                    <a href="<?= htmlspecialchars($selectedEmployee['resume']) ?>"
+                                                    <!--
+                                                        Through resume_file.php, which asks which
+                                                        company is reading. The column used to be
+                                                        rendered straight into this href as a bare
+                                                        filename, so the link resolved to /hr/ and
+                                                        404ed even when the CV was on file.
+                                                    -->
+                                                    <a href="/resume_file.php?path=<?= urlencode($resumeLink) ?>"
                                                         target="_blank" class="btn btn-sm btn-light border">
 
                                                         <i class="bi bi-eye me-1"></i>
@@ -3644,6 +3680,28 @@ while ($row = mysqli_fetch_assoc($query)) {
 
                                                 <div class="form-text mb-0 mt-1">
                                                     Already on file from the applicant's application. No need to upload again.
+                                                </div>
+
+                                            <?php elseif ($resumeState === 'lost'): ?>
+
+                                                <div class="form-text mb-0">
+                                                    This applicant attached a CV, but the file is no
+                                                    longer on record. Ask them to send it again and
+                                                    upload it below.
+                                                </div>
+
+                                                <div class="d-flex gap-2 mt-2">
+
+                                                    <input type="file" name="resume" class="d-none" id="resumeUpload"
+                                                        accept=".pdf,.doc,.docx">
+
+                                                    <label for="resumeUpload" class="btn btn-sm btn-light border">
+
+                                                        <i class="bi bi-upload me-1"></i>
+                                                        Upload
+
+                                                    </label>
+
                                                 </div>
 
                                             <?php else: ?>

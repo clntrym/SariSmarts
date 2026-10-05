@@ -55,17 +55,47 @@ if (isset($_POST['submit_application'])) {
             mkdir($folder, 0777, true);
         }
 
-        $resume = time() . "_" . basename($_FILES['resume']['name']);
+        $filename = time() . "_" . basename($_FILES['resume']['name']);
 
-        if (
-            !move_uploaded_file(
-                $_FILES['resume']['tmp_name'],
-                $folder . $resume
-            )
-        ) {
+        /*
+        | Recorded as a path, not a bare name.
+        |
+        | This stored "1759_cv.pdf" while the file sat in uploads/resume/,
+        | and the Resume card in Employee Registration renders the column
+        | straight into an href -- so a CV that WAS on file linked to
+        | /hr/1759_cv.pdf, which is nowhere. Every other document in this
+        | system stores its folder. Old rows keep working because
+        | resumePath() accepts either.
+        */
+        require_once __DIR__ . "/../includes/resume_file.php";
+
+        $resume = resumePath($filename);
+
+        if ($resume === "") {
+            die("That file name cannot be used.");
+        }
+
+        /*
+        | And the bytes go to the database.
+        |
+        | uploads/resume/ is in .gitignore, so it is not in the deploy, and
+        | the host keeps no disk between deploys in any case: the
+        | application row survived and the PDF did not, which is what HR
+        | was looking at when the card said Missing.
+        */
+        require_once __DIR__ . "/../includes/stored_files.php";
+
+        $bytes = @file_get_contents($_FILES['resume']['tmp_name']);
+
+        if ($bytes === false
+            || !platformFileStore($conn, $resume, $bytes,
+                                  "application/pdf", $filename)) {
 
             die("Resume upload failed.");
         }
+
+        /* And to the disk as well, where the host keeps one. */
+        @move_uploaded_file($_FILES['resume']['tmp_name'], $folder . $filename);
     }
     /*
     | Which company this application belongs to.
