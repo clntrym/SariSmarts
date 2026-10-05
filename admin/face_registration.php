@@ -26,46 +26,58 @@ $MODULE_HEADER = __DIR__ . "/admin_header.php";
 $MODULE_FOOTER = __DIR__ . "/admin_footer.php";
 
 /*
-| Everyone on the payroll, and whether their face is on file.
+| The accounts, not the employee records.
 |
-| LEFT JOIN, because an employee with no biometric row is exactly who this
-| page is for -- an INNER JOIN would hide them.
+| This listed the employees table first, and on Retail Starter that table
+| is empty. Employee rows are created by HR during onboarding, and a plan
+| with no HR role has no onboarding: its staff are created in User
+| Management and are users and nothing else. The owner made two accounts,
+| opened this page, and was told "No employees yet".
+|
+| So this lists what they actually created. The employee row is made when
+| a face is first registered -- the convention hr/my_attendance.php already
+| set for exactly this situation.
+|
+| Every join is LEFT: an account with no employee row and no face is
+| precisely who this page is for, and an INNER JOIN would hide them.
 */
 $stmt = $conn->prepare("
     SELECT
+        u.user_id,
+        u.fullname,
+        u.email,
+        u.role,
         e.employee_id,
         e.employee_code,
-        e.first_name,
-        e.last_name,
-        e.employment_status,
         b.branch_name,
-        eb.face_descriptor,
-        eb.captured_at
-    FROM employees e
+        eb.face_descriptor
+    FROM users u
+    LEFT JOIN employees e
+        ON e.employee_id = u.employee_id AND e.company_id = u.company_id
     LEFT JOIN branch b
         ON b.branch_id = e.branch_id AND b.company_id = e.company_id
     LEFT JOIN employee_biometrics eb
         ON eb.employee_id = e.employee_id AND eb.company_id = e.company_id
-    WHERE e.company_id = ?
-      AND (e.archived_at IS NULL)
-    ORDER BY e.first_name, e.last_name
+    WHERE u.company_id = ?
+      AND LOWER(TRIM(u.status)) = 'active'
+    ORDER BY u.fullname
 ");
 $stmt->bind_param("i", $companyId);
 $stmt->execute();
 
-$employees = [];
+$staff = [];
 $rows = $stmt->get_result();
 
 while ($row = $rows->fetch_assoc()) {
     $row['has_face'] = trim((string) $row['face_descriptor']) !== '';
     unset($row['face_descriptor']);   /* 128 floats per row, and the page
                                          only needs to know yes or no. */
-    $employees[] = $row;
+    $staff[] = $row;
 }
 
 $stmt->close();
 
-$registered = count(array_filter($employees, static fn (array $e): bool => $e['has_face']));
+$registered = count(array_filter($staff, static fn (array $s): bool => $s['has_face']));
 
 include $MODULE_HEADER;
 ?>
@@ -81,19 +93,21 @@ include $MODULE_HEADER;
         </div>
         <div class="text-end">
             <span class="badge rounded-pill bg-light text-secondary fs-6">
-                <?= (int) $registered ?> of <?= count($employees) ?> registered
+                <?= (int) $registered ?> of <?= count($staff) ?> registered
             </span>
         </div>
     </div>
 
-    <?php if (!$employees): ?>
+    <?php if (!$staff): ?>
 
         <div class="card border-0 shadow-sm">
             <div class="card-body text-center py-5">
                 <i class="bi bi-people fs-1 text-secondary"></i>
-                <h5 class="mt-3 mb-1">No employees yet</h5>
+                <h5 class="mt-3 mb-1">No staff accounts yet</h5>
                 <p class="text-muted mb-0">
-                    Add staff first, then come back to register their faces.
+                    Create them in
+                    <a href="/admin/user_management.php">User Management</a>,
+                    then come back to register their faces.
                 </p>
             </div>
         </div>
@@ -110,27 +124,27 @@ include $MODULE_HEADER;
 
                         <div class="list-group list-group-flush" id="employeeList">
 
-                            <?php foreach ($employees as $employee): ?>
+                            <?php foreach ($staff as $person): ?>
 
                                 <button type="button"
                                     class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
-                                    data-employee-id="<?= (int) $employee['employee_id'] ?>"
-                                    data-employee-name="<?= htmlspecialchars(trim($employee['first_name'] . ' ' . $employee['last_name'])) ?>">
+                                    data-user-id="<?= (int) $person['user_id'] ?>"
+                                    data-user-name="<?= htmlspecialchars((string) $person['fullname']) ?>">
 
                                     <span>
                                         <span class="fw-semibold">
-                                            <?= htmlspecialchars(trim($employee['first_name'] . ' ' . $employee['last_name'])) ?>
+                                            <?= htmlspecialchars((string) $person['fullname']) ?>
                                         </span>
                                         <br>
                                         <small class="text-muted">
-                                            <?= htmlspecialchars((string) ($employee['employee_code'] ?: 'No code')) ?>
-                                            <?php if ($employee['branch_name']): ?>
-                                                &middot; <?= htmlspecialchars($employee['branch_name']) ?>
+                                            <?= htmlspecialchars(roleDisplayName((string) $person['role'])) ?>
+                                            <?php if ($person['branch_name']): ?>
+                                                &middot; <?= htmlspecialchars($person['branch_name']) ?>
                                             <?php endif; ?>
                                         </small>
                                     </span>
 
-                                    <?php if ($employee['has_face']): ?>
+                                    <?php if ($person['has_face']): ?>
                                         <span class="badge rounded-pill bg-success-subtle text-success">Registered</span>
                                     <?php else: ?>
                                         <span class="badge rounded-pill bg-light text-secondary">No face</span>
@@ -197,7 +211,7 @@ const faceModelsReady = (async () => {
     await faceapi.nets.faceRecognitionNet.loadFromUri("/models");
 })();
 
-let chosenId = 0;
+let chosenUserId = 0;
 let chosenName = '';
 let stream = null;
 
@@ -206,7 +220,7 @@ const startBtn = document.getElementById('startCameraBtn');
 const captureBtn = document.getElementById('captureFaceBtn');
 const chosenLabel = document.getElementById('chosenEmployee');
 
-document.querySelectorAll('#employeeList [data-employee-id]').forEach(item => {
+document.querySelectorAll('#employeeList [data-user-id]').forEach(item => {
 
     item.addEventListener('click', () => {
 
@@ -215,8 +229,8 @@ document.querySelectorAll('#employeeList [data-employee-id]').forEach(item => {
 
         item.classList.add('active');
 
-        chosenId = parseInt(item.dataset.employeeId, 10);
-        chosenName = item.dataset.employeeName;
+        chosenUserId = parseInt(item.dataset.userId, 10);
+        chosenName = item.dataset.userName;
 
         chosenLabel.textContent = 'Registering ' + chosenName + '.';
         startBtn.disabled = false;
@@ -241,7 +255,7 @@ startBtn.addEventListener('click', async () => {
 
 captureBtn.addEventListener('click', async () => {
 
-    if (!chosenId) {
+    if (!chosenUserId) {
         return;
     }
 
@@ -271,7 +285,7 @@ captureBtn.addEventListener('click', async () => {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                employee_id: chosenId,
+                user_id: chosenUserId,
                 descriptor: Array.from(detection.descriptor)
             })
         });

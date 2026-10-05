@@ -68,20 +68,55 @@ if (preg_match_all('~prepare\(\s*"([^"]*)"~s', $save, $found)) {
 
     foreach ($found[1] as $statement) {
 
-        if (!str_contains($statement, 'employees')
-            && !str_contains($statement, 'employee_biometrics')) {
+        /*
+        | users is in this list too. It is the table that says who somebody
+        | IS, and the endpoint now reads it by an id from the browser --
+        | without a company, that lookup would hand back another business's
+        | staff member and everything after it would be correct about the
+        | wrong person.
+        */
+        $touchesPeople = str_contains($statement, 'employees')
+            || str_contains($statement, 'employee_biometrics')
+            || preg_match('~\b(FROM|UPDATE|INTO)\s+users\b~i', $statement);
+
+        if (!$touchesPeople) {
             continue;
         }
 
         $kind = strtoupper(strtok(trim($statement), " \n\t"));
 
         t_ok(str_contains($statement, 'company_id'),
-            "this {$kind} against an employee names the company");
+            "this {$kind} against a person names the company");
     }
 }
 
 t_ok(substr_count($save, 'company_id') >= 2,
     'the endpoint names the company more than once -- on the lookup and the write');
+
+/* ------------------------------------------- it lists people who exist here */
+
+/*
+| It listed the employees table, and on Retail Starter that table is empty.
+|
+| Employee rows are created by HR during onboarding, and a plan with no HR
+| role has no onboarding -- its staff are created in User Management as
+| users and nothing else. The owner opened the page and was told "No
+| employees yet" directly beneath two accounts they had just made.
+|
+| So the page lists users, which is what staff ARE on this plan, and the
+| employee row is created when a face is first registered. That is the
+| convention hr/my_attendance.php already set for exactly this: it makes
+| the row on demand and links the account to it, so every other page agrees
+| from then on.
+*/
+t_ok(str_contains($page, 'FROM users'),
+    'the page lists the accounts the owner actually created');
+
+t_ok(str_contains($save, 'INSERT INTO employees'),
+    'and the endpoint creates the employee row when there is none');
+
+t_ok(str_contains($save, 'UPDATE users') && str_contains($save, 'employee_id'),
+    'then links the account to it, so the rest of the system agrees');
 
 /* --------------------------------------------- it writes where attendance reads */
 

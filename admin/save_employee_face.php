@@ -45,11 +45,11 @@ if (!is_array($payload)) {
     faceReply(false, 'Nothing was sent.');
 }
 
-$employeeId = (int) ($payload['employee_id'] ?? 0);
+$userId = (int) ($payload['user_id'] ?? 0);
 $descriptor = $payload['descriptor'] ?? null;
 
-if ($employeeId <= 0) {
-    faceReply(false, 'Choose an employee first.');
+if ($userId <= 0) {
+    faceReply(false, 'Choose somebody first.');
 }
 
 /*
@@ -68,20 +68,85 @@ foreach ($descriptor as $number) {
     }
 }
 
-/* The employee, and only if they are this company's. */
+/* The account, and only if it is this company's. */
 $stmt = $conn->prepare("
-    SELECT employee_id, first_name, last_name
-    FROM employees
-    WHERE employee_id = ? AND company_id = ?
+    SELECT user_id, fullname, email, employee_id
+    FROM users
+    WHERE user_id = ? AND company_id = ?
     LIMIT 1
 ");
-$stmt->bind_param("ii", $employeeId, $companyId);
+$stmt->bind_param("ii", $userId, $companyId);
 $stmt->execute();
-$employee = $stmt->get_result()->fetch_assoc();
+$account = $stmt->get_result()->fetch_assoc();
 $stmt->close();
 
-if (!$employee) {
-    faceReply(false, 'No such employee.');
+if (!$account) {
+    faceReply(false, 'No such staff member.');
+}
+
+$personName = trim((string) $account['fullname']);
+$employeeId = (int) $account['employee_id'];
+
+/*
+| An employee row, made now if there is none.
+|
+| On a plan with no HR there is no onboarding, so staff exist as users and
+| nothing else -- and attendance is keyed by employee_id. The row is
+| created here and the account linked to it, which is the convention
+| hr/my_attendance.php already set for the same situation.
+*/
+if ($employeeId > 0) {
+
+    /* It exists, but prove it is this company's before writing to it. */
+    $stmt = $conn->prepare("
+        SELECT employee_id FROM employees
+        WHERE employee_id = ? AND company_id = ?
+        LIMIT 1
+    ");
+    $stmt->bind_param("ii", $employeeId, $companyId);
+    $stmt->execute();
+    $owned = $stmt->get_result()->fetch_assoc();
+    $stmt->close();
+
+    if (!$owned) {
+        faceReply(false, 'That account is linked to an employee record of another company.');
+    }
+
+} else {
+
+    /* "Juan Dela Cruz" -> first "Juan", last "Dela Cruz". A single word is
+       all first name; last_name is NOT NULL, so it falls back to a stop
+       rather than an empty string. Same split as my_attendance.php. */
+    $parts = preg_split('/\s+/', $personName, 2) ?: [];
+    $firstName = trim($parts[0] ?? '') !== '' ? trim($parts[0]) : 'Staff';
+    $lastName = trim($parts[1] ?? '') !== '' ? trim($parts[1]) : '-';
+    $email = trim((string) $account['email']);
+
+    $stmt = $conn->prepare("
+        INSERT INTO employees (company_id, first_name, last_name, email)
+        VALUES (?, ?, ?, ?)
+    ");
+    $stmt->bind_param("isss", $companyId, $firstName, $lastName, $email);
+
+    if (!$stmt->execute()) {
+        $problem = $stmt->error;
+        $stmt->close();
+
+        error_log('save_employee_face could not create an employee: ' . $problem);
+        faceReply(false, 'An employee record could not be created: ' . $problem);
+    }
+
+    $employeeId = (int) $conn->insert_id;
+    $stmt->close();
+
+    /* Link the account to it, so every other page agrees from now on. */
+    $stmt = $conn->prepare("
+        UPDATE users SET employee_id = ?
+        WHERE user_id = ? AND company_id = ?
+    ");
+    $stmt->bind_param("iii", $employeeId, $userId, $companyId);
+    $stmt->execute();
+    $stmt->close();
 }
 
 $json = json_encode(array_map('floatval', $descriptor));
@@ -147,5 +212,4 @@ $stmt->close();
 | writes to. Giving this one page a trail that nothing else keeps would be
 | inventing a convention, not following one.
 */
-faceReply(true,trim($employee['first_name'] . ' ' . $employee['last_name'])
-    . ' can now time in by face.');
+faceReply(true, $personName . ' can now time in by face.');
