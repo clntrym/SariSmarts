@@ -103,6 +103,40 @@ foreach (['canHrms' => 'HRMS', 'canFinance' => 'Finance'] as $flag => $what) {
         "the {$what} section is shown only where the plan includes it");
 }
 
+/* ------------------------------------- the fallback, and why it is silent */
+
+/*
+| companyPlanRoles() falls back to every role when a plan grants none,
+| rather than locking an owner out of hiring anybody. That is the right
+| default and it is invisible, which is the problem: a database where
+| plan_role_access.sql never ran has every subscription_plan_roles row
+| present -- pricing.php renders them perfectly, because it reads role_name
+| -- and every system_role NULL, because that is the column the migration
+| adds. So every owner on every plan is quietly given everything, and the
+| pricing page agrees with the sidebar only by accident.
+|
+| This pins the behaviour so a reader knows it is deliberate, and
+| tools/plan_status.php is what says whether it is firing.
+*/
+$fallbackCompany = userTestMake($conn, 'NoPlanRows', 'active');
+$fallbackId = (int) $fallbackCompany['company_id'];
+
+t_same(['admin', 'hr', 'finance', 'inventory', 'cashier'],
+    companyPlanRoles($conn, $fallbackId),
+    'a company with no subscription falls back to every role, by design');
+
+t_ok(is_file($root . '/tools/plan_status.php'),
+    'and there is one page that says whether that fallback is firing');
+
+$tool = (string) file_get_contents($root . '/tools/plan_status.php');
+
+t_ok(str_contains($tool, 'super admin'),
+    'which only the Super Admin may read');
+t_ok(str_contains($tool, 'system_role'),
+    'and which names the column whose absence causes it');
+t_ok(!preg_match('~\b(INSERT|UPDATE|DELETE|ALTER|DROP)\b~i', $tool),
+    'and changes nothing -- it is a diagnostic, not a migration');
+
 /* ------------------------------------------------- hiring, both ways */
 
 /*

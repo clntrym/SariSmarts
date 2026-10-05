@@ -78,8 +78,94 @@ function userTestCleanup(mysqli $conn): void
     $stmt->execute();
     $stmt->close();
 
-    $stmt = $conn->prepare("DELETE FROM company WHERE company_name LIKE ?");
+    /*
+    | Everything hanging off the company, before the company.
+    |
+    | This deleted users and company and nothing else, which worked only
+    | while a test created nothing else. A suite that makes a branch, or a
+    | job, or a stock request leaves the company undeletable:
+    |
+    |     Cannot delete or update a parent row: a foreign key constraint
+    |     fails (`sari`.`branch`, CONSTRAINT `fk_branch_company` ...)
+    |
+    | The tables are read from the schema rather than listed, for the same
+    | reason wipe_company.php reads them: a hand-written list is how one
+    | gets missed, and the one that gets missed is the one that breaks the
+    | next suite.
+    */
+    $companies = [];
+    $stmt = $conn->prepare("SELECT company_id FROM company WHERE company_name LIKE ?");
     $stmt->bind_param("s", $like);
     $stmt->execute();
+    $rows = $stmt->get_result();
+
+    while ($row = $rows->fetch_assoc()) {
+        $companies[] = (int) $row['company_id'];
+    }
+
     $stmt->close();
+
+    if ($companies === []) {
+        return;
+    }
+
+    $ids = implode(',', $companies);
+
+    $tables = [];
+    $result = $conn->query("
+        SELECT TABLE_NAME FROM information_schema.COLUMNS
+        WHERE TABLE_SCHEMA = DATABASE()
+          AND COLUMN_NAME = 'company_id'
+          AND TABLE_NAME <> 'company'
+    ");
+
+    while ($result && $row = $result->fetch_assoc()) {
+        $tables[] = $row['TABLE_NAME'];
+    }
+
+    /* Order cannot be right for every schema, so it is taken out of the
+       question -- exactly as wipe_company.php does. */
+    $conn->query("SET FOREIGN_KEY_CHECKS = 0");
+
+    foreach ($tables as $table) {
+        @$conn->query("DELETE FROM `{$table}` WHERE company_id IN ({$ids})");
+    }
+
+    @$conn->query("DELETE FROM `company` WHERE company_id IN ({$ids})");
+
+    $conn->query("SET FOREIGN_KEY_CHECKS = 1");
 }
+
+/*
+| Run however the test ends.
+|
+| This file's own description says the rows are "removed again however the
+| test ends", and that was only true of the one suite that remembered to
+| call it. Four companies from four different suites were still sitting in
+| the local database, and tools/plan_status.php listed them as real
+| businesses with no subscription -- a diagnostic reporting test litter as
+| a finding.
+|
+| Registered here rather than asked of each suite, because a cleanup you
+| have to remember is a cleanup that gets forgotten. A suite that calls it
+| explicitly, as test_account_access.php does mid-run, still works: the
+| deletes are by name prefix and run twice harmlessly.
+*/
+register_shutdown_function(static function () use ($conn): void {
+
+    /*
+    | Shutdown handlers run in the order they were registered, and this one
+    | is registered first -- before any a suite adds for its own fixtures.
+    | So it runs first, while those fixtures are still there, which is why
+    | it has to be able to remove them rather than assume they are gone.
+    |
+    | And it must never be the thing that fails a green run: a cleanup that
+    | throws turns a passing suite into a failing one, which is how this
+    | was first noticed.
+    */
+    try {
+        userTestCleanup($conn);
+    } catch (Throwable $error) {
+        fwrite(STDERR, "cleanup: " . $error->getMessage() . "\n");
+    }
+});
