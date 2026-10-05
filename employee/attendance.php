@@ -309,12 +309,12 @@ $records = $stmtRec->get_result();
                         <div class="row">
                             <div class="col-md-6">
                                 <h6>Time In Photo</h6>
-                                <img src="../<?= htmlspecialchars($row['photo_in']) ?>" class="img-fluid rounded border">
+                                <img src="/attendance_photo.php?path=<?= urlencode($row['photo_in']) ?>" class="img-fluid rounded border">
                             </div>
                             <div class="col-md-6">
                                 <h6>Time Out Photo</h6>
                                 <?php if ($row['photo_out']) { ?>
-                                    <img src="../<?= htmlspecialchars($row['photo_out']) ?>" class="img-fluid rounded border">
+                                    <img src="/attendance_photo.php?path=<?= urlencode($row['photo_out']) ?>" class="img-fluid rounded border">
                                 <?php } else { ?>
                                     <p class="text-muted">
                                         No Time Out Photo

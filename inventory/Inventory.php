@@ -26,7 +26,7 @@ if (isset($_POST['saveProduct'])) {
             "title" => "Validation Error",
             "text" => "Product name is required."
         ];
-        header("Location: inventory.php");
+        header("Location: Inventory.php");
         exit;
     }
 
@@ -36,7 +36,7 @@ if (isset($_POST['saveProduct'])) {
             "title" => "Validation Error",
             "text" => "Please select a category."
         ];
-        header("Location: inventory.php");
+        header("Location: Inventory.php");
         exit;
     }
 
@@ -48,7 +48,7 @@ if (isset($_POST['saveProduct'])) {
             "text" => "Please select a supplier."
         ];
 
-        header("Location: inventory.php");
+        header("Location: Inventory.php");
         exit;
     }
 
@@ -79,7 +79,7 @@ if (isset($_POST['saveProduct'])) {
             "title" => "Invalid Category",
             "text" => "The selected category does not exist."
         ];
-        header("Location: inventory.php");
+        header("Location: Inventory.php");
         exit;
     }
 
@@ -121,7 +121,7 @@ if (isset($_POST['saveProduct'])) {
             "text" => "The selected supplier does not exist."
         ];
 
-        header("Location: inventory.php");
+        header("Location: Inventory.php");
         exit;
     }
 
@@ -154,7 +154,7 @@ if (isset($_POST['saveProduct'])) {
             "title" => "Product Already Exists",
             "text" => "A product with this name already exists."
         ];
-        header("Location: inventory.php");
+        header("Location: Inventory.php");
         exit;
     }
 
@@ -171,7 +171,7 @@ if (isset($_POST['saveProduct'])) {
                 "title" => "Image Upload Error",
                 "text" => "There was a problem uploading the image."
             ];
-            header("Location: inventory.php");
+            header("Location: Inventory.php");
             exit;
         }
 
@@ -195,7 +195,7 @@ if (isset($_POST['saveProduct'])) {
                 "title" => "Invalid Image",
                 "text" => "Only JPG, JPEG, PNG, and WEBP images are allowed."
             ];
-            header("Location: inventory.php");
+            header("Location: Inventory.php");
             exit;
         }
 
@@ -205,7 +205,7 @@ if (isset($_POST['saveProduct'])) {
                 "title" => "Image Too Large",
                 "text" => "Image size must not exceed 2MB."
             ];
-            header("Location: inventory.php");
+            header("Location: Inventory.php");
             exit;
         }
 
@@ -216,7 +216,7 @@ if (isset($_POST['saveProduct'])) {
                 "title" => "Invalid Image",
                 "text" => "The uploaded file is not a valid image."
             ];
-            header("Location: inventory.php");
+            header("Location: Inventory.php");
             exit;
         }
 
@@ -237,7 +237,7 @@ if (isset($_POST['saveProduct'])) {
                 "title" => "Upload Failed",
                 "text" => "Unable to save the product image."
             ];
-            header("Location: inventory.php");
+            header("Location: Inventory.php");
             exit;
         }
     }
@@ -385,7 +385,7 @@ if (isset($_POST['saveProduct'])) {
         ];
     }
 
-    header("Location: inventory.php");
+    header("Location: Inventory.php");
     exit;
 }
 
@@ -400,7 +400,7 @@ if (isset($_POST['saveCategory'])) {
             "title" => "Validation Error",
             "text" => "Category name is required."
         ];
-        header("Location: inventory.php");
+        header("Location: Inventory.php");
         exit;
     }
 
@@ -441,7 +441,7 @@ if (isset($_POST['saveCategory'])) {
             "title" => "Category Already Exists",
             "text" => "That category already exists."
         ];
-        header("Location: inventory.php");
+        header("Location: Inventory.php");
         exit;
     }
 
@@ -480,7 +480,7 @@ if (isset($_POST['saveCategory'])) {
 
 
     mysqli_stmt_close($insertCategory);
-    header("Location: inventory.php");
+    header("Location: Inventory.php");
     exit;
 }
 

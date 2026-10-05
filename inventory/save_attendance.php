@@ -139,9 +139,25 @@ if ($data === false) {
 }
 
 $filename = $type . "_" . $employee_id . "_" . date("YmdHis") . ".jpg";
-$filepath = "../uploads/attendance/" . $filename;
+$photoPath = "uploads/attendance/" . $filename;
 
-if (file_put_contents($filepath, $data) === false) {
+/*
+| The bytes go to the database.
+|
+| This wrote them to ../uploads/attendance/, a folder that is in .gitignore
+| and so was never in the deploy, on a host that keeps no disk between
+| deploys in any case. file_put_contents() returned false and the employee
+| was told "Unable to save the captured photo" -- and their time-in was
+| refused, correctly, because the photograph is the evidence they were
+| there and a timestamp alone proves nothing.
+|
+| The path stored on the attendance row does not change. It was where the
+| file sat; it is now the key it is filed under, and attendance_photo.php
+| serves it to the company it belongs to.
+*/
+require_once __DIR__ . "/../includes/stored_files.php";
+
+if (!platformFileStore($conn, $photoPath, $data, "image/jpeg", $filename)) {
     echo json_encode([
         "success" => false,
         "message" => "Unable to save the captured photo."
@@ -149,7 +165,13 @@ if (file_put_contents($filepath, $data) === false) {
     exit;
 }
 
-$photoPath = "uploads/attendance/" . $filename;
+/* And to the disk as well, where the host keeps one. Harmless where it
+   does not: the store is what is read back. */
+$filepath = __DIR__ . "/../uploads/attendance/" . $filename;
+
+if (is_dir(dirname($filepath)) || @mkdir(dirname($filepath), 0777, true)) {
+    @file_put_contents($filepath, $data);
+}
 
 
 /*

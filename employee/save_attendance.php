@@ -76,9 +76,37 @@ $prefix = ($type == "IN") ? "IN" : "OUT";
 
 $filename = $prefix . "_" . $employee_id . "_" . date("YmdHis") . ".jpg";
 
-$filepath = "../uploads/attendance/" . $filename;
+/*
+| The bytes go to the database.
+|
+| This wrote them to ../uploads/attendance/ and did not look at the result.
+| That folder is in .gitignore, so it was never in the deploy, on a host
+| that keeps no disk between deploys in any case -- the write failed every
+| time and the row was saved anyway, claiming a photograph that does not
+| exist. The other four savers at least said so.
+|
+| The path on the attendance row does not change. It was where the file
+| sat; it is now the key it is filed under, and attendance_photo.php serves
+| it to the company it belongs to.
+*/
+require_once __DIR__ . "/../includes/stored_files.php";
 
-file_put_contents($filepath, $data);
+$photoPath = "uploads/attendance/" . $filename;
+
+if (!platformFileStore($conn, $photoPath, $data, "image/jpeg", $filename)) {
+    echo json_encode([
+        "success" => false,
+        "message" => "Unable to save the captured photo."
+    ]);
+    exit;
+}
+
+/* And to the disk as well, where the host keeps one. */
+$filepath = __DIR__ . "/../uploads/attendance/" . $filename;
+
+if (is_dir(dirname($filepath)) || @mkdir(dirname($filepath), 0777, true)) {
+    @file_put_contents($filepath, $data);
+}
 
 $getBranch = mysqli_query($conn, "
 SELECT
