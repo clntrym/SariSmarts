@@ -550,6 +550,28 @@ $employeeOpen = in_array($currentPage, $employeePages);
                     </a>
                 </li>
 
+                <?php if (!$canHrms): ?>
+                    <!--
+                        Only where the plan has no HR officer.
+
+                        Attendance is taken by face, and the face is captured
+                        during Employee Registration -- an HRMS page. Retail
+                        Starter sells no HR role, so on that plan nobody could
+                        register one and every time-in would fail with no
+                        screen anywhere to fix it.
+
+                        Hidden where there IS an HR officer, because they
+                        capture it during onboarding and two routes to one job
+                        is a thing to explain rather than a feature.
+                    -->
+                    <li class="nav-item">
+                        <a href="/admin/face_registration.php" class="nav-link <?= ($currentPage == 'face_registration.php') ? 'active' : '' ?>">
+                            <i class="bi bi-person-bounding-box me-2"></i>
+                            <span>Face Registration</span>
+                        </a>
+                    </li>
+                <?php endif; ?>
+
                 <?php if ($canHiring): ?>
                     <li class="nav-item">
                         <a href="/admin/approval.php" class="nav-link <?= (str_contains($here, '/admin/') && $currentPage == 'approval.php') ? 'active' : '' ?>">
