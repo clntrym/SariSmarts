@@ -6,15 +6,18 @@ requireRole(['admin']);
 $companyId = requireCompany();
 
 /*
-| And whether the plan has this department at all.
+| No plan check here, unlike the other pages in the Finance menu.
 |
-| requireRole() above admits an admin, and role says nothing about the
-| plan: Retail Starter sells Owner/Admin, Cashier and Inventory Staff, so
-| an owner on it has no Finance people and no Finance to manage. Hiding the
-| sidebar entry is presentation; this is what holds when the address is
-| typed.
+| Tax briefly carried requirePlanRole($conn, $companyId, 'finance'), because
+| it sat inside the Finance dropdown and everything in there was gated
+| together. That was wrong: a sari-sari store on Retail Starter has no
+| Finance staff and still files with the BIR. The obligation comes from
+| being a business, not from having bought a Finance seat.
+|
+| So Tax is its own sidebar entry now rather than an item in that menu, and
+| any owner reaches it on any plan. requireRole(['admin']) above is the
+| whole of the rule: it is the owner's page.
 */
-requirePlanRole($conn, $companyId, 'finance', 'Finance');
 $MODULE_HEADER = __DIR__ . "/admin_header.php";
 $MODULE_FOOTER = __DIR__ . "/admin_footer.php";
 

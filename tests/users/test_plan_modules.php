@@ -176,6 +176,33 @@ t_ok(str_contains($tool, 'system_role'),
 t_ok(!preg_match('~\b(INSERT|UPDATE|DELETE|ALTER|DROP)\b~i', $tool),
     'and changes nothing -- it is a diagnostic, not a migration');
 
+/* ------------------------------------------------------------------ tax */
+
+$tax = (string) preg_replace(['~/\*.*?\*/~s', '~(?<!:)//[^\n]*~'],
+    '', (string) file_get_contents($root . '/admin/tax.php'));
+
+t_ok(!str_contains($tax, 'requirePlanRole'),
+    'Tax is not gated on having Finance staff -- every store files with the BIR');
+
+t_ok(str_contains($tax, "requireRole(['admin'"),
+    'but it is still the owner\'s page, not open to anybody');
+
+/*
+| And it is reachable on a plan with no Finance dropdown to hide it in:
+| outside the $canFinance block, which is where it used to live.
+*/
+$financeBlock = '';
+
+if (preg_match('~\$canFinance\):\s*\?>(.*?)<\?php endif;~s', $header, $found)) {
+    $financeBlock = $found[1];
+}
+
+t_ok($financeBlock !== '', 'the Finance section was found in the sidebar');
+t_ok(!str_contains($financeBlock, 'tax.php'),
+    'and Tax is no longer inside it, so hiding Finance does not hide Tax');
+t_ok(str_contains($header, 'tax.php'),
+    'while Tax is still in the sidebar somewhere');
+
 /* ------------------------------------------------- hiring, both ways */
 
 /*
@@ -207,7 +234,15 @@ $behindHrms = ['hr/recruitment.php', 'hr/employee_registration.php',
                'hr/applications.php', 'hr/employee_view.php',
                'hr/archive_employee.php', 'hr/employee_contract_print.php'];
 
-$behindFinance = ['admin/income.php', 'finance/expenses.php', 'admin/tax.php',
+/*
+| Tax is not here.
+|
+| It sat inside the Finance dropdown, so gating that dropdown took it away
+| from Retail Starter -- and a small store still files with the BIR. Tax is
+| an obligation every company has, not a function of having Finance staff,
+| so it is a sidebar entry of its own and an admin reaches it on any plan.
+*/
+$behindFinance = ['admin/income.php', 'finance/expenses.php',
                   'finance/accounts_payable.php'];
 
 foreach (['hr' => $behindHrms, 'finance' => $behindFinance] as $role => $pages) {

@@ -366,7 +366,10 @@ $employeeOpen = in_array($currentPage, $employeePages);
                               'employee_directory.php', 'approval.php',
                               'attendance.php', 'payroll.php'];
 
-                $financePages = ['income.php', 'expenses.php', 'tax.php',
+                /* tax.php is not here any more: it is its own entry below,
+                   and leaving it listed would hold the Finance menu open on
+                   a page that is no longer in it. */
+                $financePages = ['income.php', 'expenses.php',
                                  'accounts_payable.php', 'reports.php'];
 
                 $stockPages = ['Inventory.php', 'suppliers.php', 'stock_requests.php',
@@ -378,7 +381,7 @@ $employeeOpen = in_array($currentPage, $employeePages);
 
                 $hrmsOpen = str_contains($here, '/hr/') && in_array($currentPage, $hrmsPages, true);
                 $financeOpen = (str_contains($here, '/finance/') && in_array($currentPage, $financePages, true))
-                    || in_array($currentPage, ['income.php', 'tax.php', 'reports.php'], true);
+                    || in_array($currentPage, ['income.php', 'reports.php'], true);
                 $stockOpen = in_array($currentPage, $stockPages, true)
                     || (str_contains($here, '/inventory/') && $currentPage === 'reports.php');
                 ?>
@@ -467,11 +470,6 @@ $employeeOpen = in_array($currentPage, $employeePages);
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="/admin/tax.php" class="nav-link <?= ($currentPage == 'tax.php') ? 'active' : '' ?>">
-                                    <i class="bi bi-percent me-2"></i><span>Tax</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
                                 <a href="/finance/accounts_payable.php" class="nav-link <?= ($currentPage == 'accounts_payable.php') ? 'active' : '' ?>">
                                     <i class="bi bi-journal-text me-2"></i><span>Accounts Payable</span>
                                 </a>
@@ -535,6 +533,22 @@ $employeeOpen = in_array($currentPage, $employeePages);
 
                 <!-- ====================== RUNNING THE BUSINESS ==================== -->
                 <li class="nav-item mt-2"><small class="text-white-50 px-3">ADMINISTRATION</small></li>
+
+                <!--
+                    Tax sits here rather than in the Finance menu.
+
+                    It used to be an item in that dropdown, so gating the
+                    dropdown took it away from Retail Starter -- and a
+                    sari-sari store still files with the BIR. The obligation
+                    comes from being a business, not from having bought a
+                    Finance seat, so every owner has it on every plan.
+                -->
+                <li class="nav-item">
+                    <a href="/admin/tax.php" class="nav-link <?= ($currentPage == 'tax.php') ? 'active' : '' ?>">
+                        <i class="bi bi-percent me-2"></i>
+                        <span>Tax</span>
+                    </a>
+                </li>
 
                 <?php if ($canHiring): ?>
                     <li class="nav-item">
