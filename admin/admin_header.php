@@ -333,6 +333,31 @@ $employeeOpen = in_array($currentPage, $employeePages);
         .nav-link[aria-expanded="true"] .bi-chevron-down {
             transform: rotate(180deg);
         }
+
+        /* Prevent Tailwind CSS utility .collapse { visibility: collapse } from hiding Bootstrap collapsible menus */
+        .collapse.show {
+            display: block !important;
+            visibility: visible !important;
+        }
+        .collapse:not(.show) {
+            display: none !important;
+        }
+        .sidebar .collapse {
+            visibility: visible !important;
+        }
+        .sidebar .collapse.show {
+            display: block !important;
+            visibility: visible !important;
+            height: auto !important;
+        }
+
+        /* Ensure active buttons in sidebar stand out clearly */
+        #employeeMenu .nav-link.active,
+        .sidebar .nav-link.active {
+            background: #fbbd23 !important;
+            color: #000 !important;
+            font-weight: bold !important;
+        }
     </style>
 
 </head>
@@ -385,7 +410,8 @@ $employeeOpen = in_array($currentPage, $employeePages);
 
                 $hrmsOpen = str_contains($here, '/hr/') && in_array($currentPage, $hrmsPages, true);
                 $financeOpen = (str_contains($here, '/finance/') && in_array($currentPage, $financePages, true))
-                    || in_array($currentPage, ['income.php', 'reports.php'], true);
+                    || in_array($currentPage, ['income.php', 'reports.php', 'expenses.php', 'expenses'], true)
+                    || (isset($_SERVER['REQUEST_URI']) && str_contains($_SERVER['REQUEST_URI'], '/finance/'));
                 $stockOpen = in_array($currentPage, $stockPages, true)
                     || (str_contains($here, '/inventory/') && $currentPage === 'reports.php');
                 ?>
@@ -469,7 +495,7 @@ $employeeOpen = in_array($currentPage, $employeePages);
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="/finance/expenses.php" class="nav-link <?= ($currentPage == 'expenses.php') ? 'active' : '' ?>">
+                                <a href="/finance/expenses.php" class="nav-link <?= in_array($currentPage, ['expenses.php', 'expenses'], true) ? 'active' : '' ?>">
                                     <i class="bi bi-receipt-cutoff me-2"></i><span>Expenses</span>
                                 </a>
                             </li>

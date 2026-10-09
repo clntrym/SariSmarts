@@ -452,6 +452,16 @@ $averageAmount = $totalTransactions > 0
 
 <style>
     .hidden { display: none !important; }
+    .collapse.show { display: block !important; visibility: visible !important; }
+    .sidebar .collapse { visibility: visible !important; }
+    .sidebar .collapse:not(.show) { display: none !important; }
+    .sidebar .collapse.show { display: block !important; visibility: visible !important; height: auto !important; }
+    #employeeMenu .nav-link.active,
+    .sidebar .nav-link.active {
+        background: #fbbd23 !important;
+        color: #000 !important;
+        font-weight: bold !important;
+    }
     .dashboard-card {
         border: none;
         border-radius: 18px;
