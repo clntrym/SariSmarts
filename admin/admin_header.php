@@ -76,6 +76,10 @@ $employeeOpen = in_array($currentPage, $employeePages);
         <link rel="stylesheet" href="../assets/leaflet/leaflet.css">
     <?php endif; ?>
 
+    <?php if ($currentPage === 'expenses.php' || (isset($_SERVER['REQUEST_URI']) && strpos($_SERVER['REQUEST_URI'], 'expenses.php') !== false)): ?>
+        <script src="https://cdn.tailwindcss.com"></script>
+    <?php endif; ?>
+
     <style></style>
 
     <style>

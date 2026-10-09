@@ -444,7 +444,14 @@ $averageAmount = $totalTransactions > 0
 
 ?>
 
+<script>
+    if (typeof tailwind === 'undefined') {
+        document.write('<script src="https://cdn.tailwindcss.com"><\/script>');
+    }
+</script>
+
 <style>
+    .hidden { display: none !important; }
     .dashboard-card {
         border: none;
         border-radius: 18px;
